@@ -1,0 +1,550 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Log settings -->
+    <sys:String x:Key="Toolbar.LogSettings">⚙ ログ設定</sys:String>
+    <sys:String x:Key="Toolbar.LogSettings.Tip">CSV に記録するチャンネルを選択</sys:String>
+    <sys:String x:Key="Log.SettingsTitle">CSV 記録設定</sys:String>
+    <sys:String x:Key="Log.SettingsHint">CSV に記録するチャンネルを選択。デフォルトは全選択、同期記録です。</sys:String>
+    <sys:String x:Key="Log.SelectAll">全選択</sys:String>
+    <sys:String x:Key="Log.SelectNone">全解除</sys:String>
+    <sys:String x:Key="Log.SelectedCount">選択 CH 数</sys:String>
+    <sys:String x:Key="Log.Confirm">OK</sys:String>
+    <sys:String x:Key="Log.NoChannelsSelected">CH が未選択、記録不可</sys:String>
+    <sys:String x:Key="Log.SelectionHintFmt">{0} CH を記録します</sys:String>
+
+    <!-- Phase 5-2: Chart settings dialog -->
+    <sys:String x:Key="ChartSettings.Title">グラフ設定</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Vib">振動グラフ</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Tilt">水平グラフ</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Env">温湿度グラフ</sys:String>
+    <sys:String x:Key="ChartSettings.XSec">X 軸時間長（秒）</sys:String>
+    <sys:String x:Key="ChartSettings.VibY">Y 軸レンジ (G)</sys:String>
+    <sys:String x:Key="ChartSettings.TiltY">Y 軸レンジ (角度)</sys:String>
+    <sys:String x:Key="ChartSettings.EnvY">Y 軸レンジ (Min ~ Max)</sys:String>
+
+    <!-- Phase 5-2: Time domain settings -->
+    <sys:String x:Key="TimeDomain.Title">時間領域設定</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Stats">統計サンプリング</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Overlap">Overlap</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz">統計頻度</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz.Hint">Peak / RMS / Crest と AI 特徴量の統計頻度。既定 20Hz = 50ms ごと。</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap">Overlap 比率</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap.Hint">隣接 batch の重ね率。高いほど平滑だが遅延大。既定 30%。</sys:String>
+
+    <!-- Phase 5-2: Tilt zero -->
+    <sys:String x:Key="Tilt.Zero">ゼロ</sys:String>
+    <sys:String x:Key="Tilt.ZeroReset">ゼロ解除</sys:String>
+    <sys:String x:Key="Tilt.ZeroTip">1 回目：現在の X/Y/Z 角度を 0° 基準に設定。2 回目：絶対角度に戻す。</sys:String>
+    <sys:String x:Key="Status.TiltZeroedFmt">{0}：水平ゼロ調整完了（基準からの相対表示）</sys:String>
+    <sys:String x:Key="Status.TiltZeroResetFmt">{0}：水平ゼロ解除（絶対角度表示）</sys:String>
+
+    <!-- Phase 5-2.4: Performance settings -->
+    <sys:String x:Key="Pref.Section.Performance">パフォーマンス調整</sys:String>
+    <sys:String x:Key="Pref.Perf.Hint">動作が重い場合は下げてください。グラフ更新頻度や点数の低下は測定精度に影響せず、視覚的な滑らかさのみに影響します。</sys:String>
+    <sys:String x:Key="Pref.Perf.RefreshHz">グラフ更新頻度</sys:String>
+    <sys:String x:Key="Pref.Perf.MaxPoints">軸あたり最大点数</sys:String>
+
+    <!-- Phase 5-2.1: Tilt LPF preferences -->
+    <sys:String x:Key="Pref.Section.Tilt">水平角度</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Label">角度表示モード：</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Inclinometer">水準器モード（既定）</sys:String>
+    <sys:String x:Key="Pref.TiltMode.InclinometerTip">水平面から各軸が外れた角度。水平時 X=0°、Y=0°、Z=+90°、範囲 -90°~+90°。工学慣例。</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVector">ベクトル夾角モード</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVectorTip">軸の正方向と重力の物理夾角。水平時 X=90°、Y=90°、Z=0°、範囲 0°~180°。</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Enable">LPF（ローパスフィルタ）有効</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tip">DC 成分から傾角を算出後 LPF を適用、振動環境でも安定。既定オン。</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tau">時定数</sys:String>
+
+    <!-- Preferences dialog -->
+    <sys:String x:Key="Toolbar.Preferences">⚙ 設定</sys:String>
+    <sys:String x:Key="Pref.Title">Preferences 設定</sys:String>
+    <sys:String x:Key="Pref.Apply">適用</sys:String>
+    <sys:String x:Key="Pref.Section.Vibration">振動表示</sys:String>
+    <sys:String x:Key="Pref.Section.Display">表示</sys:String>
+    <sys:String x:Key="Pref.Section.Future">将来機能用</sys:String>
+    <sys:String x:Key="Pref.Future.Hint">今後のソフトウェア／ハードウェア調整機能（ファーム更新、通信設定、詳細校正等）はこのパネルに統合予定。</sys:String>
+    <sys:String x:Key="Pref.Gravity.Label">重力（垂直軸 1G）の扱い：</sys:String>
+    <sys:String x:Key="Pref.Gravity.Remove">重力を除去（既定）</sys:String>
+    <sys:String x:Key="Pref.Gravity.RemoveTip">各軸の DC 成分を除去、静止時 X/Y/Z ≈ 0、振動成分のみ表示</sys:String>
+    <sys:String x:Key="Pref.Gravity.Keep">重力を保持</sys:String>
+    <sys:String x:Key="Pref.Gravity.KeepTip">DC 成分を保持、垂直軸は静止時 ≈ 1G</sys:String>
+
+    <!-- ViewMode icon labels -->
+    <sys:String x:Key="ViewMode.Vibration">振動</sys:String>
+    <sys:String x:Key="ViewMode.Tilt">水平</sys:String>
+    <sys:String x:Key="ViewMode.Env">温湿度</sys:String>
+    <sys:String x:Key="Series.Temp">温度</sys:String>
+    <sys:String x:Key="Series.Hum">湿度</sys:String>
+
+    <!-- App -->
+    <sys:String x:Key="App.Title">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar (Phase 5 VMS-style) -->
+    <sys:String x:Key="Toolbar.AddSensor">+ Sensor 追加</sys:String>
+    <sys:String x:Key="Toolbar.RemoveSensor">− 削除</sys:String>
+    <sys:String x:Key="Toolbar.SyncLabel">同期:</sys:String>
+    <sys:String x:Key="Toolbar.StartAll">▶ 全開始</sys:String>
+    <sys:String x:Key="Toolbar.StopAll">■ 全停止</sys:String>
+    <sys:String x:Key="Toolbar.RecordAll">● 全記録</sys:String>
+    <sys:String x:Key="Toolbar.View">View:</sys:String>
+    <sys:String x:Key="Toolbar.View.Tip">全 Sensor の表示モードを一括切替</sys:String>
+    <sys:String x:Key="Toolbar.FontSize">フォント:</sys:String>
+
+    <!-- Sensor Tab -->
+    <sys:String x:Key="Tab.Sensor">Sensor</sys:String>
+    <sys:String x:Key="Tab.Stats">📊 統計</sys:String>
+
+    <!-- Sections -->
+    <sys:String x:Key="Section.Connection">接続</sys:String>
+    <sys:String x:Key="Section.Measure">計測</sys:String>
+    <sys:String x:Key="Section.Settings">設定</sys:String>
+    <sys:String x:Key="Section.Log">記録</sys:String>
+    <sys:String x:Key="Section.Calibration">校正</sys:String>
+
+    <!-- Per-channel -->
+    <sys:String x:Key="Channel.PortLabel">Port:</sys:String>
+    <sys:String x:Key="Channel.Connect">接続</sys:String>
+    <sys:String x:Key="Channel.Disconnect">切断</sys:String>
+    <sys:String x:Key="Channel.RecordStart">● 記録開始</sys:String>
+    <sys:String x:Key="Channel.RecordStop">■ 記録停止</sys:String>
+    <sys:String x:Key="Channel.OpenFolder">📁 フォルダ</sys:String>
+    <sys:String x:Key="Channel.MaxReset">Max リセット</sys:String>
+
+    <!-- Live data -->
+    <sys:String x:Key="Table.Acc">Acc (G)</sys:String>
+    <sys:String x:Key="Table.Alarm">警報</sys:String>
+    <sys:String x:Key="Table.Status">状態</sys:String>
+    <sys:String x:Key="Table.Angle">角度 (°)</sys:String>
+    <sys:String x:Key="Table.Value">値</sys:String>
+    <sys:String x:Key="Measure.Running">測定中</sys:String>
+    <sys:String x:Key="Measure.Stopped">停止中</sys:String>
+    <sys:String x:Key="Pref.Diag.Show">診断パネルを表示</sys:String>
+    <sys:String x:Key="Pref.Diag.Tip">各 Sensor タブに SPS / Bytes / Pkt / Lost / Hex プレビューを表示。既定オフ。</sys:String>
+    <sys:String x:Key="Table.MaxRecord">最大値 (G)</sys:String>
+
+    <!-- Add Sensor Dialog -->
+    <sys:String x:Key="Dialog.AddSensor.Title">Sensor 追加</sys:String>
+
+    <!-- Status messages (Phase 5) -->
+    <sys:String x:Key="Status.SensorConnectedFmt">{0} 接続</sys:String>
+    <sys:String x:Key="Status.SensorDisconnectedFmt">{0} 切断</sys:String>
+    <sys:String x:Key="Status.SyncStartedFmt">同期開始 ({0} sensors)</sys:String>
+    <sys:String x:Key="Status.SyncStopped">同期停止</sys:String>
+
+    <sys:String x:Key="App.LegacyTitle">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar -->
+    <sys:String x:Key="Toolbar.AddChannel">+ チャンネル追加</sys:String>
+    <sys:String x:Key="Toolbar.ScanUsb">🔍 スキャン</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe">💾 レシピ保存</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe.Tip">現在の全チャンネル設定を .tzrcp ファイルとして保存</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe">📂 レシピ読込</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe.Tip">既存の .tzrcp 設定ファイルを読み込み</sys:String>
+    <sys:String x:Key="Toolbar.Connect">▶ 接続</sys:String>
+    <sys:String x:Key="Toolbar.Disconnect">■ 切断</sys:String>
+    <sys:String x:Key="Toolbar.StartRecord">● 記録開始</sys:String>
+    <sys:String x:Key="Toolbar.StopRecord">■ 記録停止</sys:String>
+    <sys:String x:Key="Toolbar.RecLabel">REC</sys:String>
+    <sys:String x:Key="Toolbar.RecOpen">📂 開く</sys:String>
+    <sys:String x:Key="Toolbar.SamplesUnit">サンプル</sys:String>
+    <sys:String x:Key="Toolbar.ActiveChannels">有効 Sensor:</sys:String>
+    <sys:String x:Key="Toolbar.Language">言語</sys:String>
+
+    <!-- Channel card -->
+    <sys:String x:Key="Channel.SPS">SPS</sys:String>
+    <sys:String x:Key="Channel.LostPackets">欠落</sys:String>
+    <sys:String x:Key="Channel.Calibration">校正</sys:String>
+    <sys:String x:Key="Channel.LoadCalibration.Tip">校正ファイルを読み込み</sys:String>
+    <sys:String x:Key="Channel.RemoveChannel.Tip">チャンネルを削除</sys:String>
+    <sys:String x:Key="Channel.Uncalibrated">未校正</sys:String>
+    <sys:String x:Key="Channel.CalibratedFmt">校正済 [{0}]</sys:String>
+
+    <!-- Tab headers -->
+    <sys:String x:Key="Tab.Vibration">📊 振動解析</sys:String>
+    <sys:String x:Key="Tab.Level">📐 水平計測</sys:String>
+    <sys:String x:Key="Tab.Env">🌡 温湿度</sys:String>
+
+    <!-- Vibration tab -->
+    <sys:String x:Key="Vibration.TimeMode">時間領域</sys:String>
+    <sys:String x:Key="Vibration.FftMode">周波数 (FFT)</sys:String>
+    <sys:String x:Key="Vibration.WaveformMode">波形 (Waveform)</sys:String>
+    <sys:String x:Key="Vibration.ShowAxes">表示軸:</sys:String>
+    <sys:String x:Key="Vibration.AmpRangeLabel">振幅範囲:</sys:String>
+    <sys:String x:Key="Vibration.AmpAuto">Auto</sys:String>
+    <sys:String x:Key="Vibration.Snapshot">📷 スナップショット</sys:String>
+    <sys:String x:Key="Vibration.ResetZoom">🔄 ズーム解除</sys:String>
+    <sys:String x:Key="Vibration.MaxMarkerFmt">{0} 最大: f={1:F1}Hz · A={2:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ZoomHint">ヒント: 左ドラッグで矩形ズーム · 右クリックでカーソル · ホイールでズーム · 「🔄 ズーム解除」ボタンで戻す</sys:String>
+    <sys:String x:Key="Vibration.CrestLabel">Crest</sys:String>
+    <sys:String x:Key="Vibration.Hpf">HPF (0.5Hz)</sys:String>
+    <sys:String x:Key="Vibration.UnitLabel">単位:</sys:String>
+    <sys:String x:Key="Vibration.WindowLabel">窓関数:</sys:String>
+    <sys:String x:Key="Vibration.WindowLengthLabel">時間長:</sys:String>
+    <sys:String x:Key="Vibration.FreqRangeLabel">周波数範囲:</sys:String>
+    <sys:String x:Key="Vibration.SecUnit">秒</sys:String>
+    <sys:String x:Key="Vibration.HzUnit">Hz</sys:String>
+    <sys:String x:Key="Vibration.AutoFreq">Auto (Nyquist)</sys:String>
+    <sys:String x:Key="Vibration.CursorFmt">t={0:F3}s · X={1:F3}G · Y={2:F3}G · Z={3:F3}G</sys:String>
+    <sys:String x:Key="Vibration.CursorFftFmt">f={0:F1}Hz · X={1:F4}G · Y={2:F4}G · Z={3:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ClearCursor">⊗ カーソル消去</sys:String>
+    <sys:String x:Key="Vibration.Pause">⏸ 一時停止</sys:String>
+    <sys:String x:Key="Vibration.Resume">▶ 再開</sys:String>
+    <sys:String x:Key="Vibration.Zero">⊙ ゼロ</sys:String>
+    <sys:String x:Key="Vibration.Csv">● CSV</sys:String>
+    <sys:String x:Key="Vibration.AxisTime">時間 (s)</sys:String>
+    <sys:String x:Key="Vibration.AxisFreq">周波数 (Hz)</sys:String>
+    <sys:String x:Key="Vibration.AxisAmp">振幅 (G)</sys:String>
+    <sys:String x:Key="Vibration.AxisG">G</sys:String>
+    <sys:String x:Key="Vibration.RmsLabel">RMS</sys:String>
+    <sys:String x:Key="Vibration.PpLabel">P-P</sys:String>
+
+    <!-- Level tab -->
+    <sys:String x:Key="Level.Title">水平計測（Pitch / Roll、校正補償適用済）</sys:String>
+    <sys:String x:Key="Level.ZeroAll">⊙ 全ゼロ</sys:String>
+    <sys:String x:Key="Level.Precision">精度: ±0.05°</sys:String>
+    <sys:String x:Key="Level.Pitch">Pitch</sys:String>
+    <sys:String x:Key="Level.Roll">Roll</sys:String>
+    <sys:String x:Key="Level.Total">合成</sys:String>
+
+    <!-- Env tab -->
+    <sys:String x:Key="Env.Title">温湿度監視（HDC1080）</sys:String>
+    <sys:String x:Key="Env.WindowLabel">トレンド窓:</sys:String>
+    <sys:String x:Key="Env.Window1Hr">1 時間</sys:String>
+    <sys:String x:Key="Env.Window6Hr">6 時間</sys:String>
+    <sys:String x:Key="Env.Window24Hr">24 時間</sys:String>
+    <sys:String x:Key="Env.TempAlertLabel">高温警報:</sys:String>
+    <sys:String x:Key="Env.HumAlertLabel">高湿警報:</sys:String>
+    <sys:String x:Key="Env.Temperature">温度</sys:String>
+    <sys:String x:Key="Env.Humidity">湿度</sys:String>
+    <sys:String x:Key="Env.AxisTemp">温度 (°C)</sys:String>
+    <sys:String x:Key="Env.AxisHum">湿度 (%RH)</sys:String>
+    <sys:String x:Key="Env.AxisTime">時間 (s)</sys:String>
+    <sys:String x:Key="Env.SeriesTempFmt">Ch{0} 温度</sys:String>
+    <sys:String x:Key="Env.SeriesHumFmt">Ch{0} 湿度</sys:String>
+
+    <!-- AddChannelDialog -->
+    <sys:String x:Key="Dialog.AddChannel.Title">チャンネル追加</sys:String>
+    <sys:String x:Key="Dialog.SlotIndex">Sensor 番号</sys:String>
+    <sys:String x:Key="Dialog.DisplayName">表示名</sys:String>
+    <sys:String x:Key="Dialog.ConnectionSettings">接続設定</sys:String>
+    <sys:String x:Key="Dialog.UsbCdc">USB CDC</sys:String>
+    <sys:String x:Key="Dialog.ComPort">COM ポート</sys:String>
+    <sys:String x:Key="Dialog.RescanTip">再スキャン</sys:String>
+    <sys:String x:Key="Dialog.SensorSettings">センサ設定</sys:String>
+    <sys:String x:Key="Dialog.SensorId">センサ ID</sys:String>
+    <sys:String x:Key="Dialog.SensorIdTip">8 桁のセンサ識別子。校正ファイルの自動マッチに使用</sys:String>
+    <sys:String x:Key="Dialog.FullScale">フルスケール</sys:String>
+    <sys:String x:Key="Dialog.Odr">ODR (Hz)</sys:String>
+    <sys:String x:Key="Dialog.L02Warning">⚠ 設定値とファームウェアの実値が一致するか確認してください（教訓 L02）</sys:String>
+    <sys:String x:Key="Dialog.Calibration">校正ファイル</sys:String>
+    <sys:String x:Key="Dialog.AutoCalibration">自動マッチ（センサ ID で Calibration\ フォルダを検索）</sys:String>
+    <sys:String x:Key="Dialog.ManualCalibration">手動指定</sys:String>
+    <sys:String x:Key="Dialog.Browse">参照…</sys:String>
+    <sys:String x:Key="Dialog.Cancel">キャンセル</sys:String>
+    <sys:String x:Key="Dialog.Add">追加</sys:String>
+    <sys:String x:Key="Dialog.DefaultChannelNameFmt">Sensor {0}</sys:String>
+    <sys:String x:Key="Dialog.SelectCalibration">校正ファイルを選択</sys:String>
+
+    <!-- Recipe -->
+    <sys:String x:Key="Recipe.Unnamed">無題</sys:String>
+    <sys:String x:Key="Recipe.SaveTitle">レシピ保存</sys:String>
+    <sys:String x:Key="Recipe.LoadTitle">レシピ読込</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirm">レシピを読み込むと現在の全チャンネルが切断・削除されます。続行しますか？</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirmTitle">レシピ読込の確認</sys:String>
+    <sys:String x:Key="Recipe.SummaryTitle">レシピ概要</sys:String>
+    <sys:String x:Key="Recipe.SummaryPrompt">このレシピを読み込みますか？</sys:String>
+    <sys:String x:Key="Recipe.PortNote">(注: PortName が本機に存在しない場合、SensorID で USB デバイスの自動マッチを試みます)</sys:String>
+
+    <!-- Status messages -->
+    <sys:String x:Key="Status.Ready">準備完了（「+ Sensor 追加」で開始）</sys:String>
+    <sys:String x:Key="Status.ScanResultFmt">{0} 個の COM ポートを検出、うち {1} 個が iVS の可能性</sys:String>
+    <sys:String x:Key="Status.ChannelLimit">最大 4 チャンネルに達しました</sys:String>
+    <sys:String x:Key="Status.NoChannels">少なくとも 1 チャンネルを追加してください</sys:String>
+    <sys:String x:Key="Status.ChannelAddedFmt">{0} を追加 ({1})</sys:String>
+    <sys:String x:Key="Status.ChannelRemovedFmt">チャンネル {0} を削除</sys:String>
+    <sys:String x:Key="Status.CalibrationLoadedFmt">{0}: 校正ファイルを読込 [{1}]</sys:String>
+    <sys:String x:Key="Status.ConnectingFmt">{0}/{1} チャンネル接続済、デバイス設定を検証中…</sys:String>
+    <sys:String x:Key="Status.MismatchWarnFmt">⚠ 接続完了 ({0} CH)、{1} CH のデバイス設定が不一致 — チャンネルカードで確認してください</sys:String>
+    <sys:String x:Key="Status.VerifySuccessFmt">✓ 接続完了 ({0} CH)、{1} CH の設定一致を確認</sys:String>
+    <sys:String x:Key="Status.ConnectedNoVerifyFmt">接続完了 ({0} CH)、デバイス応答を解析できません（ファームが回読をサポートしていない可能性）</sys:String>
+    <sys:String x:Key="Status.ConnectedFmt">{0} CH 接続済み</sys:String>
+    <sys:String x:Key="Status.Disconnected">切断済</sys:String>
+    <sys:String x:Key="Status.RecordStartedFmt">記録開始 → {0}</sys:String>
+    <sys:String x:Key="Status.RecordStoppedFmt">記録停止 ({0:N0} サンプル)</sys:String>
+    <sys:String x:Key="Status.NoRecord">有効チャンネルがありません、記録不可</sys:String>
+    <sys:String x:Key="Status.RecipeSavedFmt">レシピ保存: {0}</sys:String>
+    <sys:String x:Key="Status.RecipeLoadedFmt">レシピ読込完了 ({0}/{1} CH)、「▶ 接続」を押してください</sys:String>
+    <sys:String x:Key="Status.RecipeChannelFailFmt">⚠ チャンネル {0} 読込失敗: {1}</sys:String>
+    <sys:String x:Key="Status.NoChannelsForRecipe">チャンネルがありません、保存不可</sys:String>
+
+    <!-- Error MessageBox titles -->
+    <sys:String x:Key="Error.Title">エラー</sys:String>
+    <sys:String x:Key="Error.AddChannelFailFmt">チャンネル追加失敗: {0}</sys:String>
+    <sys:String x:Key="Error.LoadCalibrationFailFmt">校正ファイル読込失敗: {0}</sys:String>
+    <sys:String x:Key="Error.ConnectFailFmt">接続エラー: {0}</sys:String>
+    <sys:String x:Key="Error.RecordStartFailFmt">記録開始失敗: {0}</sys:String>
+    <sys:String x:Key="Error.RecipeSaveFailFmt">レシピ保存失敗: {0}</sys:String>
+    <sys:String x:Key="Error.RecipeLoadFailFmt">レシピ読込失敗: {0}</sys:String>
+
+    <!-- Bottom bar -->
+    <sys:String x:Key="Bottom.LastSyncFmt">最終同期: {0:HH:mm:ss} ({1} CH)</sys:String>
+
+    <!-- Mismatch banner -->
+    <sys:String x:Key="MismatchBanner.Text">デバイスが報告する FS / ODR と UI 設定が一致しません — チャンネルカードで確認するか、再接続してファームウェア状態を確認してください。</sys:String>
+    <sys:String x:Key="MismatchBanner.L02">(教訓 L02)</sys:String>
+
+    <!-- Transport state -->
+    <sys:String x:Key="State.Disconnected">未接続</sys:String>
+    <sys:String x:Key="State.Connecting">接続中…</sys:String>
+    <sys:String x:Key="State.Connected">接続済</sys:String>
+    <sys:String x:Key="State.Reconnecting">再接続中…</sys:String>
+    <sys:String x:Key="State.Faulted">接続異常</sys:String>
+
+    <!-- Verification labels -->
+    <sys:String x:Key="Verification.Unverified">未検証</sys:String>
+    <sys:String x:Key="Verification.NoResponse">ファームが ReadFs/ReadOdr に応答せず</sys:String>
+    <sys:String x:Key="Verification.SuccessFmt">✓ 検証済 {0}, {1}</sys:String>
+    <sys:String x:Key="Verification.MismatchFmt">⚠ デバイス報告 {0}, {1}（不一致）</sys:String>
+    <sys:String x:Key="Verification.FsFmt">FS=±{0}G</sys:String>
+    <sys:String x:Key="Verification.OdrFmt">ODR={0}Hz</sys:String>
+    <sys:String x:Key="Verification.FsUnknown">FS=?</sys:String>
+    <sys:String x:Key="Verification.OdrUnknown">ODR=?</sys:String>
+
+    <!-- Phase 5-4: Alarm thresholds + chart icons -->
+    <sys:String x:Key="Chart.ResetZoom">ズーム解除</sys:String>
+    <sys:String x:Key="Chart.Refresh">グラフ再描画</sys:String>
+    <sys:String x:Key="Alarm.Title">警報閾値設定</sys:String>
+    <sys:String x:Key="Alarm.Target">対象</sys:String>
+    <sys:String x:Key="Alarm.ConfigTip">クリックして警報閾値を設定</sys:String>
+    <sys:String x:Key="Alarm.Section.Thresholds">3 段階閾値（絶対値比較）</sys:String>
+    <sys:String x:Key="Alarm.Green">緑（正常）</sys:String>
+    <sys:String x:Key="Alarm.Yellow">黄（警告）</sys:String>
+    <sys:String x:Key="Alarm.Red">赤（警報）</sys:String>
+    <sys:String x:Key="Alarm.PreviewFmt">緑: {0} {3} / 黄: {1} {3} / 赤: {2} {3}</sys:String>
+    <sys:String x:Key="Alarm.CopyToAll">現在の閾値を同グループに一括コピー（例 X-0P → X/Y/Z 全 0-P）</sys:String>
+    <sys:String x:Key="Alarm.CopyToGroup">グループにコピー</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibPeak">全軸 0-P にコピー</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibRms">全軸 RMS にコピー</sys:String>
+    <sys:String x:Key="Alarm.CopyToTilt">全軸角度にコピー</sys:String>
+    <sys:String x:Key="Alarm.InvalidNumber">有効な数値を入力してください</sys:String>
+    <sys:String x:Key="Alarm.InvalidRange">赤閾値は黄より大きく、両者は 0 以上である必要があります</sys:String>
+    <!-- Phase 5-6: Alarm logger -->
+    <sys:String x:Key="Section.Alarm">警報記録</sys:String>
+    <sys:String x:Key="Alarm.LogFolder">記録フォルダ</sys:String>
+    <sys:String x:Key="Alarm.TodayCount">本日の警報数（緑 / 黄 / 赤）</sys:String>
+    <!-- Phase 5-7: trend logger + alarm sound -->
+    <sys:String x:Key="Trend.LogFolder">Trend 記録フォルダ</sys:String>
+    <sys:String x:Key="Trend.RawData">Raw Data 全記録</sys:String>
+    <sys:String x:Key="Trend.RawDataTip">有効時は全 raw サンプル（約 3300 sps）を記録、ファイルが非常に大きくなります。無効時は統計レートで Trend を記録。</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Show">警報音</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Tip">黄信号で Asterisk、赤信号で Hand 音を再生。既定オフ。</sys:String>
+    <!-- Phase 5-8c2: toast filter -->
+    <sys:String x:Key="Pref.Toast.Enable">警報視覚通知（ポップアップ）</sys:String>
+    <sys:String x:Key="Pref.Toast.Tip">右下に浮動ポップアップを表示。どのレベルで表示するか選択可能。</sys:String>
+    <sys:String x:Key="Pref.Toast.Yellow">黄でポップアップ</sys:String>
+    <sys:String x:Key="Pref.Toast.Red">赤でポップアップ</sys:String>
+    <sys:String x:Key="VibSet.WaveformY">Y 軸範囲</sys:String>
+    <sys:String x:Key="EventLog.Title">イベントログ</sys:String>
+    <sys:String x:Key="EventLog.Time">時刻</sys:String>
+    <sys:String x:Key="EventLog.Level">レベル</sys:String>
+    <sys:String x:Key="EventLog.Source">送信元</sys:String>
+    <sys:String x:Key="EventLog.Message">メッセージ</sys:String>
+    <sys:String x:Key="EventLog.OpenFolder">フォルダを開く</sys:String>
+    <sys:String x:Key="Toolbar.EventLog">イベント</sys:String>
+    <!-- Phase 5-8c3: live status feed -->
+    <sys:String x:Key="LiveFeed.Title">リアルタイム状態</sys:String>
+    <sys:String x:Key="LiveFeed.Clear">クリア</sys:String>
+    <sys:String x:Key="LiveFeed.ClearTip">パネルをクリア（イベントログには影響しません）</sys:String>
+    <!-- Phase 5-8c4 -->
+    <sys:String x:Key="Alarm.ResetTip">本日の警報カウンタをクリア（緑 / 黄 / 赤 → 0）</sys:String>
+    <sys:String x:Key="Alarm.ResetDone">本日の警報カウンタをクリアしました</sys:String>
+    <!-- Phase 5-8c5: timed / continuous recording -->
+    <sys:String x:Key="Recording.ModeSection">録画モード</sys:String>
+    <sys:String x:Key="Recording.ModeDesc">2 つのモードは独立。既定は両方オフ = 手動開始 / 手動停止 + 分割時間で切替。</sys:String>
+    <sys:String x:Key="Recording.Timed">タイマー録画</sys:String>
+    <sys:String x:Key="Recording.TimedTip">設定秒数経過後、自動停止します（10 〜 86400 秒、最大 24 時間）。</sys:String>
+    <sys:String x:Key="Recording.Duration">録画秒数</sys:String>
+    <sys:String x:Key="Recording.Continuous">連続録画（分割しない）</sys:String>
+    <sys:String x:Key="Recording.ContinuousTip">下の「CSV 分割時間」は無視され、停止まで 1 ファイルに連続書込み。長時間連続解析向け。</sys:String>
+    <sys:String x:Key="Recording.TimedStartFmt">タイマー録画開始 — {0} 秒後に自動停止</sys:String>
+    <sys:String x:Key="Recording.AutoStoppedFmt">{0} 秒経過 — 録画を自動停止しました</sys:String>
+    <sys:String x:Key="Recording.ContinuousStart">連続録画を開始（分割なし）</sys:String>
+    <!-- Phase 5-8c6: Smart Log + Cleanup section -->
+    <sys:String x:Key="Recording.SmartLogSection">Smart Log（イベント駆動録画）</sys:String>
+    <sys:String x:Key="Recording.SmartLogEnable">Smart Log を有効化</sys:String>
+    <sys:String x:Key="Recording.SmartLogTip">振動が閾値を超えたら自動録画開始、低下したら自動停止。1 イベント = 1 CSV。24 時間運転でない設備のディスク節約に最適。判定は max(|PeakX|, |PeakY|, |PeakZ|) で行います。</sys:String>
+    <sys:String x:Key="Recording.SmartStartG">開始閾値</sys:String>
+    <sys:String x:Key="Recording.SmartStartHold">開始保持時間</sys:String>
+    <sys:String x:Key="Recording.SmartStopG">停止閾値</sys:String>
+    <sys:String x:Key="Recording.SmartStopHold">停止保持時間</sys:String>
+    <sys:String x:Key="Recording.SmartMinSec">最小イベント時間</sys:String>
+    <sys:String x:Key="Recording.CleanupSection">保存期間クリーンアップ</sys:String>
+    <sys:String x:Key="Recording.CleanupDesc">保存日数を超えた古いファイルは起動時と毎日 0 時に自動削除（FIFO で 7 日分ずつ）。上の Trend / Raw 設定を即座に反映するには下のボタンを押してください。</sys:String>
+    <!-- Phase 5-8c7: Vibration Stats window -->
+    <sys:String x:Key="StatsWin.Title">振動統計データ</sys:String>
+    <sys:String x:Key="StatsWin.Window">ウィンドウ</sys:String>
+    <sys:String x:Key="StatsWin.Overlap">オーバーラップ</sys:String>
+    <sys:String x:Key="StatsWin.Start">▶ 開始</sys:String>
+    <sys:String x:Key="StatsWin.Stop">■ 停止</sys:String>
+    <sys:String x:Key="StatsWin.ExportNow">今すぐ計算</sys:String>
+    <sys:String x:Key="StatsWin.ExportNowTip">タイマーを待たず、全 Sensor を即座に 1 回計算して CSV に書込みます</sys:String>
+    <sys:String x:Key="StatsWin.Clear">画面クリア</sys:String>
+    <sys:String x:Key="StatsWin.OutputFolder">CSV 出力フォルダ：</sys:String>
+    <sys:String x:Key="StatsWin.NextInFmt">次回 {0:F1}s</sys:String>
+    <sys:String x:Key="StatsWin.RunningFmt">実行中（ウィンドウ {0}s、オーバーラップ {1}%）</sys:String>
+    <sys:String x:Key="StatsWin.StoppedFmt">停止（{0} 件書込み済）</sys:String>
+    <sys:String x:Key="StatsWin.Col.Time">時刻</sys:String>
+    <sys:String x:Key="StatsWin.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="StatsWin.Col.Axis">軸</sys:String>
+    <sys:String x:Key="Toolbar.VibStats">振動統計</sys:String>
+    <!-- Phase 5-8c8: power saver + stats chart -->
+    <sys:String x:Key="StatsWin.ChartMetric">指標</sys:String>
+    <sys:String x:Key="StatsWin.ChartMaxPoints">最大点数</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Section">省電力モード</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Enable">省電力モードを有効化</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Tip">指定時間マウス/キーボード操作がないとグラフ描画を一時停止し、CPU を節約します。データ演算と警報判定には影響しません。操作で即時に復帰。既定で有効。</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.IdleMin">無操作閾値</sys:String>
+    <sys:String x:Key="Unit.Min">分</sys:String>
+    <!-- Phase 5-8c9 -->
+    <sys:String x:Key="StatsWin.ApplyAxis">Y 軸範囲を適用</sys:String>
+    <sys:String x:Key="StatsWin.AutoAxis">Y 軸自動</sys:String>
+    <sys:String x:Key="StatsWin.XSpan">X 範囲</sys:String>
+    <sys:String x:Key="Pref.Stats.LogEnable">統計データをイベントログに記録</sys:String>
+    <sys:String x:Key="Pref.Stats.LogTip">有効化すると、振動統計の各行が監査用にイベントログ（%LocalAppData%\Tranzx.iVS4\Logs\app_yyyyMMdd.csv）にも記録されます。既定では無効。注意：5 秒ウィンドウ + 30% オーバーラップでは、Sensor 毎に約 3.5 秒に 3 行が生成されるため、長時間計測ではログファイルが大幅に増加します。</sys:String>
+    <sys:String x:Key="HistoryWin.Title">履歴分析</sys:String>
+    <sys:String x:Key="HistoryWin.LoadCsv">📂 CSV を読込</sys:String>
+    <sys:String x:Key="HistoryWin.ClearAll">クリア</sys:String>
+    <sys:String x:Key="HistoryWin.PlotMetric">指標</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFmt">{0} 行、{1} 指標を読込済</sys:String>
+    <sys:String x:Key="HistoryWin.EmptyFile">CSV ファイルが空か形式不正です</sys:String>
+    <sys:String x:Key="Toolbar.HistoryAnalysis">履歴分析</sys:String>
+    <!-- Phase 5-8c11 -->
+    <sys:String x:Key="HistoryWin.Subtitle">最大 4 件 CSV 重ね合わせ ｜ クリック=値表示 ｜ Ctrl+ドラッグ=ズーム ｜ 右ドラッグ=パン ｜ ホイール=ズーム</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlay">+ 比較追加</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlayTip">別の CSV を現在のグラフに重ねる（最大 4 件）</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoom">↺ 元に戻す</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoomTip">ズームを全範囲に戻す</sys:String>
+    <sys:String x:Key="HistoryWin.StatsPanel">統計</sys:String>
+    <sys:String x:Key="HistoryWin.Comparison">複数ファイル比較</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFiles">読込済：</sys:String>
+    <sys:String x:Key="HistoryWin.MaxOverlayFmt">重ね合わせ上限に達しました（{0} 件）</sys:String>
+    <sys:String x:Key="HistoryWin.NoDataToExport">エクスポートするデータがありません</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReport">📄 レポート出力</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReportTip">PDF / HTML / CSV サマリーレポートを出力</sys:String>
+    <!-- Phase 5-8c12 -->
+    <sys:String x:Key="HistoryWin.Align">⚙ 手動位置合わせ</sys:String>
+    <sys:String x:Key="HistoryWin.AlignTip">各 CSV の位置合わせ基準（どの秒を 0 とするか）を設定</sys:String>
+    <sys:String x:Key="HistoryWin.AlignDesc">既定では各 CSV の最初の行を 0 秒とします。手動で位置合わせするには、各ファイルで 0 秒として扱う時間（最初の行からの秒数）を入力してください。</sys:String>
+    <sys:String x:Key="HistoryWin.AlignOffset">0 秒の位置</sys:String>
+    <sys:String x:Key="HistoryWin.AlignReset">すべて 0 にリセット</sys:String>
+    <sys:String x:Key="HistoryWin.AlignNeedMulti">位置合わせには 2 件以上の CSV が必要です</sys:String>
+    <sys:String x:Key="HistoryWin.PdfFallback">PDF を生成できません（Edge / Chrome が見つかりません）。代わりに HTML を保存しました。手動で PDF へ印刷できます。</sys:String>
+    <!-- Phase 5-9 (A) -->
+    <sys:String x:Key="Motion3D.Title">3D 動態リプレイ</sys:String>
+    <sys:String x:Key="Motion3D.Subtitle">録画組を選択、Tilt と振動 CSV を一括読込みでセンサ動作を再現</sys:String>
+    <sys:String x:Key="Motion3D.LoadCsv">📂 録画組を読込</sys:String>
+    <sys:String x:Key="Motion3D.SelectTiltCsv">任意 CSV（Tilt または Vib）を選択、対応する CSV を自動検出</sys:String>
+    <sys:String x:Key="Motion3D.Clear">クリア</sys:String>
+    <sys:String x:Key="Motion3D.MotionScale">振動倍率</sys:String>
+    <sys:String x:Key="Motion3D.TrailLen">軌跡長</sys:String>
+    <sys:String x:Key="Motion3D.ShowVector">ベクトル矢印</sys:String>
+    <sys:String x:Key="Motion3D.ShowTrail">軌跡</sys:String>
+    <sys:String x:Key="Motion3D.ShowGrid">地面グリッド</sys:String>
+    <sys:String x:Key="Motion3D.LiveValues">ライブ値</sys:String>
+    <sys:String x:Key="Motion3D.Speed">速度</sys:String>
+    <sys:String x:Key="Motion3D.Rewind">先頭へ戻る</sys:String>
+    <sys:String x:Key="Motion3D.NoData">CSV に有効データがありません</sys:String>
+    <sys:String x:Key="Motion3D.ExportAvi">🎬 AVI 出力</sys:String>
+    <sys:String x:Key="Motion3D.ExportAviTip">AVI 動画に出力（Motion-JPEG、VLC で再生、最長 60 秒）</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4">🎞 MP4 出力</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4Tip">MP4 (H.264) に出力 — どこでも再生可、FFmpeg 必要</sys:String>
+    <sys:String x:Key="Motion3D.RenderingAvi">3D 描画中</sys:String>
+    <sys:String x:Key="Motion3D.EncodingMp4">H.264 エンコード中</sys:String>
+    <sys:String x:Key="Motion3D.FFmpegMissing">FFmpeg が見つかりません。&#x0a;&#x0a;MP4 出力には ffmpeg.exe が必要です：&#x0a;&#x0a;1. 直接ダウンロード：「はい」をクリックして BtbN FFmpeg builds を開く&#x0a;   ffmpeg.exe を本ソフトのフォルダか C:\ffmpeg\bin\ に配置&#x0a;&#x0a;2. winget install Gyan.FFmpeg&#x0a;&#x0a;3. choco install ffmpeg&#x0a;&#x0a;MP4 不要なら AVI 出力 + VLC でも可（FFmpeg 不要）。&#x0a;&#x0a;ダウンロードページを開きますか？</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="Recording.LogStats">統計</sys:String>
+    <sys:String x:Key="Recording.LogStatsTip">有効化すると、振動統計画面の各行が監査用にイベントログ（%LocalAppData%\Tranzx PHM\Logs）にも記録されます。既定で有効。注意：5 秒ウィンドウ + 30% オーバーラップでは Sensor 毎に約 3.5 秒で 3 行が生成されるため、長時間計測ではログが増加します。</sys:String>
+    <sys:String x:Key="Channel.Temperature">温度</sys:String>
+    <sys:String x:Key="Channel.Humidity">湿度</sys:String>
+    <sys:String x:Key="Channel.Tilt">水平角度</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="WarnFeed.Title">警告モニター</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Section">環境警告（温度 / 湿度）</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Enable">環境警告を有効化</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Tip">有効化すると、温度または湿度が閾値を超えた際に右側の「警告モニター」とイベントログに警告を表示します。既定では無効。</sys:String>
+    <!-- Phase 5-7b: recording settings -->
+    <sys:String x:Key="Recording.Title">記録設定</sys:String>
+    <sys:String x:Key="Recording.Settings">設定</sys:String>
+    <sys:String x:Key="Recording.TrendSection">Trend 記録（統計レート）</sys:String>
+    <sys:String x:Key="Recording.TrendDesc">振動・水平・温湿度の 3 CSV を並行書き込み。N 分ごとに自動分割。保持日数を超えたファイルは自動削除。</sys:String>
+    <sys:String x:Key="Recording.RawSection">Raw Data 記録（全サンプル）</sys:String>
+    <sys:String x:Key="Recording.RawDesc">有効時は全 raw 加速度 sample（約 3300 sps）を別 CSV に記録。ファイル大、短い分割 + 短い保持推奨。</sys:String>
+    <sys:String x:Key="Recording.SegmentTime">CSV 分割時間</sys:String>
+    <sys:String x:Key="Recording.Retention">保持日数</sys:String>
+    <sys:String x:Key="Recording.Min">分</sys:String>
+    <sys:String x:Key="Recording.Day">日</sys:String>
+    <sys:String x:Key="Recording.CleanNow">今すぐクリーン</sys:String>
+    <sys:String x:Key="Recording.CleanedFmt">{0} 個の期限切れファイルを削除しました。</sys:String>
+    <!-- Phase 5-7c: 紀錄範圍 + 三類 mask -->
+    <sys:String x:Key="Recording.ScopeSection">記録範囲 / 記録種類</sys:String>
+    <sys:String x:Key="Recording.ScopeAll">全 Sensor を同時に記録</sys:String>
+    <sys:String x:Key="Recording.ScopeAllTip">有効：いずれかの Sensor で開始ボタンを押すと、接続中の全 Sensor が同時に開始 / 停止。無効：押した Sensor のみ記録。</sys:String>
+    <sys:String x:Key="Recording.LogTypes">記録種類（複数選択可）：</sys:String>
+    <!-- Phase 5-8: vibration sub-mode -->
+    <sys:String x:Key="VibSub.Trend">トレンド</sys:String>
+    <sys:String x:Key="VibSub.Waveform">波形</sys:String>
+    <sys:String x:Key="VibSub.Fft">FFT</sys:String>
+    <!-- Phase 5-8b: vibration measurement settings -->
+    <sys:String x:Key="VibSub.MenuTip">表示モード選択（トレンド / 波形 / FFT）</sys:String>
+    <sys:String x:Key="VibSet.Title">振動測定設定</sys:String>
+    <sys:String x:Key="VibSet.TipWithShortcut">振動測定設定&#x000A;ショートカット：Shift + 左ドラッグ = ボックス選択で P-P 計算</sys:String>
+    <sys:String x:Key="VibSet.StatsSection">時域統計（レート / Overlap）</sys:String>
+    <sys:String x:Key="VibSet.StatsDesc">毎秒の統計バッチ回数。Peak / RMS / Crest / AI 特徴量を計算。Overlap 大ほど滑らかだが遅延増。</sys:String>
+    <sys:String x:Key="VibSet.TrendSection">トレンド図（時域統計）</sys:String>
+    <sys:String x:Key="VibSet.WaveformSection">波形（時域）</sys:String>
+    <sys:String x:Key="VibSet.WaveformDesc">最近 N 秒の生サンプルを表示。リングバッファは 60 秒分まで確保済み。</sys:String>
+    <sys:String x:Key="VibSet.WaveformSec">表示時間</sys:String>
+    <sys:String x:Key="VibSet.FftSection">FFT スペクトル</sys:String>
+    <sys:String x:Key="VibSet.FftDesc">最近 N サンプル → 窓関数 → 片側振幅スペクトル。N 大ほど周波数分解能高い（df = SPS / N）。</sys:String>
+    <sys:String x:Key="VibSet.FftFreqMax">周波数範囲</sys:String>
+    <sys:String x:Key="VibSet.FftYMax">振幅軸上限</sys:String>
+    <sys:String x:Key="VibSet.FftWindow">窓関数</sys:String>
+    <sys:String x:Key="VibSet.FftN">Lines of Scan (N)</sys:String>
+    <sys:String x:Key="Unit.Sec">秒</sys:String>
+    <sys:String x:Key="Unit.Auto">自動</sys:String>
+    <!-- Phase 5-8c: reconnect / dashboard / alarm stats -->
+    <sys:String x:Key="Pref.Reconnect.Section">Sensor 自動再接続</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Tip">Sensor 切断時に自動再接続を試みます。0 = 無効。</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Attempts">最大試行回数</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Interval">再試行間隔</sys:String>
+    <sys:String x:Key="Unit.Times">回</sys:String>
+    <sys:String x:Key="Unit.Disabled">無効</sys:String>
+    <sys:String x:Key="Toolbar.Dashboard">ダッシュボード</sys:String>
+    <sys:String x:Key="Toolbar.AlarmStats">警報統計</sys:String>
+    <sys:String x:Key="Dashboard.Title">複数 Sensor ダッシュボード</sys:String>
+    <sys:String x:Key="Dashboard.Connected">接続中</sys:String>
+    <sys:String x:Key="Dashboard.Disconnected">未接続</sys:String>
+    <sys:String x:Key="Dashboard.SummaryFmt">接続中 {0} / {1}</sys:String>
+    <sys:String x:Key="AlarmStats.Title">警報履歴統計</sys:String>
+    <sys:String x:Key="AlarmStats.Range">期間</sys:String>
+    <sys:String x:Key="AlarmStats.RangeToday">本日</sys:String>
+    <sys:String x:Key="AlarmStats.Range7d">直近 7 日</sys:String>
+    <sys:String x:Key="AlarmStats.Range30d">直近 30 日</sys:String>
+    <sys:String x:Key="AlarmStats.Range90d">直近 90 日</sys:String>
+    <sys:String x:Key="AlarmStats.RangeAll">全期間</sys:String>
+    <sys:String x:Key="AlarmStats.Folder">記録フォルダ</sys:String>
+    <sys:String x:Key="AlarmStats.Refresh">再読込</sys:String>
+    <sys:String x:Key="AlarmStats.Green">緑解除</sys:String>
+    <sys:String x:Key="AlarmStats.Yellow">黄回数</sys:String>
+    <sys:String x:Key="AlarmStats.Red">赤回数</sys:String>
+    <sys:String x:Key="AlarmStats.PerSensor">Sensor × メトリック 統計</sys:String>
+    <sys:String x:Key="AlarmStats.Daily">日別警報数</sys:String>
+    <sys:String x:Key="AlarmStats.Date">日付</sys:String>
+    <sys:String x:Key="AlarmStats.Count">回数</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Key">メトリック</sys:String>
+    <sys:String x:Key="AlarmStats.SummaryFmt">{0} 件のイベントを解析、{1} 個の Sensor × メトリック 組合せ</sys:String>
+    <sys:String x:Key="AlarmStats.FolderMissing">記録フォルダが存在しません：{0}</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Tranzx.iVS4.App</RootNamespace>
+    <AssemblyName>Tranzx.iVS4</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <ApplicationIcon></ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.2.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tranzx.iVS4.Core\Tranzx.iVS4.Core.csproj" />
+    <ProjectReference Include="..\Tranzx.iVS4.Calibration\Tranzx.iVS4.Calibration.csproj" />
+    <ProjectReference Include="..\Tranzx.iVS4.Analysis\Tranzx.iVS4.Analysis.csproj" />
+    <ProjectReference Include="..\Tranzx.iVS4.Communication\Tranzx.iVS4.Communication.csproj" />
+  </ItemGroup>
+</Project>

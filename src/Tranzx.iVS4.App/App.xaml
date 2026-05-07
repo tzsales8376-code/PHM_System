@@ -1,0 +1,153 @@
+<Application x:Class="Tranzx.iVS4.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:conv="clr-namespace:Tranzx.iVS4.App.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 預設語系：繁體中文。LocalizationService 會於 App 啟動時依系統語系切換 -->
+                <ResourceDictionary Source="pack://application:,,,/Resources/Strings.zh-TW.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ─── Font sizes (DIP) — AppSettingsService.ApplyFontScale 會覆寫 ─── -->
+            <sys:Double x:Key="RootFontSize">13</sys:Double>
+            <sys:Double x:Key="LargeFontSize">16</sys:Double>
+            <sys:Double x:Key="SmallFontSize">11</sys:Double>
+            <sys:Double x:Key="TinyFontSize">10</sys:Double>
+            <sys:Double x:Key="DataValueFontSize">19</sys:Double>
+
+            <!-- ─── Converters ─── -->
+            <conv:InverseBoolConverter x:Key="InverseBool"/>
+            <conv:TransportStateToColorConverter x:Key="StateToColor"/>
+            <conv:TransportStateToTextConverter x:Key="StateToText"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+            <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVis"/>
+            <conv:BoolToConnBrushConverter x:Key="BoolToConnBrush"/>
+            <conv:StringNotEmptyToVisibilityConverter x:Key="StringNotEmptyToVis"/>
+            <conv:ChannelIndexPlus1Converter x:Key="ChannelIndexPlus1"/>
+            <conv:EqualsToBoolConverter x:Key="EqualsToBool"/>
+            <conv:AlarmLevelToBrushConverter x:Key="AlarmLevelToBrush"/>
+
+            <!-- ─── 色票（深色主題基底）─── -->
+            <SolidColorBrush x:Key="BgPrimary" Color="#1E1E2E"/>
+            <SolidColorBrush x:Key="BgSecondary" Color="#2A2A3E"/>
+            <SolidColorBrush x:Key="BgTertiary" Color="#363650"/>
+            <SolidColorBrush x:Key="TextPrimary" Color="#E8E8F0"/>
+            <SolidColorBrush x:Key="TextSecondary" Color="#9090A8"/>
+            <SolidColorBrush x:Key="AccentBlue" Color="#5294E2"/>
+            <SolidColorBrush x:Key="AccentTeal" Color="#1ABC9C"/>
+            <SolidColorBrush x:Key="AccentAmber" Color="#F39C12"/>
+            <SolidColorBrush x:Key="AccentRed" Color="#E74C3C"/>
+            <SolidColorBrush x:Key="AccentPurple" Color="#9B59B6"/>
+
+            <!-- 通道顏色 -->
+            <SolidColorBrush x:Key="Ch1Color" Color="#1ABC9C"/>
+            <SolidColorBrush x:Key="Ch2Color" Color="#5294E2"/>
+            <SolidColorBrush x:Key="Ch3Color" Color="#F39C12"/>
+            <SolidColorBrush x:Key="Ch4Color" Color="#9B59B6"/>
+
+            <Style TargetType="Window">
+                <Setter Property="Background" Value="{StaticResource BgPrimary}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontFamily" Value="Segoe UI, Microsoft JhengHei UI, Yu Gothic UI"/>
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+            </Style>
+
+            <Style TargetType="TabItem">
+                <Setter Property="Padding" Value="14,6"/>
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+            </Style>
+
+            <Style TargetType="GroupBox">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+                <Setter Property="MinHeight" Value="26"/>
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+                <Setter Property="MinHeight" Value="26"/>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+                <Setter Property="MinHeight" Value="24"/>
+            </Style>
+
+            <Style TargetType="CheckBox">
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+            </Style>
+
+            <!-- ChartSettingsDialog 用：振動 Y 範圍顯示模板（0 = Auto） -->
+            <DataTemplate x:Key="VibYItemTpl">
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding StringFormat=±{0:F1} G}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="0">
+                                    <Setter Property="Text" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </DataTemplate>
+            <DataTemplate x:Key="TiltYItemTpl">
+                <TextBlock Text="{Binding StringFormat=±{0:F0}°}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="HzItemTpl">
+                <TextBlock Text="{Binding StringFormat={}{0:F0} Hz}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="PctItemTpl">
+                <TextBlock Text="{Binding StringFormat={}{0:F0} %}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="SecItemTpl">
+                <TextBlock Text="{Binding StringFormat={}{0:F1} sec}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="IntItemTpl">
+                <TextBlock Text="{Binding StringFormat={}{0:N0} pts}"/>
+            </DataTemplate>
+
+            <!-- ModeIconButton: RadioButton 樣式，看起來像 Tab/Pill 按鈕 -->
+            <Style x:Key="ModeIconButton" TargetType="RadioButton">
+                <Setter Property="Padding" Value="12,6"/>
+                <Setter Property="Margin" Value="0,0,4,0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="FontSize" Value="{DynamicResource RootFontSize}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border x:Name="bd"
+                                    Background="{StaticResource BgTertiary}"
+                                    BorderBrush="Transparent" BorderThickness="0,0,0,3"
+                                    CornerRadius="4,4,0,0"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="bd" Property="Background" Value="{StaticResource BgPrimary}"/>
+                                    <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource AccentBlue}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

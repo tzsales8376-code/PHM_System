@@ -1,0 +1,400 @@
+<Window x:Class="Tranzx.iVS4.App.Views.Motion3DWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Motion3D.Title}"
+        Width="1300" Height="820" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource BgSecondary}" Padding="16,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🧊" FontSize="20" Margin="0,0,8,0"
+                           Foreground="{DynamicResource AccentTeal}"/>
+                <TextBlock Text="{DynamicResource Motion3D.Title}"
+                           FontSize="18" FontWeight="Bold"
+                           Foreground="{DynamicResource AccentTeal}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{DynamicResource Motion3D.Subtitle}"
+                           FontSize="11" Margin="12,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondary}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 工具列：載入 / 模式 / 設定 -->
+        <Border Grid.Row="1" Background="{DynamicResource BgSecondary}"
+                BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,1,0,1"
+                Padding="16,8">
+            <StackPanel Orientation="Horizontal">
+                <Button Padding="14,5" Click="OnLoadCsvClick"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        FontWeight="Bold"
+                        Content="{DynamicResource Motion3D.LoadCsv}"/>
+                <Button Padding="10,5" Margin="6,0,0,0" Click="OnClearClick"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Content="{DynamicResource Motion3D.Clear}"/>
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+
+                <TextBlock Text="{DynamicResource Motion3D.MotionScale}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondary}" Margin="0,0,6,0"/>
+                <Slider x:Name="sldMotionScale" Width="120" Minimum="1" Maximum="200" Value="40"
+                        VerticalAlignment="Center"
+                        ValueChanged="OnSettingChanged"/>
+                <TextBlock x:Name="lblMotionScale" Text="40×" Width="40" Margin="6,0,0,0"
+                           VerticalAlignment="Center" FontFamily="Consolas"
+                           Foreground="{DynamicResource TextPrimary}"/>
+
+                <TextBlock Text="{DynamicResource Motion3D.TrailLen}"
+                           VerticalAlignment="Center" Margin="12,0,6,0"
+                           Foreground="{DynamicResource TextSecondary}"/>
+                <Slider x:Name="sldTrail" Width="100" Minimum="0" Maximum="500" Value="120"
+                        VerticalAlignment="Center"
+                        ValueChanged="OnSettingChanged"/>
+                <TextBlock x:Name="lblTrail" Text="120" Width="40" Margin="6,0,0,0"
+                           VerticalAlignment="Center" FontFamily="Consolas"
+                           Foreground="{DynamicResource TextPrimary}"/>
+
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <CheckBox x:Name="cbShowVector" Content="{DynamicResource Motion3D.ShowVector}"
+                          IsChecked="True" VerticalAlignment="Center"
+                          Foreground="{DynamicResource TextPrimary}"
+                          Click="OnSettingChanged"/>
+                <CheckBox x:Name="cbShowTrail" Content="{DynamicResource Motion3D.ShowTrail}"
+                          IsChecked="True" VerticalAlignment="Center" Margin="10,0,0,0"
+                          Foreground="{DynamicResource TextPrimary}"
+                          Click="OnSettingChanged"/>
+                <CheckBox x:Name="cbShowGrid" Content="{DynamicResource Motion3D.ShowGrid}"
+                          IsChecked="True" VerticalAlignment="Center" Margin="10,0,0,0"
+                          Foreground="{DynamicResource TextPrimary}"
+                          Click="OnGridToggle"/>
+
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <!-- 5-9 (B)：影片匯出 -->
+                <Button x:Name="btnExportAvi" Padding="12,5" Click="OnExportAviClick"
+                        Background="{DynamicResource AccentAmber}" Foreground="White"
+                        FontWeight="Bold"
+                        Content="{DynamicResource Motion3D.ExportAvi}"
+                        ToolTip="{DynamicResource Motion3D.ExportAviTip}"/>
+                <Button x:Name="btnExportMp4" Padding="12,5" Margin="6,0,0,0" Click="OnExportMp4Click"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        FontWeight="Bold"
+                        Content="{DynamicResource Motion3D.ExportMp4}"
+                        ToolTip="{DynamicResource Motion3D.ExportMp4Tip}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 中間：3D viewport + 右側即時數值面板 -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Viewport3D Grid.Column="0" x:Name="viewport"
+                        ClipToBounds="True"
+                        MouseDown="OnViewportMouseDown"
+                        MouseMove="OnViewportMouseMove"
+                        MouseUp="OnViewportMouseUp"
+                        MouseWheel="OnViewportMouseWheel">
+                <Viewport3D.Camera>
+                    <PerspectiveCamera x:Name="camera"
+                                       Position="8,-8,6"
+                                       LookDirection="-8,8,-6"
+                                       UpDirection="0,0,1"
+                                       FieldOfView="45"/>
+                </Viewport3D.Camera>
+            </Viewport3D>
+
+            <!-- 右側即時數值面板 -->
+            <Border Grid.Column="1" Width="280"
+                    Background="{DynamicResource BgSecondary}"
+                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="{DynamicResource BgTertiary}" Padding="10,8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📡" FontSize="14" Margin="0,0,6,0"
+                                       Foreground="{DynamicResource AccentTeal}"/>
+                            <TextBlock Text="{DynamicResource Motion3D.LiveValues}"
+                                       FontWeight="Bold" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimary}"/>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="12,8">
+                            <TextBlock Text="📐 水平角度"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                            <Grid Margin="0,4,0,12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="X" FontWeight="Bold"
+                                           Foreground="#E74C3C" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblAngleX" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Y" FontWeight="Bold"
+                                           Foreground="#1ABC9C" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblAngleY" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Z" FontWeight="Bold"
+                                           Foreground="#5294E2" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblAngleZ" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                            </Grid>
+
+                            <TextBlock Text="📊 振動加速度"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                            <Grid Margin="0,4,0,12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="X" FontWeight="Bold"
+                                           Foreground="#E74C3C" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblAccX" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Y" FontWeight="Bold"
+                                           Foreground="#1ABC9C" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblAccY" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Z" FontWeight="Bold"
+                                           Foreground="#5294E2" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblAccZ" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="|G|" FontWeight="Bold"
+                                           Foreground="#F39C12" FontFamily="Consolas"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblAccMag" Text="—"
+                                           FontFamily="Consolas" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentAmber}"/>
+                            </Grid>
+
+                            <TextBlock Text="⏱ 時間"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                            <TextBlock x:Name="lblFrameTime" Text="—" Margin="0,4,0,0"
+                                       FontFamily="Consolas" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimary}"/>
+
+                            <!-- 5-9：Lissajous XY 投影（不平衡 / 對心診斷工具）-->
+                            <TextBlock Text="🌀 Lissajous (X-Y 投影)"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Margin="0,16,0,0"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                            <Border Background="{DynamicResource BgPrimary}"
+                                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1"
+                                    CornerRadius="4" Margin="0,4,0,0"
+                                    Width="248" Height="248">
+                                <Canvas x:Name="lissajousCanvas" Background="Transparent"
+                                        ClipToBounds="True"/>
+                            </Border>
+                            <TextBlock x:Name="lblLissajousHint"
+                                       Text="—"
+                                       FontSize="10" Margin="0,4,0,0"
+                                       TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+
+                            <!-- 5-9：可展開的解析說明 -->
+                            <Expander Header="📖 軌跡與向量解析說明"
+                                      Margin="0,12,0,0" IsExpanded="False"
+                                      Foreground="{DynamicResource AccentTeal}"
+                                      FontSize="11" FontWeight="SemiBold">
+                                <Border Background="{DynamicResource BgPrimary}"
+                                        BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1"
+                                        CornerRadius="4" Padding="10" Margin="0,4,0,0">
+                                    <StackPanel>
+                                        <!-- 向量箭頭說明 -->
+                                        <TextBlock Text="🎯 加速度向量箭頭"
+                                                   FontWeight="Bold" FontSize="11"
+                                                   Foreground="#E74C3C"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock TextWrapping="Wrap" FontSize="10" LineHeight="16"
+                                                   Foreground="{DynamicResource TextPrimary}">
+                                            <Run Text="從 Sensor 中心射出，方向 = 當下的 G 向量。" FontWeight="Bold"/>
+                                            <LineBreak/>
+                                            <Run Text="• 顏色：" Foreground="{DynamicResource TextSecondary}"/>
+                                            <Run Text="綠 ≤0.2G / 黃 0.2~0.5G / " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="紅 >0.5G" Foreground="#E74C3C"/>
+                                            <LineBreak/>
+                                            <Run Text="• 長度 = |G| 大小" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="可看出："
+                                                 FontWeight="SemiBold"
+                                                 Foreground="{DynamicResource AccentTeal}"/>
+                                            <LineBreak/>
+                                            <Run Text="① 振動主方向（哪一軸最強）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="② 衝擊瞬間（箭頭爆衝變紅）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="③ 異常方向（垂直機台運行方向忽然有大箭頭 = 共振或鬆動）" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+
+                                        <!-- 軌跡尾巴 -->
+                                        <TextBlock Text="🌀 振動軌跡尾巴"
+                                                   FontWeight="Bold" FontSize="11"
+                                                   Foreground="#F39C12"
+                                                   Margin="0,12,0,4"/>
+                                        <TextBlock TextWrapping="Wrap" FontSize="10" LineHeight="16"
+                                                   Foreground="{DynamicResource TextPrimary}">
+                                            <Run Text="最近 N 筆振動點連成漸淡的線。" FontWeight="Bold"/>
+                                            <LineBreak/>
+                                            <Run Text="可看出："
+                                                 FontWeight="SemiBold"
+                                                 Foreground="{DynamicResource AccentTeal}"/>
+                                            <LineBreak/>
+                                            <Run Text="① 振動方向偏向（軌跡延某軸拉長 = 該方向偏振）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="② 振動量級隨時間變化（軌跡擴大/收縮）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="③ 衝擊事件位置（軌跡突起一條長線）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="" Foreground="{DynamicResource TextSecondary}"/>
+                                            <LineBreak/>
+                                            <Run Text="⚠ 軌跡為視覺示意，非真實位置 — 真實位置需對加速度做兩次積分。" Foreground="#9090A8" FontStyle="Italic"/>
+                                        </TextBlock>
+
+                                        <!-- Lissajous -->
+                                        <TextBlock Text="🌀 Lissajous (X-Y 投影)"
+                                                   FontWeight="Bold" FontSize="11"
+                                                   Foreground="#1ABC9C"
+                                                   Margin="0,12,0,4"/>
+                                        <TextBlock TextWrapping="Wrap" FontSize="10" LineHeight="16"
+                                                   Foreground="{DynamicResource TextPrimary}">
+                                            <Run Text="X-acc vs Y-acc 散點圖。工業界判讀軸對心 / 不平衡的標準工具。" FontWeight="Bold"/>
+                                            <LineBreak/>
+                                            <Run Text="圖形 → 故障類型："
+                                                 FontWeight="SemiBold"
+                                                 Foreground="{DynamicResource AccentTeal}"/>
+                                            <LineBreak/>
+                                            <Run Text="● 圓形 → " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="正常或不平衡（XY 振幅相當）" Foreground="{DynamicResource TextPrimary}"/>
+                                            <LineBreak/>
+                                            <Run Text="● 橢圓 → " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="不對心（某軸振動較大，常見於聯軸器偏移）" Foreground="#F39C12"/>
+                                            <LineBreak/>
+                                            <Run Text="● 8 字 → " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="複合故障（不平衡 + 不對心同時存在）" Foreground="#E74C3C"/>
+                                            <LineBreak/>
+                                            <Run Text="● 直線 → " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="嚴重單方向偏振（鬆動 / 共振）" Foreground="#E74C3C"/>
+                                            <LineBreak/>
+                                            <Run Text="● 雜亂團 → " Foreground="{DynamicResource TextPrimary}"/>
+                                            <Run Text="無規則振動（軸承故障或衝擊式)" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </Expander>
+
+                            <Border Background="{DynamicResource BgPrimary}"
+                                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1"
+                                    CornerRadius="4" Padding="8" Margin="0,12,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="🖱 操作說明"
+                                               FontWeight="SemiBold" FontSize="11"
+                                               Foreground="{DynamicResource AccentTeal}"
+                                               Margin="0,0,0,4"/>
+                                    <TextBlock Text="左鍵拖曳：旋轉視角"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextSecondary}"/>
+                                    <TextBlock Text="右鍵拖曳：平移"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextSecondary}"/>
+                                    <TextBlock Text="滾輪：縮放"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextSecondary}"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Timeline scrubber -->
+        <Border Grid.Row="3" Background="{DynamicResource BgSecondary}"
+                BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,1,0,1"
+                Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="btnPlay" Content="▶"
+                        Padding="14,4" MinWidth="44" FontSize="16"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        FontWeight="Bold"
+                        Click="OnPlayClick"/>
+                <Button Grid.Column="1" Content="⏮" Padding="10,4" MinWidth="36" FontSize="14"
+                        Margin="6,0,0,0"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Click="OnRewindClick"
+                        ToolTip="{DynamicResource Motion3D.Rewind}"/>
+
+                <Slider Grid.Column="2" x:Name="sldTimeline" Margin="12,0"
+                        Minimum="0" Maximum="100" Value="0"
+                        IsMoveToPointEnabled="True"
+                        VerticalAlignment="Center"
+                        ValueChanged="OnTimelineChanged"/>
+
+                <TextBlock Grid.Column="3" x:Name="lblTimeline" Text="0.0s / 0.0s"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"
+                           MinWidth="220"
+                           FontFamily="Consolas"
+                           Foreground="{DynamicResource TextSecondary}"/>
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{DynamicResource Motion3D.Speed}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="cmbSpeed" Width="70" Padding="4,2"
+                              SelectionChanged="OnSpeedChanged"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="4" Background="{DynamicResource BgSecondary}" Padding="16,6">
+            <TextBlock x:Name="lblFile" FontFamily="Consolas"
+                       FontSize="{DynamicResource SmallFontSize}"
+                       Foreground="{DynamicResource AccentBlue}"
+                       TextTrimming="CharacterEllipsis"/>
+        </Border>
+    </Grid>
+</Window>

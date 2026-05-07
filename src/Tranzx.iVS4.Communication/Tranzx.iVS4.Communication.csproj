@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Tranzx.iVS4.Communication</RootNamespace>
+    <AssemblyName>Tranzx.iVS4.Communication</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <UseWindowsForms>false</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tranzx.iVS4.Core\Tranzx.iVS4.Core.csproj" />
+    <ProjectReference Include="..\Tranzx.iVS4.Calibration\Tranzx.iVS4.Calibration.csproj" />
+    <ProjectReference Include="..\Tranzx.iVS4.Analysis\Tranzx.iVS4.Analysis.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,164 @@
+<Window x:Class="Tranzx.iVS4.App.Views.VibrationMeasurementSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource VibSet.Title}"
+        Width="540" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="700">
+        <StackPanel Margin="16">
+            <TextBlock Text="{DynamicResource VibSet.Title}"
+                       FontSize="18" FontWeight="Bold"
+                       Foreground="{DynamicResource AccentTeal}" Margin="0,0,0,12"/>
+
+            <!-- 時域統計（合併 5-8b1 之前獨立的「時域統計設定」對話框）-->
+            <GroupBox Header="{DynamicResource VibSet.StatsSection}"
+                      Foreground="{DynamicResource AccentTeal}"
+                      BorderBrush="{DynamicResource BgTertiary}"
+                      Padding="10,8" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource VibSet.StatsDesc}"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               Foreground="{DynamicResource TextSecondary}"
+                               TextWrapping="Wrap" Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource TimeDomain.StatsHz}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbStatsHz" Padding="6,3"
+                                  ItemTemplate="{StaticResource HzItemTpl}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource TimeDomain.Overlap}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbOverlap" Padding="6,3"
+                                  ItemTemplate="{StaticResource PctItemTpl}"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- 趨勢/圖表（沿用 ChartSettings 振動 X/Y 設定）-->
+            <GroupBox Header="{DynamicResource VibSet.TrendSection}"
+                      Foreground="{DynamicResource AccentTeal}"
+                      BorderBrush="{DynamicResource BgTertiary}"
+                      Padding="10,8" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource ChartSettings.XSec}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbTrendXSec" Padding="6,3"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource ChartSettings.VibY}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbTrendYMax" Padding="6,3"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- 波形 -->
+            <GroupBox Header="{DynamicResource VibSet.WaveformSection}"
+                      Foreground="{DynamicResource AccentTeal}"
+                      BorderBrush="{DynamicResource BgTertiary}"
+                      Padding="10,8" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource VibSet.WaveformDesc}"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               Foreground="{DynamicResource TextSecondary}"
+                               TextWrapping="Wrap" Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.WaveformSec}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbWaveformSec" Padding="6,3"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.WaveformY}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbWaveformY" Padding="6,3"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- FFT -->
+            <GroupBox Header="{DynamicResource VibSet.FftSection}"
+                      Foreground="{DynamicResource AccentTeal}"
+                      BorderBrush="{DynamicResource BgTertiary}"
+                      Padding="10,8" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource VibSet.FftDesc}"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               Foreground="{DynamicResource TextSecondary}"
+                               TextWrapping="Wrap" Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.FftFreqMax}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbFftFreqMax" Padding="6,3"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.FftYMax}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbFftYMax" Padding="6,3"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.FftWindow}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbFftWindow" Padding="6,3"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource VibSet.FftN}"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <ComboBox Grid.Column="1" x:Name="cmbFftN" Padding="6,3"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- 按鈕 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{DynamicResource Dialog.Cancel}" Padding="20,5" Margin="0,0,8,0"
+                        Click="OnCancelClick" IsCancel="True"/>
+                <Button Content="{DynamicResource Pref.Apply}" Padding="20,5"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        Click="OnApplyClick" IsDefault="True"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

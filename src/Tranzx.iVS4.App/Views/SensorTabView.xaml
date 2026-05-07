@@ -1,0 +1,921 @@
+<UserControl x:Class="Tranzx.iVS4.App.Views.SensorTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:oxy="http://oxyplot.org/skiawpf"
+             xmlns:svc="clr-namespace:Tranzx.iVS4.App.Services"
+             xmlns:v="clr-namespace:Tranzx.iVS4.App.Views"
+             Background="{DynamicResource BgPrimary}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" MinWidth="180"/>
+            <ColumnDefinition Width="*" MinWidth="500"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ════════ 左側控制群 ════════ -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto"
+                      Background="{DynamicResource BgSecondary}" Padding="6">
+            <StackPanel>
+                <!-- 連線（單一 toggle 按鈕：紅燈未連線 / 綠燈已連線）-->
+                <GroupBox Header="{DynamicResource Section.Connection}"
+                          Foreground="{DynamicResource AccentTeal}"
+                          BorderBrush="{DynamicResource BgTertiary}"
+                          Margin="0,0,0,6" Padding="6">
+                    <StackPanel>
+                        <TextBlock Foreground="{DynamicResource TextSecondary}" FontSize="{DynamicResource SmallFontSize}"
+                                   Margin="0,0,0,2">
+                            <Run Text="{DynamicResource Channel.PortLabel}"/>
+                            <Run Text=" "/>
+                            <Run Text="{Binding Channel.PortName}" FontWeight="SemiBold"
+                                 Foreground="{DynamicResource TextPrimary}"/>
+                        </TextBlock>
+                        <TextBlock Foreground="{DynamicResource TextSecondary}" FontSize="{DynamicResource SmallFontSize}"
+                                   Margin="0,0,0,4">
+                            <Run Text="ID:"/>
+                            <Run Text=" "/>
+                            <Run Text="{Binding Channel.SensorId, FallbackValue='—'}" FontWeight="SemiBold"
+                                 Foreground="{DynamicResource AccentAmber}"/>
+                        </TextBlock>
+                        <Button Command="{Binding ConnectCommand}"
+                                Padding="4,8" FontWeight="Bold" Foreground="White">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <!-- 預設：未連線 (紅燈) -->
+                                    <Setter Property="Background" Value="{DynamicResource AccentRed}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentTeal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontSize="14" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="🔌"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                                    <Setter Property="Text" Value="✓"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{DynamicResource Channel.Connect}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                                    <Setter Property="Text" Value="{DynamicResource Channel.Disconnect}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 量測（單一 toggle 按鈕：綠燈量測中 / 紅燈已停止）-->
+                <GroupBox Header="{DynamicResource Section.Measure}"
+                          Foreground="{DynamicResource AccentTeal}"
+                          BorderBrush="{DynamicResource BgTertiary}"
+                          Margin="0,0,0,6" Padding="6"
+                          IsEnabled="{Binding IsConnected}">
+                    <StackPanel>
+                        <Button Command="{Binding ToggleMeasureCommand}"
+                                Padding="4,8" Margin="0,0,0,4"
+                                FontWeight="Bold" Foreground="White">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <!-- 預設：量測中 (綠) -->
+                                    <Setter Property="Background" Value="{DynamicResource AccentTeal}"/>
+                                    <Style.Triggers>
+                                        <!-- 已暫停 → 紅燈，按下會恢復 -->
+                                        <DataTrigger Binding="{Binding IsPausedPlot}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentRed}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontSize="16" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="⏸"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPausedPlot}" Value="True">
+                                                    <Setter Property="Text" Value="▶"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center" Margin="6,0,0,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{DynamicResource Measure.Running}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPausedPlot}" Value="True">
+                                                    <Setter Property="Text" Value="{DynamicResource Measure.Stopped}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- SPS（只在診斷模式顯示）-->
+                        <TextBlock Foreground="{DynamicResource TextSecondary}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Visibility="{Binding AppSettings.ShowDiagnostics,
+                                                Converter={StaticResource BoolToVis}}">
+                            <Run Text="SPS:"/>
+                            <Run Text="{Binding Channel.Sps, StringFormat=F0, Mode=OneWay}"
+                                 Foreground="{DynamicResource AccentBlue}" FontWeight="Bold"/>
+                        </TextBlock>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Log/錄製 -->
+                <GroupBox Header="{DynamicResource Section.Log}"
+                          Foreground="{DynamicResource AccentTeal}"
+                          BorderBrush="{DynamicResource BgTertiary}"
+                          Margin="0,0,0,6" Padding="6">
+                    <StackPanel>
+                        <!-- 開始/停止錄製（一鍵 toggle）-->
+                        <!-- 5-8c5：未錄=紅 / 錄製中=綠；定時模式顯示倒數秒數 -->
+                        <Button Padding="4,6" Margin="0,0,0,4"
+                                Foreground="White" FontWeight="Bold"
+                                Command="{Binding DataContext.ToggleSensorRecordingCommand,
+                                          RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding Channel.Index}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Background" Value="{DynamicResource AccentRed}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Channel.IsRecording}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentTeal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{DynamicResource Channel.RecordStart}"/>
+                                        <Style.Triggers>
+                                            <!-- 錄製中（非定時）→ 顯示「停止錄製」 -->
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Channel.IsRecording}" Value="True"/>
+                                                    <Condition Binding="{Binding Channel.RecordingCountdownText}" Value=""/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="{DynamicResource Channel.RecordStop}"/>
+                                            </MultiDataTrigger>
+                                            <!-- 錄製中（定時）→ 顯示倒數 -->
+                                            <DataTrigger Binding="{Binding Channel.IsRecordingTimed}" Value="True">
+                                                <Setter Property="Text" Value="{Binding Channel.RecordingCountdownText}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Button>
+
+                        <!-- 設定 / 開資料夾 兩個 icon -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Padding="6,4" Margin="0,0,2,0"
+                                    Background="{DynamicResource BgTertiary}"
+                                    Foreground="{DynamicResource TextPrimary}"
+                                    Command="{Binding OpenRecordingSettingsCommand}"
+                                    ToolTip="{DynamicResource Recording.Title}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="⚙" FontSize="13" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{DynamicResource Recording.Settings}"
+                                               FontSize="{DynamicResource SmallFontSize}"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="1" Padding="6,4" Margin="2,0,0,0"
+                                    Background="{DynamicResource BgTertiary}"
+                                    Foreground="{DynamicResource TextPrimary}"
+                                    Command="{Binding OpenTrendFolderCommand}"
+                                    ToolTip="{DynamicResource Channel.OpenFolder}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="📂" FontSize="13" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{DynamicResource Channel.OpenFolder}"
+                                               FontSize="{DynamicResource SmallFontSize}"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- ━━━ Alarm 紀錄 ━━━ -->
+                <GroupBox Header="{DynamicResource Section.Alarm}"
+                          Foreground="{DynamicResource AccentTeal}"
+                          BorderBrush="{DynamicResource BgTertiary}"
+                          Margin="0,0,0,6" Padding="6">
+                    <StackPanel>
+                        <!-- 路徑顯示 -->
+                        <TextBlock Text="{DynamicResource Alarm.LogFolder}"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Margin="0,0,0,2"/>
+                        <Border Background="{DynamicResource BgPrimary}" CornerRadius="3"
+                                Padding="6,3" Margin="0,0,0,4">
+                            <TextBlock Text="{Binding AppSettings.AlarmLogFolder, Mode=OneWay}"
+                                       FontFamily="Consolas"
+                                       FontSize="{DynamicResource TinyFontSize}"
+                                       Foreground="{DynamicResource AccentBlue}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding AppSettings.AlarmLogFolder, Mode=OneWay}"/>
+                        </Border>
+                        <!-- 瀏覽 + 開資料夾 -->
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="{DynamicResource Dialog.Browse}"
+                                    Padding="4,4" Margin="0,0,4,0"
+                                    FontSize="{DynamicResource SmallFontSize}"
+                                    Command="{Binding BrowseAlarmFolderCommand}"/>
+                            <Button Grid.Column="1" Content="📂" Padding="6,4"
+                                    Background="{DynamicResource BgTertiary}"
+                                    Foreground="{DynamicResource TextPrimary}"
+                                    Command="{Binding OpenAlarmFolderCommand}"
+                                    ToolTip="{DynamicResource Channel.OpenFolder}"/>
+                        </Grid>
+
+                        <!-- 今日警報計數 + 清除按鈕 (5-8c4) -->
+                        <Grid Margin="0,2,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{DynamicResource Alarm.TodayCount}"
+                                       Foreground="{DynamicResource TextSecondary}"
+                                       FontSize="{DynamicResource SmallFontSize}"
+                                       VerticalAlignment="Center"/>
+                            <Button Grid.Column="1"
+                                    Content="🗑"
+                                    Padding="6,1"
+                                    FontSize="11"
+                                    Background="{DynamicResource BgTertiary}"
+                                    Foreground="{DynamicResource TextPrimary}"
+                                    Command="{Binding ResetAlarmCountCommand}"
+                                    ToolTip="{DynamicResource Alarm.ResetTip}"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="#1ABC9C" CornerRadius="3"
+                                    Padding="0,3" Margin="0,0,2,0">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Foreground="White" FontWeight="Bold"
+                                           Text="{Binding AlarmLogger.TodayGreenCount, Mode=OneWay}"/>
+                            </Border>
+                            <Border Grid.Column="1" Background="#F39C12" CornerRadius="3"
+                                    Padding="0,3" Margin="2,0">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Foreground="White" FontWeight="Bold"
+                                           Text="{Binding AlarmLogger.TodayYellowCount, Mode=OneWay}"/>
+                            </Border>
+                            <Border Grid.Column="2" Background="#E74C3C" CornerRadius="3"
+                                    Padding="0,3" Margin="2,0,0,0">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Foreground="White" FontWeight="Bold"
+                                           Text="{Binding AlarmLogger.TodayRedCount, Mode=OneWay}"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 診斷面板（綁 ShowDiagnostics，預設關閉）-->
+                <Border Background="{DynamicResource BgTertiary}" CornerRadius="3"
+                        Padding="6,4" Margin="0,0,0,6"
+                        Visibility="{Binding AppSettings.ShowDiagnostics,
+                                     Converter={StaticResource BoolToVis}}">
+                    <StackPanel>
+                        <TextBlock FontSize="{DynamicResource TinyFontSize}" FontFamily="Consolas"
+                                   Foreground="{DynamicResource AccentTeal}">
+                            <Run Text="Bytes:"/>
+                            <Run Text="{Binding Channel.RawBytesReceived, StringFormat=N0, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="{DynamicResource TinyFontSize}" FontFamily="Consolas"
+                                   Foreground="{DynamicResource TextSecondary}">
+                            <Run Text="Pkt:"/>
+                            <Run Text="{Binding Channel.ValidPackets, Mode=OneWay}"/>
+                            <Run Text="  Lost:"/>
+                            <Run Text="{Binding Channel.LostPackets, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="{DynamicResource TinyFontSize}" FontFamily="Consolas"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding Channel.RawHexPreview}">
+                            <Run Text="{Binding Channel.RawHexPreview, Mode=OneWay}"/>
+                        </TextBlock>
+                        <!-- 5-8c4：raw int16 + scale factor 診斷（驗證裝置回傳 vs UI 換算）-->
+                        <TextBlock FontSize="{DynamicResource TinyFontSize}" FontFamily="Consolas"
+                                   Foreground="{DynamicResource AccentAmber}">
+                            <Run Text="ScF:"/>
+                            <Run Text="{Binding Channel.ScaleFactorMgPerLsb, StringFormat={}{0:F3}, Mode=OneWay}"/>
+                            <Run Text=" mG/LSB"/>
+                        </TextBlock>
+                        <TextBlock FontSize="{DynamicResource TinyFontSize}" FontFamily="Consolas"
+                                   Foreground="{DynamicResource AccentAmber}">
+                            <Run Text="Raw avg [X,Y,Z]: ["/>
+                            <Run Text="{Binding Channel.RawAvgX, StringFormat={}{0:F0}, Mode=OneWay}"/>
+                            <Run Text=","/>
+                            <Run Text="{Binding Channel.RawAvgY, StringFormat={}{0:F0}, Mode=OneWay}"/>
+                            <Run Text=","/>
+                            <Run Text="{Binding Channel.RawAvgZ, StringFormat={}{0:F0}, Mode=OneWay}"/>
+                            <Run Text="]"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ════════ 右側：上半即時值 + 下半圖表 ════════ -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="200"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 即時值表（依 ViewMode 切換顯示振動 / 水平 / 溫溼度三套）-->
+            <Border Grid.Row="0" Background="{DynamicResource BgSecondary}"
+                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1"
+                    Padding="8" Margin="6,6,6,3">
+                <!-- 圓環即時值表（依 ViewMode 切換）-->
+                <Grid>
+                    <!-- ============ 振動模式：3 個 axis panel（X/Y/Z），每個 panel 內：軸名 + 0-P GaugeArc + RMS sub ============ -->
+                    <Grid Visibility="{Binding IsVibrationMode, Converter={StaticResource BoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- ━━━ X 軸 ━━━ -->
+                        <Border Grid.Column="0" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.PeakX"/>
+                                    <Binding Path="Channel.Thresholds.XPeak.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.XPeak.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="X" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentRed}"/>
+                                <!-- 0-P 弧形儀表 -->
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="XPeak"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.PeakX}"
+                                                Yellow="{Binding Channel.Thresholds.XPeak.Yellow}"
+                                                Red="{Binding Channel.Thresholds.XPeak.Red}"
+                                                ValueFormat="F3" Unit="G" SubLabel="0-P"/>
+                                </Button>
+                                <!-- RMS 子區（LED + 數字，獨立 alarm）-->
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="XRms"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <Grid Margin="6,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Grid.Column="0" Width="12" Height="12" Margin="0,0,8,0"
+                                                 VerticalAlignment="Center">
+                                            <Ellipse.Fill>
+                                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                                    <Binding Path="Channel.RmsX"/>
+                                                    <Binding Path="Channel.Thresholds.XRms.Yellow"/>
+                                                    <Binding Path="Channel.Thresholds.XRms.Red"/>
+                                                </MultiBinding>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Grid.Column="1" Foreground="{DynamicResource TextPrimary}"
+                                                   FontSize="18" FontWeight="Bold">
+                                            <Run Text="RMS:" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                            <Run Text="{Binding Channel.RmsX, StringFormat=F3, Mode=OneWay}"/>
+                                            <Run Text=" G" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ━━━ Y 軸 ━━━ -->
+                        <Border Grid.Column="1" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.PeakY"/>
+                                    <Binding Path="Channel.Thresholds.YPeak.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.YPeak.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="Y" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentTeal}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="YPeak"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.PeakY}"
+                                                Yellow="{Binding Channel.Thresholds.YPeak.Yellow}"
+                                                Red="{Binding Channel.Thresholds.YPeak.Red}"
+                                                ValueFormat="F3" Unit="G" SubLabel="0-P"/>
+                                </Button>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="YRms"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <Grid Margin="6,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Grid.Column="0" Width="12" Height="12" Margin="0,0,8,0"
+                                                 VerticalAlignment="Center">
+                                            <Ellipse.Fill>
+                                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                                    <Binding Path="Channel.RmsY"/>
+                                                    <Binding Path="Channel.Thresholds.YRms.Yellow"/>
+                                                    <Binding Path="Channel.Thresholds.YRms.Red"/>
+                                                </MultiBinding>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Grid.Column="1" Foreground="{DynamicResource TextPrimary}"
+                                                   FontSize="18" FontWeight="Bold">
+                                            <Run Text="RMS:" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                            <Run Text="{Binding Channel.RmsY, StringFormat=F3, Mode=OneWay}"/>
+                                            <Run Text=" G" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ━━━ Z 軸 ━━━ -->
+                        <Border Grid.Column="2" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.PeakZ"/>
+                                    <Binding Path="Channel.Thresholds.ZPeak.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.ZPeak.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="Z" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentBlue}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="ZPeak"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.PeakZ}"
+                                                Yellow="{Binding Channel.Thresholds.ZPeak.Yellow}"
+                                                Red="{Binding Channel.Thresholds.ZPeak.Red}"
+                                                ValueFormat="F3" Unit="G" SubLabel="0-P"/>
+                                </Button>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="ZRms"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <Grid Margin="6,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Grid.Column="0" Width="12" Height="12" Margin="0,0,8,0"
+                                                 VerticalAlignment="Center">
+                                            <Ellipse.Fill>
+                                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                                    <Binding Path="Channel.RmsZ"/>
+                                                    <Binding Path="Channel.Thresholds.ZRms.Yellow"/>
+                                                    <Binding Path="Channel.Thresholds.ZRms.Red"/>
+                                                </MultiBinding>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Grid.Column="1" Foreground="{DynamicResource TextPrimary}"
+                                                   FontSize="18" FontWeight="Bold">
+                                            <Run Text="RMS:" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                            <Run Text="{Binding Channel.RmsZ, StringFormat=F3, Mode=OneWay}"/>
+                                            <Run Text=" G" Foreground="{DynamicResource TextSecondary}"
+                                                 FontWeight="Normal"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- ============ 水平模式：3 個 GaugeArc（X/Y/Z 角度）============ -->
+                    <Grid Visibility="{Binding IsTiltMode, Converter={StaticResource BoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.AngleX"/>
+                                    <Binding Path="Channel.Thresholds.AngleX.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.AngleX.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="X" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentRed}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="AngleX"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.AngleX}"
+                                                Yellow="{Binding Channel.Thresholds.AngleX.Yellow}"
+                                                Red="{Binding Channel.Thresholds.AngleX.Red}"
+                                                ValueFormat="F2" Unit="°" SubLabel="Angle"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.AngleY"/>
+                                    <Binding Path="Channel.Thresholds.AngleY.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.AngleY.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="Y" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentTeal}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="AngleY"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.AngleY}"
+                                                Yellow="{Binding Channel.Thresholds.AngleY.Yellow}"
+                                                Red="{Binding Channel.Thresholds.AngleY.Red}"
+                                                ValueFormat="F2" Unit="°" SubLabel="Angle"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.AngleZ"/>
+                                    <Binding Path="Channel.Thresholds.AngleZ.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.AngleZ.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="Z" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="32" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentBlue}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="AngleZ"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.AngleZ}"
+                                                Yellow="{Binding Channel.Thresholds.AngleZ.Yellow}"
+                                                Red="{Binding Channel.Thresholds.AngleZ.Red}"
+                                                ValueFormat="F2" Unit="°" SubLabel="Angle"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- ============ 溫溼度模式：2 個 GaugeArc ============ -->
+                    <Grid Visibility="{Binding IsEnvMode, Converter={StaticResource BoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.TemperatureC"/>
+                                    <Binding Path="Channel.Thresholds.Temp.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.Temp.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Series.Temp}" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="28" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentRed}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="Temp"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.TemperatureC}"
+                                                Yellow="{Binding Channel.Thresholds.Temp.Yellow}"
+                                                Red="{Binding Channel.Thresholds.Temp.Red}"
+                                                ValueFormat="F1" Unit="°C" SubLabel="Temperature"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Margin="4" CornerRadius="14" BorderThickness="3"
+                                Background="{DynamicResource BgTertiary}">
+                            <Border.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AlarmLevelToBrush}">
+                                    <Binding Path="Channel.HumidityPercent"/>
+                                    <Binding Path="Channel.Thresholds.Hum.Yellow"/>
+                                    <Binding Path="Channel.Thresholds.Hum.Red"/>
+                                </MultiBinding>
+                            </Border.BorderBrush>
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Series.Hum}" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                           FontSize="28" FontWeight="Bold"
+                                           Foreground="{DynamicResource AccentBlue}"/>
+                                <Button Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand"
+                                        Command="{Binding OpenAlarmDialogCommand}" CommandParameter="Hum"
+                                        ToolTip="{DynamicResource Alarm.ConfigTip}">
+                                    <v:GaugeArc Value="{Binding Channel.HumidityPercent}"
+                                                Yellow="{Binding Channel.Thresholds.Hum.Yellow}"
+                                                Red="{Binding Channel.Thresholds.Hum.Red}"
+                                                ValueFormat="F0" Unit="%" SubLabel="Humidity"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- 圖表區 -->
+            <Border Grid.Row="1" Background="{DynamicResource BgPrimary}"
+                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1"
+                    Margin="6,3,6,6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{DynamicResource BgSecondary}"
+                            BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,0,0,1"
+                            Padding="8,4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>  <!-- Sensor 標籤 -->
+                                <ColumnDefinition Width="Auto"/>  <!-- 模式 icon -->
+                                <ColumnDefinition Width="*"/>     <!-- spacer -->
+                                <ColumnDefinition Width="Auto"/>  <!-- series 開關 + 歸零 + 設定 -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Sensor 編號 + 顯示名稱 -->
+                            <Border Grid.Column="0" Background="{DynamicResource BgTertiary}"
+                                    Padding="10,4" Margin="0,0,12,0" CornerRadius="3"
+                                    VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="10" Height="10" Fill="{Binding Channel.ChannelColor}"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding SensorHeaderText}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextPrimary}"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 三個 ViewMode icon（全域同步）+ 振動 sub-mode dropdown -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <!-- 振動 RadioButton + ▾ dropdown（split button 風格）-->
+                                <RadioButton x:Name="rbModeVib" GroupName="VMode"
+                                             Style="{StaticResource ModeIconButton}"
+                                             IsChecked="True"
+                                             Checked="OnModeVibrationChecked">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="📊" FontSize="18" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource ViewMode.Vibration}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"
+                                                   FontWeight="SemiBold"/>
+                                        <!-- 當前 sub-mode chip（只在振動 mode active 時顯示）-->
+                                        <Border Background="{DynamicResource AccentTeal}" CornerRadius="3"
+                                                Padding="5,1" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                Visibility="{Binding IsVibrationMode, Converter={StaticResource BoolToVis}}">
+                                            <TextBlock x:Name="lblVibSubChip" Foreground="White"
+                                                       FontSize="11" FontWeight="Normal"
+                                                       Text="{DynamicResource VibSub.Trend}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </RadioButton>
+                                <!-- ▾ 按鈕（只在振動 mode 顯示）-->
+                                <Button x:Name="btnVibSubMenu" Content="▾"
+                                        Click="OnVibSubMenuClick"
+                                        Padding="8,4" Margin="-2,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Background="{DynamicResource BgTertiary}"
+                                        Foreground="{DynamicResource TextPrimary}"
+                                        BorderBrush="{DynamicResource AccentTeal}"
+                                        BorderThickness="1"
+                                        FontSize="11"
+                                        ToolTip="{DynamicResource VibSub.MenuTip}"
+                                        Visibility="{Binding IsVibrationMode, Converter={StaticResource BoolToVis}}"/>
+
+                                <RadioButton x:Name="rbModeTilt" GroupName="VMode"
+                                             Style="{StaticResource ModeIconButton}"
+                                             Checked="OnModeTiltChecked">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="📐" FontSize="18" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource ViewMode.Tilt}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton x:Name="rbModeEnv" GroupName="VMode"
+                                             Style="{StaticResource ModeIconButton}"
+                                             Checked="OnModeEnvChecked">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="🌡" FontSize="18" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource ViewMode.Env}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+
+                            <!-- 右側：series 開關 + 歸零（水平模式）+ 兩個 ⚙ -->
+                            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- series 開關 -->
+                                <StackPanel x:Name="pnlVibToggles" Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding ShowX}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentRed}"/>
+                                            <Run Text=" X" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox IsChecked="{Binding ShowY}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentTeal}"/>
+                                            <Run Text=" Y" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox IsChecked="{Binding ShowZ}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentBlue}"/>
+                                            <Run Text=" Z" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                </StackPanel>
+                                <StackPanel x:Name="pnlTiltToggles" Orientation="Horizontal" Visibility="Collapsed">
+                                    <CheckBox IsChecked="{Binding ShowAngleX}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentRed}"/>
+                                            <Run Text=" X°" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox IsChecked="{Binding ShowAngleY}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentTeal}"/>
+                                            <Run Text=" Y°" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox IsChecked="{Binding ShowAngleZ}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentBlue}"/>
+                                            <Run Text=" Z°" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                </StackPanel>
+                                <StackPanel x:Name="pnlEnvToggles" Orientation="Horizontal" Visibility="Collapsed">
+                                    <CheckBox IsChecked="{Binding ShowTemp}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentRed}"/>
+                                            <Run Text=" "/>
+                                            <Run Text="{DynamicResource Series.Temp}" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox IsChecked="{Binding ShowHum}" Margin="6,0" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="█" Foreground="{DynamicResource AccentBlue}"/>
+                                            <Run Text=" "/>
+                                            <Run Text="{DynamicResource Series.Hum}" Foreground="{DynamicResource TextPrimary}"/>
+                                        </TextBlock>
+                                    </CheckBox>
+                                </StackPanel>
+
+                                <!-- 分隔線 -->
+                                <Border Width="1" Margin="8,4" Background="{DynamicResource BgTertiary}"/>
+
+                                <!-- 水平歸零按鈕（僅水平模式顯示）— 依 IsTiltZeroed toggle 外觀 -->
+                                <Button x:Name="btnTiltZero"
+                                        Command="{Binding TiltZeroCommand}"
+                                        Padding="10,4" Margin="0,0,4,0"
+                                        Visibility="Collapsed"
+                                        ToolTip="{DynamicResource Tilt.ZeroTip}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="{DynamicResource AccentAmber}"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Channel.IsTiltZeroed}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource AccentTeal}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="📐" FontSize="14" VerticalAlignment="Center"/>
+                                        <TextBlock VerticalAlignment="Center" Margin="4,0,0,0" FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{DynamicResource Tilt.Zero}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Channel.IsTiltZeroed}" Value="True">
+                                                            <Setter Property="Text" Value="{DynamicResource Tilt.ZeroReset}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- 還原縮放 -->
+                                <Button Command="{Binding ResetZoomCommand}"
+                                        Padding="6,4" Margin="0,0,4,0"
+                                        Background="{DynamicResource BgTertiary}"
+                                        Foreground="{DynamicResource TextPrimary}"
+                                        ToolTip="{DynamicResource Chart.ResetZoom}">
+                                    <TextBlock Text="🔍" FontSize="14" VerticalAlignment="Center"/>
+                                </Button>
+
+                                <!-- 重新刷新 -->
+                                <Button Command="{Binding RefreshChartCommand}"
+                                        Padding="6,4" Margin="0,0,4,0"
+                                        Background="{DynamicResource BgTertiary}"
+                                        Foreground="{DynamicResource TextPrimary}"
+                                        ToolTip="{DynamicResource Chart.Refresh}">
+                                    <TextBlock Text="🔃" FontSize="14" VerticalAlignment="Center"/>
+                                </Button>
+
+                                <!-- 時域統計設定 ⏱ icon（5-8b1：振動 mode 下隱藏，已合併到 ⚙ 振動量測設定）-->
+                                <Button Command="{Binding OpenTimeDomainSettingsCommand}"
+                                        Padding="6,4" Margin="0,0,4,0"
+                                        Background="{DynamicResource BgTertiary}"
+                                        Foreground="{DynamicResource TextPrimary}"
+                                        ToolTip="{DynamicResource TimeDomain.Title}"
+                                        Visibility="{Binding IsVibrationMode, Converter={StaticResource InverseBoolToVis}}">
+                                    <TextBlock Text="⏱" FontSize="14" VerticalAlignment="Center"/>
+                                </Button>
+
+                                <!-- 圖表設定 ⚙ icon（振動 mode 顯示「振動量測設定」） -->
+                                <Button Command="{Binding OpenChartSettingsCommand}"
+                                        Padding="6,4"
+                                        Background="{DynamicResource BgTertiary}"
+                                        Foreground="{DynamicResource TextPrimary}">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Setter Property="ToolTip" Value="{DynamicResource ChartSettings.Title}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsVibrationMode}" Value="True">
+                                                    <Setter Property="ToolTip" Value="{DynamicResource VibSet.TipWithShortcut}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <TextBlock Text="⚙" FontSize="14" VerticalAlignment="Center"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- PlotView 綁定 ViewModel.ChartModel（每個 Sensor 自己的）-->
+                    <oxy:PlotView Grid.Row="1" Background="Transparent"
+                                  Model="{Binding ChartModel}"
+                                  Controller="{Binding ChartController}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,359 @@
+<Window x:Class="Tranzx.iVS4.App.Views.RecordingSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Recording.Title}"
+        Width="540" Height="720" MinHeight="480"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResize"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>      <!-- 可滾動內容 -->
+            <RowDefinition Height="Auto"/>   <!-- 固定按鈕列 -->
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled" Padding="16,16,16,8">
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{DynamicResource Recording.Title}"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="{DynamicResource AccentTeal}" Margin="0,0,0,12"/>
+
+        <!-- ❗ Phase 5-8c5：錄製模式 -->
+        <GroupBox Grid.Row="1" Header="{DynamicResource Recording.ModeSection}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Recording.ModeDesc}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <CheckBox x:Name="cbTimedRecording" Margin="0,0,0,4"
+                          Foreground="{DynamicResource TextPrimary}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Recording.Timed}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{DynamicResource Recording.TimedTip}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </CheckBox>
+                <Grid Margin="22,4,0,8"
+                      IsEnabled="{Binding ElementName=cbTimedRecording, Path=IsChecked}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Recording.Duration}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Column="1" x:Name="txtDurationSec" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{DynamicResource Unit.Sec}" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                </Grid>
+
+                <Border Height="1" Background="{DynamicResource BgTertiary}" Margin="0,4"/>
+
+                <CheckBox x:Name="cbContinuousRecording" Margin="0,4,0,0"
+                          Foreground="{DynamicResource TextPrimary}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Recording.Continuous}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{DynamicResource Recording.ContinuousTip}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </CheckBox>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- 紀錄範圍 + 三類紀錄勾選 -->
+        <GroupBox Grid.Row="2" Header="{DynamicResource Recording.ScopeSection}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <CheckBox x:Name="cbScopeAll" Margin="0,0,0,4"
+                          Foreground="{DynamicResource TextPrimary}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Recording.ScopeAll}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{DynamicResource Recording.ScopeAllTip}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </CheckBox>
+                <Border Height="1" Background="{DynamicResource BgTertiary}" Margin="0,4"/>
+                <TextBlock Text="{DynamicResource Recording.LogTypes}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           FontSize="{DynamicResource SmallFontSize}" Margin="0,0,0,4"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0" x:Name="cbLogVib"
+                              Content="{DynamicResource ViewMode.Vibration}"
+                              Foreground="{DynamicResource TextPrimary}"/>
+                    <CheckBox Grid.Column="1" x:Name="cbLogTilt"
+                              Content="{DynamicResource ViewMode.Tilt}"
+                              Foreground="{DynamicResource TextPrimary}"/>
+                    <CheckBox Grid.Column="2" x:Name="cbLogEnv"
+                              Content="{DynamicResource ViewMode.Env}"
+                              Foreground="{DynamicResource TextPrimary}"/>
+                    <CheckBox Grid.Column="3" x:Name="cbLogRaw"
+                              Content="Raw"
+                              Foreground="{DynamicResource TextPrimary}"/>
+                    <!-- 5-8c10：統計也納入錄製類型（預設 ON）-->
+                    <CheckBox Grid.Column="4" x:Name="cbLogStats"
+                              Content="{DynamicResource Recording.LogStats}"
+                              ToolTip="{DynamicResource Recording.LogStatsTip}"
+                              Foreground="{DynamicResource TextPrimary}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- 共用：紀錄資料夾 -->
+        <GroupBox Grid.Row="3" Header="{DynamicResource Trend.LogFolder}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <Border Background="{DynamicResource BgPrimary}" CornerRadius="3"
+                        Padding="6,4" Margin="0,0,0,4">
+                    <TextBlock x:Name="lblFolder" FontFamily="Consolas"
+                               FontSize="{DynamicResource SmallFontSize}"
+                               Foreground="{DynamicResource AccentBlue}"
+                               TextTrimming="CharacterEllipsis"/>
+                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="{DynamicResource Dialog.Browse}"
+                            Padding="6,4" Margin="0,0,4,0"
+                            Click="OnBrowseFolder"/>
+                    <Button Grid.Column="1" Content="📂" Padding="6,4"
+                            Background="{DynamicResource BgTertiary}"
+                            Foreground="{DynamicResource TextPrimary}"
+                            Click="OnOpenFolder"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Trend：切割 + 保留 -->
+        <GroupBox Grid.Row="4" Header="{DynamicResource Recording.TrendSection}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Recording.TrendDesc}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Recording.SegmentTime}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbTrendSeg" Padding="6,3"
+                             />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Recording.Retention}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbTrendRet" Padding="6,3"
+                             />
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Raw：切割 + 保留 -->
+        <GroupBox Grid.Row="5" Header="{DynamicResource Recording.RawSection}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Recording.RawDesc}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Recording.SegmentTime}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbRawSeg" Padding="6,3"
+                             />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Recording.Retention}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbRawRet" Padding="6,3"
+                             />
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- ❗ Phase 5-8c6：Smart Log 智慧錄製 -->
+        <GroupBox Grid.Row="6" Header="{DynamicResource Recording.SmartLogSection}"
+                  Foreground="{DynamicResource AccentAmber}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <CheckBox x:Name="cbSmartLog" Margin="0,0,0,4"
+                          Foreground="{DynamicResource TextPrimary}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Recording.SmartLogEnable}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{DynamicResource Recording.SmartLogTip}"
+                                   FontSize="{DynamicResource SmallFontSize}"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </CheckBox>
+                <Grid Margin="22,8,0,0"
+                      IsEnabled="{Binding ElementName=cbSmartLog, Path=IsChecked}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Recording.SmartStartG}"
+                               VerticalAlignment="Center" Margin="0,0,0,4"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtStartG" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}" Margin="0,0,0,4"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="G" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Recording.SmartStartHold}"
+                               VerticalAlignment="Center" Margin="0,0,0,4"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtStartHold" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}" Margin="0,0,0,4"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{DynamicResource Unit.Sec}" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Recording.SmartStopG}"
+                               VerticalAlignment="Center" Margin="0,0,0,4"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtStopG" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}" Margin="0,0,0,4"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="G" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource Recording.SmartStopHold}"
+                               VerticalAlignment="Center" Margin="0,0,0,4"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtStopHold" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}" Margin="0,0,0,4"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{DynamicResource Unit.Sec}" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource Recording.SmartMinSec}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtMinSec" Padding="6,4"
+                             Background="{DynamicResource BgPrimary}"
+                             Foreground="{DynamicResource TextPrimary}"
+                             BorderBrush="{DynamicResource BgTertiary}"
+                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="{DynamicResource Unit.Sec}" Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondary}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- ❗ Phase 5-8c6：保留期清理（從底部按鈕移上來，含說明） -->
+        <GroupBox Grid.Row="7" Header="{DynamicResource Recording.CleanupSection}"
+                  Foreground="{DynamicResource AccentAmber}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Recording.CleanupDesc}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <Button Content="{DynamicResource Recording.CleanNow}" Padding="14,6"
+                        HorizontalAlignment="Left"
+                        Click="OnCleanupNow"
+                        Background="{DynamicResource AccentAmber}" Foreground="White"
+                        FontWeight="SemiBold"/>
+            </StackPanel>
+        </GroupBox>
+        </Grid>
+        </ScrollViewer>
+
+        <!-- 按鈕（永遠固定在底部）-->
+        <Border Grid.Row="1" Background="{DynamicResource BgSecondary}"
+                BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,1,0,0"
+                Padding="16,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{DynamicResource Dialog.Cancel}" Padding="20,5" Margin="0,0,8,0"
+                        Click="OnCancelClick" IsCancel="True"/>
+                <Button Content="{DynamicResource Pref.Apply}" Padding="20,5"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        Click="OnApplyClick" IsDefault="True"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

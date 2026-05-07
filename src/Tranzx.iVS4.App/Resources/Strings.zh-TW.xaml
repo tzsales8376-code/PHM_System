@@ -1,0 +1,551 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Log settings -->
+    <sys:String x:Key="Toolbar.LogSettings">⚙ Log 設定</sys:String>
+    <sys:String x:Key="Toolbar.LogSettings.Tip">設定要錄製哪些通道的 CSV</sys:String>
+    <sys:String x:Key="Log.SettingsTitle">CSV 錄製設定</sys:String>
+    <sys:String x:Key="Log.SettingsHint">勾選要記錄到 CSV 的通道。預設全部勾選同步錄製。</sys:String>
+    <sys:String x:Key="Log.SelectAll">全選</sys:String>
+    <sys:String x:Key="Log.SelectNone">全不選</sys:String>
+    <sys:String x:Key="Log.SelectedCount">已選通道數</sys:String>
+    <sys:String x:Key="Log.Confirm">確定</sys:String>
+    <sys:String x:Key="Log.NoChannelsSelected">未勾選任何通道,無法錄製</sys:String>
+    <sys:String x:Key="Log.SelectionHintFmt">將錄製 {0} 個通道</sys:String>
+
+    <!-- Phase 5-2: Chart settings dialog -->
+    <sys:String x:Key="ChartSettings.Title">圖表設定</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Vib">振動圖表</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Tilt">水平圖表</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Env">溫溼度圖表</sys:String>
+    <sys:String x:Key="ChartSettings.XSec">X 軸時間長度（秒）</sys:String>
+    <sys:String x:Key="ChartSettings.VibY">Y 軸範圍 (G)</sys:String>
+    <sys:String x:Key="ChartSettings.TiltY">Y 軸範圍 (角度)</sys:String>
+    <sys:String x:Key="ChartSettings.EnvY">Y 軸範圍 (Min ~ Max)</sys:String>
+
+    <!-- Phase 5-2: Time domain settings dialog -->
+    <sys:String x:Key="TimeDomain.Title">時域統計設定</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Stats">取樣統計頻率</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Overlap">Overlap 重疊</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz">統計頻率</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz.Hint">每秒幾次取樣統計，計算 Peak / RMS / Crest 與 AI 特徵。預設 20Hz = 每 50ms 一筆。</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap">Overlap 百分比</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap.Hint">相鄰兩 batch 重疊比例。高 overlap 統計平滑但 lag 大。預設 30%。</sys:String>
+
+    <!-- Phase 5-2: Tilt zero -->
+    <sys:String x:Key="Tilt.Zero">歸零</sys:String>
+    <sys:String x:Key="Tilt.ZeroReset">取消歸零</sys:String>
+    <sys:String x:Key="Tilt.ZeroTip">第一次按：把當前 X/Y/Z 角度當 0° 基準。再按一次：恢復絕對角度。</sys:String>
+    <sys:String x:Key="Status.TiltZeroedFmt">{0}：水平已歸零（顯示為相對基準的偏移）</sys:String>
+    <sys:String x:Key="Status.TiltZeroResetFmt">{0}：水平歸零已取消（顯示絕對角度）</sys:String>
+
+    <!-- Phase 5-2.4: Performance settings -->
+    <sys:String x:Key="Pref.Section.Performance">效能調校</sys:String>
+    <sys:String x:Key="Pref.Perf.Hint">若程式運行不順可調低以下參數。圖表更新頻率與點數降低不影響量測精度，僅影響視覺流暢度。</sys:String>
+    <sys:String x:Key="Pref.Perf.RefreshHz">圖表更新率</sys:String>
+    <sys:String x:Key="Pref.Perf.MaxPoints">每軸最大點數</sys:String>
+
+    <!-- Phase 5-2.1: Tilt LPF preferences -->
+    <sys:String x:Key="Pref.Section.Tilt">水平角度</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Label">角度顯示模式：</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Inclinometer">水平儀模式（預設）</sys:String>
+    <sys:String x:Key="Pref.TiltMode.InclinometerTip">該軸偏離水平面的角度。平放時 X=0°、Y=0°、Z=+90°，範圍 -90°~+90°。工程慣例。</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVector">向量夾角模式</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVectorTip">軸正向與重力的物理夾角。平放時 X=90°、Y=90°、Z=0°，範圍 0°~180°。</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Enable">啟用 LPF（低通濾波）</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tip">用 DC 分量算傾角後再做低通濾波，機台振動下水平讀數更平穩。預設啟用。</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tau">時間常數</sys:String>
+
+    <!-- Preferences dialog -->
+    <sys:String x:Key="Toolbar.Preferences">⚙ 設定</sys:String>
+    <sys:String x:Key="Pref.Title">Preferences 設定</sys:String>
+    <sys:String x:Key="Pref.Apply">套用</sys:String>
+    <sys:String x:Key="Pref.Section.Vibration">振動顯示</sys:String>
+    <sys:String x:Key="Pref.Section.Display">顯示</sys:String>
+    <sys:String x:Key="Pref.Section.Future">未來功能預留</sys:String>
+    <sys:String x:Key="Pref.Future.Hint">後續軟硬體調整功能（韌體升級、通訊設定、進階校正…）將集中至此面板。</sys:String>
+    <sys:String x:Key="Pref.Gravity.Label">重力（垂直軸 1G）處理：</sys:String>
+    <sys:String x:Key="Pref.Gravity.Remove">扣除重力（預設）</sys:String>
+    <sys:String x:Key="Pref.Gravity.RemoveTip">扣除每軸 DC 分量，靜置時 X/Y/Z 都 ≈ 0，僅顯示振動成分</sys:String>
+    <sys:String x:Key="Pref.Gravity.Keep">保留重力</sys:String>
+    <sys:String x:Key="Pref.Gravity.KeepTip">保留 DC 分量，垂直軸靜置時 ≈ 1G</sys:String>
+
+    <!-- ViewMode icon labels -->
+    <sys:String x:Key="ViewMode.Vibration">振動</sys:String>
+    <sys:String x:Key="ViewMode.Tilt">水平</sys:String>
+    <sys:String x:Key="ViewMode.Env">溫溼度</sys:String>
+    <sys:String x:Key="Series.Temp">溫度</sys:String>
+    <sys:String x:Key="Series.Hum">濕度</sys:String>
+
+    <!-- App -->
+    <sys:String x:Key="App.Title">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar (Phase 5 VMS-style) -->
+    <sys:String x:Key="Toolbar.AddSensor">+ 加入Sensor</sys:String>
+    <sys:String x:Key="Toolbar.RemoveSensor">− 移除</sys:String>
+    <sys:String x:Key="Toolbar.SyncLabel">同步控制：</sys:String>
+    <sys:String x:Key="Toolbar.StartAll">▶ 全部開始</sys:String>
+    <sys:String x:Key="Toolbar.StopAll">■ 全部停止</sys:String>
+    <sys:String x:Key="Toolbar.RecordAll">● 全部錄製</sys:String>
+    <sys:String x:Key="Toolbar.View">View:</sys:String>
+    <sys:String x:Key="Toolbar.View.Tip">一鍵切換所有 Sensor 圖表的顯示模式</sys:String>
+    <sys:String x:Key="Toolbar.FontSize">字型:</sys:String>
+
+    <!-- Sensor Tab -->
+    <sys:String x:Key="Tab.Sensor">Sensor</sys:String>
+    <sys:String x:Key="Tab.Stats">📊 統計</sys:String>
+
+    <!-- Section group boxes (左側 GroupBox 標題) -->
+    <sys:String x:Key="Section.Connection">連線</sys:String>
+    <sys:String x:Key="Section.Measure">量測</sys:String>
+    <sys:String x:Key="Section.Settings">設定</sys:String>
+    <sys:String x:Key="Section.Log">Log 紀錄</sys:String>
+    <sys:String x:Key="Section.Calibration">校正</sys:String>
+
+    <!-- Per-channel labels -->
+    <sys:String x:Key="Channel.PortLabel">Port:</sys:String>
+    <sys:String x:Key="Channel.Connect">連線</sys:String>
+    <sys:String x:Key="Channel.Disconnect">斷線</sys:String>
+    <sys:String x:Key="Channel.RecordStart">● 開始錄製</sys:String>
+    <sys:String x:Key="Channel.RecordStop">■ 停止錄製</sys:String>
+    <sys:String x:Key="Channel.OpenFolder">📁 開啟資料夾</sys:String>
+    <sys:String x:Key="Channel.MaxReset">Max 重置</sys:String>
+
+    <!-- Live data table headers -->
+    <sys:String x:Key="Table.Acc">Acc (G)</sys:String>
+    <sys:String x:Key="Table.Alarm">Alarm</sys:String>
+    <sys:String x:Key="Table.Status">Status</sys:String>
+    <sys:String x:Key="Table.Angle">Angle (°)</sys:String>
+    <sys:String x:Key="Table.Value">Value</sys:String>
+    <sys:String x:Key="Measure.Running">量測中</sys:String>
+    <sys:String x:Key="Measure.Stopped">已停止</sys:String>
+    <sys:String x:Key="Pref.Diag.Show">顯示診斷面板</sys:String>
+    <sys:String x:Key="Pref.Diag.Tip">在每個 Sensor Tab 顯示 SPS / Bytes / Pkt / Lost / Hex preview。預設關閉。</sys:String>
+    <sys:String x:Key="Table.MaxRecord">Max (G)</sys:String>
+
+    <!-- Add Sensor Dialog -->
+    <sys:String x:Key="Dialog.AddSensor.Title">加入 Sensor</sys:String>
+
+    <!-- Status messages (Phase 5 增補) -->
+    <sys:String x:Key="Status.SensorConnectedFmt">{0} 已連線</sys:String>
+    <sys:String x:Key="Status.SensorDisconnectedFmt">{0} 已斷線</sys:String>
+    <sys:String x:Key="Status.SyncStartedFmt">同步啟動 ({0} 個 Sensor)</sys:String>
+    <sys:String x:Key="Status.SyncStopped">已同步停止</sys:String>
+
+    <!-- Old App key removed below (was already first) -->
+    <sys:String x:Key="App.LegacyTitle">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar -->
+    <sys:String x:Key="Toolbar.AddChannel">+ 加入通道</sys:String>
+    <sys:String x:Key="Toolbar.ScanUsb">🔍 掃描</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe">💾 儲存 Recipe</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe.Tip">把目前所有通道設定打包儲存為 .tzrcp</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe">📂 載入 Recipe</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe.Tip">載入既有的 .tzrcp 設定檔</sys:String>
+    <sys:String x:Key="Toolbar.Connect">▶ 連線</sys:String>
+    <sys:String x:Key="Toolbar.Disconnect">■ 斷線</sys:String>
+    <sys:String x:Key="Toolbar.StartRecord">● 開始錄製</sys:String>
+    <sys:String x:Key="Toolbar.StopRecord">■ 停止錄製</sys:String>
+    <sys:String x:Key="Toolbar.RecLabel">REC</sys:String>
+    <sys:String x:Key="Toolbar.RecOpen">📂 開啟</sys:String>
+    <sys:String x:Key="Toolbar.SamplesUnit">samples</sys:String>
+    <sys:String x:Key="Toolbar.ActiveChannels">作用 Sensor：</sys:String>
+    <sys:String x:Key="Toolbar.Language">語系</sys:String>
+
+    <!-- Channel card -->
+    <sys:String x:Key="Channel.SPS">SPS</sys:String>
+    <sys:String x:Key="Channel.LostPackets">丟包</sys:String>
+    <sys:String x:Key="Channel.Calibration">校正</sys:String>
+    <sys:String x:Key="Channel.LoadCalibration.Tip">載入校正檔</sys:String>
+    <sys:String x:Key="Channel.RemoveChannel.Tip">移除通道</sys:String>
+    <sys:String x:Key="Channel.Uncalibrated">未校正</sys:String>
+    <sys:String x:Key="Channel.CalibratedFmt">已校正 [{0}]</sys:String>
+
+    <!-- Tab headers -->
+    <sys:String x:Key="Tab.Vibration">📊 振動分析</sys:String>
+    <sys:String x:Key="Tab.Level">📐 水平量測</sys:String>
+    <sys:String x:Key="Tab.Env">🌡 溫溼度</sys:String>
+
+    <!-- Vibration tab -->
+    <sys:String x:Key="Vibration.TimeMode">時域</sys:String>
+    <sys:String x:Key="Vibration.FftMode">頻域 (FFT)</sys:String>
+    <sys:String x:Key="Vibration.WaveformMode">波形 (Waveform)</sys:String>
+    <sys:String x:Key="Vibration.ShowAxes">顯示軸：</sys:String>
+    <sys:String x:Key="Vibration.AmpRangeLabel">振幅範圍：</sys:String>
+    <sys:String x:Key="Vibration.AmpAuto">Auto</sys:String>
+    <sys:String x:Key="Vibration.Snapshot">📷 截圖</sys:String>
+    <sys:String x:Key="Vibration.ResetZoom">🔄 重設縮放</sys:String>
+    <sys:String x:Key="Vibration.MaxMarkerFmt">{0} 最大: f={1:F1}Hz · A={2:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ZoomHint">提示：左鍵拖曳框選縮放 · 右鍵點選 cursor · 滾輪縮放 · 「🔄 重設縮放」還原</sys:String>
+    <sys:String x:Key="Vibration.CrestLabel">Crest</sys:String>
+    <sys:String x:Key="Vibration.Hpf">HPF (0.5Hz)</sys:String>
+    <sys:String x:Key="Vibration.UnitLabel">單位：</sys:String>
+    <sys:String x:Key="Vibration.WindowLabel">窗函數：</sys:String>
+    <sys:String x:Key="Vibration.WindowLengthLabel">時間長度：</sys:String>
+    <sys:String x:Key="Vibration.FreqRangeLabel">頻率範圍：</sys:String>
+    <sys:String x:Key="Vibration.SecUnit">秒</sys:String>
+    <sys:String x:Key="Vibration.HzUnit">Hz</sys:String>
+    <sys:String x:Key="Vibration.AutoFreq">Auto (Nyquist)</sys:String>
+    <sys:String x:Key="Vibration.CursorFmt">t={0:F3}s · X={1:F3}G · Y={2:F3}G · Z={3:F3}G</sys:String>
+    <sys:String x:Key="Vibration.CursorFftFmt">f={0:F1}Hz · X={1:F4}G · Y={2:F4}G · Z={3:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ClearCursor">⊗ 清除游標</sys:String>
+    <sys:String x:Key="Vibration.Pause">⏸ 暫停</sys:String>
+    <sys:String x:Key="Vibration.Resume">▶ 恢復</sys:String>
+    <sys:String x:Key="Vibration.Zero">⊙ 歸零</sys:String>
+    <sys:String x:Key="Vibration.Csv">● CSV</sys:String>
+    <sys:String x:Key="Vibration.AxisTime">時間 (s)</sys:String>
+    <sys:String x:Key="Vibration.AxisFreq">頻率 (Hz)</sys:String>
+    <sys:String x:Key="Vibration.AxisAmp">振幅 (G)</sys:String>
+    <sys:String x:Key="Vibration.AxisG">G</sys:String>
+    <sys:String x:Key="Vibration.RmsLabel">RMS</sys:String>
+    <sys:String x:Key="Vibration.PpLabel">P-P</sys:String>
+
+    <!-- Level tab -->
+    <sys:String x:Key="Level.Title">水平量測（Pitch / Roll，校正補償已套用）</sys:String>
+    <sys:String x:Key="Level.ZeroAll">⊙ 全部歸零</sys:String>
+    <sys:String x:Key="Level.Precision">精度：±0.05°</sys:String>
+    <sys:String x:Key="Level.Pitch">Pitch</sys:String>
+    <sys:String x:Key="Level.Roll">Roll</sys:String>
+    <sys:String x:Key="Level.Total">合向量</sys:String>
+
+    <!-- Env tab -->
+    <sys:String x:Key="Env.Title">溫溼度監測（HDC1080）</sys:String>
+    <sys:String x:Key="Env.WindowLabel">趨勢視窗：</sys:String>
+    <sys:String x:Key="Env.Window1Hr">1 小時</sys:String>
+    <sys:String x:Key="Env.Window6Hr">6 小時</sys:String>
+    <sys:String x:Key="Env.Window24Hr">24 小時</sys:String>
+    <sys:String x:Key="Env.TempAlertLabel">高溫警報：</sys:String>
+    <sys:String x:Key="Env.HumAlertLabel">高溼警報：</sys:String>
+    <sys:String x:Key="Env.Temperature">溫度</sys:String>
+    <sys:String x:Key="Env.Humidity">濕度</sys:String>
+    <sys:String x:Key="Env.AxisTemp">溫度 (°C)</sys:String>
+    <sys:String x:Key="Env.AxisHum">濕度 (%RH)</sys:String>
+    <sys:String x:Key="Env.AxisTime">時間 (s)</sys:String>
+    <sys:String x:Key="Env.SeriesTempFmt">Ch{0} 溫度</sys:String>
+    <sys:String x:Key="Env.SeriesHumFmt">Ch{0} 濕度</sys:String>
+
+    <!-- AddChannelDialog -->
+    <sys:String x:Key="Dialog.AddChannel.Title">加入通道</sys:String>
+    <sys:String x:Key="Dialog.SlotIndex">Sensor 編號</sys:String>
+    <sys:String x:Key="Dialog.DisplayName">顯示名稱</sys:String>
+    <sys:String x:Key="Dialog.ConnectionSettings">連線設定</sys:String>
+    <sys:String x:Key="Dialog.UsbCdc">USB CDC</sys:String>
+    <sys:String x:Key="Dialog.ComPort">COM Port</sys:String>
+    <sys:String x:Key="Dialog.RescanTip">重新掃描</sys:String>
+    <sys:String x:Key="Dialog.SensorSettings">感測器設定</sys:String>
+    <sys:String x:Key="Dialog.SensorId">Sensor ID</sys:String>
+    <sys:String x:Key="Dialog.SensorIdTip">8 碼 Sensor 識別碼，用於自動配對校正檔</sys:String>
+    <sys:String x:Key="Dialog.FullScale">量程 FS</sys:String>
+    <sys:String x:Key="Dialog.Odr">ODR (Hz)</sys:String>
+    <sys:String x:Key="Dialog.L02Warning">⚠ 請確認設定值與設備實際韌體一致（L02 教訓）</sys:String>
+    <sys:String x:Key="Dialog.Calibration">校正檔</sys:String>
+    <sys:String x:Key="Dialog.AutoCalibration">自動配對（依 Sensor ID 從 Calibration\ 資料夾尋找）</sys:String>
+    <sys:String x:Key="Dialog.ManualCalibration">手動指定</sys:String>
+    <sys:String x:Key="Dialog.Browse">瀏覽…</sys:String>
+    <sys:String x:Key="Dialog.Cancel">取消</sys:String>
+    <sys:String x:Key="Dialog.Add">加入</sys:String>
+    <sys:String x:Key="Dialog.DefaultChannelNameFmt">Sensor {0}</sys:String>
+    <sys:String x:Key="Dialog.SelectCalibration">選擇校正檔</sys:String>
+
+    <!-- Recipe -->
+    <sys:String x:Key="Recipe.Unnamed">未命名</sys:String>
+    <sys:String x:Key="Recipe.SaveTitle">儲存 Recipe</sys:String>
+    <sys:String x:Key="Recipe.LoadTitle">載入 Recipe</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirm">載入 Recipe 將清除目前所有通道（並斷線）。確定要繼續？</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirmTitle">確認載入 Recipe</sys:String>
+    <sys:String x:Key="Recipe.SummaryTitle">Recipe 摘要</sys:String>
+    <sys:String x:Key="Recipe.SummaryPrompt">是否載入此 Recipe？</sys:String>
+    <sys:String x:Key="Recipe.PortNote">(注意：若 PortName 在此電腦上不存在，會嘗試以 SensorID 自動配對 USB 裝置)</sys:String>
+
+    <!-- Status messages -->
+    <sys:String x:Key="Status.Ready">就緒（按「+ 加入Sensor」開始）</sys:String>
+    <sys:String x:Key="Status.ScanResultFmt">找到 {0} 個 COM Port，其中 {1} 個疑似 iVS</sys:String>
+    <sys:String x:Key="Status.ChannelLimit">已達 4 通道上限</sys:String>
+    <sys:String x:Key="Status.NoChannels">請先加入至少一個通道</sys:String>
+    <sys:String x:Key="Status.ChannelAddedFmt">已加入 {0} ({1})</sys:String>
+    <sys:String x:Key="Status.ChannelRemovedFmt">已移除通道 {0}</sys:String>
+    <sys:String x:Key="Status.CalibrationLoadedFmt">{0}：已載入校正檔 [{1}]</sys:String>
+    <sys:String x:Key="Status.ConnectingFmt">已連線 {0}/{1} 個通道,正在驗證設備設定…</sys:String>
+    <sys:String x:Key="Status.MismatchWarnFmt">⚠ 連線完成 ({0} 通道),但 {1} 個通道設備設定不一致 — 詳見每張通道卡片</sys:String>
+    <sys:String x:Key="Status.VerifySuccessFmt">✓ 連線完成 ({0} 通道),{1} 個已驗證設備設定一致</sys:String>
+    <sys:String x:Key="Status.ConnectedNoVerifyFmt">連線完成 ({0} 通道),但無法解析設備回應(韌體可能不支援回讀)</sys:String>
+    <sys:String x:Key="Status.ConnectedFmt">已連線 {0} 個通道</sys:String>
+    <sys:String x:Key="Status.Disconnected">已斷線</sys:String>
+    <sys:String x:Key="Status.RecordStartedFmt">開始錄製 → {0}</sys:String>
+    <sys:String x:Key="Status.RecordStoppedFmt">錄製已停止 (共 {0:N0} 筆)</sys:String>
+    <sys:String x:Key="Status.NoRecord">沒有作用中的通道,無法錄製</sys:String>
+    <sys:String x:Key="Status.RecipeSavedFmt">Recipe 已儲存:{0}</sys:String>
+    <sys:String x:Key="Status.RecipeLoadedFmt">Recipe 已載入 ({0}/{1} 通道),請按「▶ 連線」啟動</sys:String>
+    <sys:String x:Key="Status.RecipeChannelFailFmt">⚠ 通道 {0} 載入失敗:{1}</sys:String>
+    <sys:String x:Key="Status.NoChannelsForRecipe">目前沒有通道,無法儲存 Recipe</sys:String>
+
+    <!-- Error MessageBox titles -->
+    <sys:String x:Key="Error.Title">錯誤</sys:String>
+    <sys:String x:Key="Error.AddChannelFailFmt">加入通道失敗:{0}</sys:String>
+    <sys:String x:Key="Error.LoadCalibrationFailFmt">無法載入校正檔:{0}</sys:String>
+    <sys:String x:Key="Error.ConnectFailFmt">連線過程發生錯誤:{0}</sys:String>
+    <sys:String x:Key="Error.RecordStartFailFmt">無法開始錄製:{0}</sys:String>
+    <sys:String x:Key="Error.RecipeSaveFailFmt">儲存 Recipe 失敗:{0}</sys:String>
+    <sys:String x:Key="Error.RecipeLoadFailFmt">載入 Recipe 失敗:{0}</sys:String>
+
+    <!-- Bottom bar -->
+    <sys:String x:Key="Bottom.LastSyncFmt">最後同步:{0:HH:mm:ss} ({1} 通道)</sys:String>
+
+    <!-- Mismatch banner -->
+    <sys:String x:Key="MismatchBanner.Text">設備回報的 FS / ODR 與 UI 設定不一致 — 請於通道卡片下方確認,或重新斷線檢查韌體狀態。</sys:String>
+    <sys:String x:Key="MismatchBanner.L02">(L02 教訓)</sys:String>
+
+    <!-- Transport state -->
+    <sys:String x:Key="State.Disconnected">未連線</sys:String>
+    <sys:String x:Key="State.Connecting">連線中…</sys:String>
+    <sys:String x:Key="State.Connected">已連線</sys:String>
+    <sys:String x:Key="State.Reconnecting">重連中…</sys:String>
+    <sys:String x:Key="State.Faulted">連線異常</sys:String>
+
+    <!-- Verification labels -->
+    <sys:String x:Key="Verification.Unverified">未驗證</sys:String>
+    <sys:String x:Key="Verification.NoResponse">韌體未回應 ReadFs/ReadOdr</sys:String>
+    <sys:String x:Key="Verification.SuccessFmt">✓ 已驗證 {0}, {1}</sys:String>
+    <sys:String x:Key="Verification.MismatchFmt">⚠ 設備回報 {0}, {1}（不一致）</sys:String>
+    <sys:String x:Key="Verification.FsFmt">FS=±{0}G</sys:String>
+    <sys:String x:Key="Verification.OdrFmt">ODR={0}Hz</sys:String>
+    <sys:String x:Key="Verification.FsUnknown">FS=?</sys:String>
+    <sys:String x:Key="Verification.OdrUnknown">ODR=?</sys:String>
+
+    <!-- Phase 5-4: Alarm thresholds + chart icons -->
+    <sys:String x:Key="Chart.ResetZoom">還原縮放</sys:String>
+    <sys:String x:Key="Chart.Refresh">重新刷新圖表</sys:String>
+    <sys:String x:Key="Alarm.Title">警報閾值設定</sys:String>
+    <sys:String x:Key="Alarm.Target">目標</sys:String>
+    <sys:String x:Key="Alarm.ConfigTip">點擊設定警報閾值</sys:String>
+    <sys:String x:Key="Alarm.Section.Thresholds">三段閾值（取絕對值比較）</sys:String>
+    <sys:String x:Key="Alarm.Green">綠（正常）</sys:String>
+    <sys:String x:Key="Alarm.Yellow">黃（警告）</sys:String>
+    <sys:String x:Key="Alarm.Red">紅（警報）</sys:String>
+    <sys:String x:Key="Alarm.PreviewFmt">綠：{0} {3} ／ 黃：{1} {3} ／ 紅：{2} {3}</sys:String>
+    <sys:String x:Key="Alarm.CopyToAll">將目前閾值複製到同群組所有量值（如 X-0P → X/Y/Z 全部 0-P）</sys:String>
+    <sys:String x:Key="Alarm.CopyToGroup">複製到群組</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibPeak">複製到所有軸 0-P</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibRms">複製到所有軸 RMS</sys:String>
+    <sys:String x:Key="Alarm.CopyToTilt">複製到所有軸角度</sys:String>
+    <sys:String x:Key="Alarm.InvalidNumber">請輸入有效的數字</sys:String>
+    <sys:String x:Key="Alarm.InvalidRange">紅燈閾值必須大於黃燈閾值，且兩者皆需 ≥ 0</sys:String>
+    <!-- Phase 5-6: Alarm logger -->
+    <sys:String x:Key="Section.Alarm">警報紀錄</sys:String>
+    <sys:String x:Key="Alarm.LogFolder">紀錄資料夾</sys:String>
+    <sys:String x:Key="Alarm.TodayCount">今日警報計數（綠 / 黃 / 紅）</sys:String>
+    <!-- Phase 5-7: trend logger + alarm sound -->
+    <sys:String x:Key="Trend.LogFolder">Trend 紀錄資料夾</sys:String>
+    <sys:String x:Key="Trend.RawData">Raw Data 全紀錄</sys:String>
+    <sys:String x:Key="Trend.RawDataTip">啟用後紀錄每筆原始 sample（約 3300 sps），檔案會非常大。停用時紀錄 Trend 統計值（依時域統計頻率）。</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Show">警報音效</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Tip">進入黃燈時播放系統提示音，紅燈播警示音。預設關閉。</sys:String>
+    <!-- Phase 5-8c2: toast filter -->
+    <sys:String x:Key="Pref.Toast.Enable">警報視覺通知（彈出視窗）</sys:String>
+    <sys:String x:Key="Pref.Toast.Tip">右下角彈出浮動通知。可選哪個等級觸發。</sys:String>
+    <sys:String x:Key="Pref.Toast.Yellow">黃燈彈出</sys:String>
+    <sys:String x:Key="Pref.Toast.Red">紅燈彈出</sys:String>
+    <sys:String x:Key="VibSet.WaveformY">Y 軸範圍</sys:String>
+    <sys:String x:Key="EventLog.Title">軟體狀況監控</sys:String>
+    <sys:String x:Key="EventLog.Time">時間</sys:String>
+    <sys:String x:Key="EventLog.Level">等級</sys:String>
+    <sys:String x:Key="EventLog.Source">來源</sys:String>
+    <sys:String x:Key="EventLog.Message">訊息</sys:String>
+    <sys:String x:Key="EventLog.OpenFolder">開啟資料夾</sys:String>
+    <sys:String x:Key="Toolbar.EventLog">狀況監控</sys:String>
+    <!-- Phase 5-8c3: live status feed -->
+    <sys:String x:Key="LiveFeed.Title">即時狀態監控</sys:String>
+    <sys:String x:Key="LiveFeed.Clear">清除</sys:String>
+    <sys:String x:Key="LiveFeed.ClearTip">清除目前面板上的訊息（不影響事件 log）</sys:String>
+    <!-- Phase 5-8c4 -->
+    <sys:String x:Key="Alarm.ResetTip">清除今日警報計數（綠/黃/紅 歸零）</sys:String>
+    <sys:String x:Key="Alarm.ResetDone">已清除今日警報計數</sys:String>
+    <!-- Phase 5-8c5: timed / continuous recording -->
+    <sys:String x:Key="Recording.ModeSection">錄製模式</sys:String>
+    <sys:String x:Key="Recording.ModeDesc">兩種模式可獨立開關。預設都關閉 = 手動開始 / 手動停止 + 依切割時間切檔。</sys:String>
+    <sys:String x:Key="Recording.Timed">定時錄製</sys:String>
+    <sys:String x:Key="Recording.TimedTip">啟動後自動倒數，到時間即自動停止。範圍 10 ~ 86400 秒（最長 24 小時）。</sys:String>
+    <sys:String x:Key="Recording.Duration">錄製秒數</sys:String>
+    <sys:String x:Key="Recording.Continuous">持續不切檔錄製</sys:String>
+    <sys:String x:Key="Recording.ContinuousTip">勾選後忽略下方的「CSV 切割時間」設定，整段錄到手動停止為止才切檔。適合長時間連續分析。</sys:String>
+    <sys:String x:Key="Recording.TimedStartFmt">定時錄製啟動，{0} 秒後自動停止</sys:String>
+    <sys:String x:Key="Recording.AutoStoppedFmt">定時 {0} 秒到，已自動停止錄製</sys:String>
+    <sys:String x:Key="Recording.ContinuousStart">持續不間斷錄製啟動（手動停止才切檔）</sys:String>
+    <!-- Phase 5-8c6: Smart Log + Cleanup section -->
+    <sys:String x:Key="Recording.SmartLogSection">Smart Log（智慧錄製）</sys:String>
+    <sys:String x:Key="Recording.SmartLogEnable">啟用 Smart Log</sys:String>
+    <sys:String x:Key="Recording.SmartLogTip">當振動超過閾值時自動開始錄製，振動回到低點時自動停止。每個事件單獨一個 CSV，適合機台不是 24 小時運轉時節省硬碟。閾值以三軸 Peak 中的最大值判斷。</sys:String>
+    <sys:String x:Key="Recording.SmartStartG">啟動閾值</sys:String>
+    <sys:String x:Key="Recording.SmartStartHold">啟動條件持續</sys:String>
+    <sys:String x:Key="Recording.SmartStopG">停止閾值</sys:String>
+    <sys:String x:Key="Recording.SmartStopHold">停止條件持續</sys:String>
+    <sys:String x:Key="Recording.SmartMinSec">最短事件時長</sys:String>
+    <sys:String x:Key="Recording.CleanupSection">保留期清理</sys:String>
+    <sys:String x:Key="Recording.CleanupDesc">超過保留天數的舊檔會在每次啟動及午夜自動清除（FIFO 一次刪 7 天）。需立即清除可按下方按鈕，會立即套用上面 Trend / Raw 的保留天數設定。</sys:String>
+    <!-- Phase 5-8c7: Vibration Stats window -->
+    <sys:String x:Key="StatsWin.Title">振動統計數據</sys:String>
+    <sys:String x:Key="StatsWin.Window">統計視窗</sys:String>
+    <sys:String x:Key="StatsWin.Overlap">重疊比例</sys:String>
+    <sys:String x:Key="StatsWin.Start">▶ 開始統計</sys:String>
+    <sys:String x:Key="StatsWin.Stop">■ 停止統計</sys:String>
+    <sys:String x:Key="StatsWin.ExportNow">立即計算一次</sys:String>
+    <sys:String x:Key="StatsWin.ExportNowTip">不等下個視窗，立刻對所有 Sensor 算一筆並寫入 CSV</sys:String>
+    <sys:String x:Key="StatsWin.Clear">清除畫面</sys:String>
+    <sys:String x:Key="StatsWin.OutputFolder">CSV 輸出資料夾：</sys:String>
+    <sys:String x:Key="StatsWin.NextInFmt">下一筆 {0:F1}s</sys:String>
+    <sys:String x:Key="StatsWin.RunningFmt">運作中（視窗 {0}s，重疊 {1}%）</sys:String>
+    <sys:String x:Key="StatsWin.StoppedFmt">已停止（共寫入 {0} 筆）</sys:String>
+    <sys:String x:Key="StatsWin.Col.Time">時間</sys:String>
+    <sys:String x:Key="StatsWin.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="StatsWin.Col.Axis">軸</sys:String>
+    <sys:String x:Key="Toolbar.VibStats">振動統計</sys:String>
+    <!-- Phase 5-8c8: power saver + stats chart -->
+    <sys:String x:Key="StatsWin.ChartMetric">圖表指標</sys:String>
+    <sys:String x:Key="StatsWin.ChartMaxPoints">最大點數</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Section">節能模式</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Enable">啟用節能模式</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Tip">無滑鼠 / 鍵盤操作達到指定時間後，自動暫停圖表渲染以節省 CPU。資料計算與警報判定不受影響。任何操作會立即恢復。預設啟用。</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.IdleMin">無操作閾值</sys:String>
+    <sys:String x:Key="Unit.Min">分鐘</sys:String>
+    <!-- Phase 5-8c9 -->
+    <sys:String x:Key="StatsWin.ApplyAxis">套用 Y 軸範圍</sys:String>
+    <sys:String x:Key="StatsWin.AutoAxis">Y 軸自動縮放</sys:String>
+    <sys:String x:Key="StatsWin.XSpan">X 範圍</sys:String>
+    <sys:String x:Key="Pref.Stats.LogEnable">統計資料寫入事件 Log</sys:String>
+    <sys:String x:Key="Pref.Stats.LogTip">啟用後，振動統計每筆會額外寫入 Event Log（%LocalAppData%\Tranzx.iVS4\Logs\app_yyyyMMdd.csv），方便客戶稽核。預設關閉。注意：5 秒視窗 + 30% 重疊 → 每 sensor 約每 3.5 秒 3 筆，長時間量測會大幅增加 Log 檔案大小。</sys:String>
+    <sys:String x:Key="HistoryWin.Title">歷史分析</sys:String>
+    <sys:String x:Key="HistoryWin.LoadCsv">📂 載入 CSV</sys:String>
+    <sys:String x:Key="HistoryWin.ClearAll">清除</sys:String>
+    <sys:String x:Key="HistoryWin.PlotMetric">繪製指標</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFmt">已載入 {0} 筆，{1} 個 metric</sys:String>
+    <sys:String x:Key="HistoryWin.EmptyFile">CSV 檔案是空的或格式錯誤</sys:String>
+    <sys:String x:Key="Toolbar.HistoryAnalysis">歷史分析</sys:String>
+    <!-- Phase 5-8c11 -->
+    <sys:String x:Key="HistoryWin.Subtitle">最多 4 組 CSV 疊加比較 ｜ 左鍵點選=查看數值 ｜ Ctrl+左鍵=框選縮放 ｜ 右鍵=平移 ｜ 滾輪=縮放</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlay">+ 加入比較</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlayTip">疊加另一個 CSV 到目前圖表（最多 4 組）</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoom">↺ 恢復原狀</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoomTip">恢復縮放至全部資料範圍</sys:String>
+    <sys:String x:Key="HistoryWin.StatsPanel">統計</sys:String>
+    <sys:String x:Key="HistoryWin.Comparison">多檔比較</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFiles">已載入：</sys:String>
+    <sys:String x:Key="HistoryWin.MaxOverlayFmt">已達最大疊加數量（{0} 組）</sys:String>
+    <sys:String x:Key="HistoryWin.NoDataToExport">尚無資料可匯出</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReport">📄 匯出報告</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReportTip">輸出 PDF / HTML / CSV 摘要報告</sys:String>
+    <!-- Phase 5-8c12 -->
+    <sys:String x:Key="HistoryWin.Align">⚙ 手動對齊</sys:String>
+    <sys:String x:Key="HistoryWin.AlignTip">設定每組 CSV 的對齊基準（哪一秒當作 0 點）</sys:String>
+    <sys:String x:Key="HistoryWin.AlignDesc">每組 CSV 預設以「第一筆」為 0 秒。如需手動對齊，請輸入該檔案要當作 0 秒的時間（從第一筆起算的秒數）。</sys:String>
+    <sys:String x:Key="HistoryWin.AlignOffset">該檔的 0 秒位於</sys:String>
+    <sys:String x:Key="HistoryWin.AlignReset">全部歸零</sys:String>
+    <sys:String x:Key="HistoryWin.AlignNeedMulti">需要 2 組以上 CSV 才能對齊</sys:String>
+    <sys:String x:Key="HistoryWin.PdfFallback">無法產出 PDF（找不到 Microsoft Edge / Chrome）。已改存 HTML，可手動列印為 PDF。</sys:String>
+    <!-- Phase 5-9 (A)：3D 動態回放 -->
+    <sys:String x:Key="Motion3D.Title">3D 動態回放</sys:String>
+    <sys:String x:Key="Motion3D.Subtitle">選一組錄製，自動載入 Tilt + 振動 CSV，重現 Sensor 在那個時段的姿態與震動</sys:String>
+    <sys:String x:Key="Motion3D.LoadCsv">📂 載入錄製組</sys:String>
+    <sys:String x:Key="Motion3D.SelectTiltCsv">選擇任一 CSV（Tilt 或 Vib），系統自動配對同時段另一個檔案</sys:String>
+    <sys:String x:Key="Motion3D.Clear">清除</sys:String>
+    <sys:String x:Key="Motion3D.MotionScale">振動放大</sys:String>
+    <sys:String x:Key="Motion3D.TrailLen">軌跡長度</sys:String>
+    <sys:String x:Key="Motion3D.ShowVector">向量箭頭</sys:String>
+    <sys:String x:Key="Motion3D.ShowTrail">軌跡尾巴</sys:String>
+    <sys:String x:Key="Motion3D.ShowGrid">地面格線</sys:String>
+    <sys:String x:Key="Motion3D.LiveValues">即時數值</sys:String>
+    <sys:String x:Key="Motion3D.Speed">速度</sys:String>
+    <sys:String x:Key="Motion3D.Rewind">回到開頭</sys:String>
+    <sys:String x:Key="Motion3D.NoData">CSV 內無有效資料</sys:String>
+    <sys:String x:Key="Motion3D.ExportAvi">🎬 匯出 AVI</sys:String>
+    <sys:String x:Key="Motion3D.ExportAviTip">渲染成 AVI（Motion-JPEG，建議用 VLC 播放，最長 60 秒）</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4">🎞 匯出 MP4</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4Tip">渲染成 MP4 (H.264) — 任何播放器都能放，需要系統有 FFmpeg</sys:String>
+    <sys:String x:Key="Motion3D.RenderingAvi">渲染 3D 場景</sys:String>
+    <sys:String x:Key="Motion3D.EncodingMp4">H.264 轉碼</sys:String>
+    <sys:String x:Key="Motion3D.FFmpegMissing">未偵測到 FFmpeg。&#x0a;&#x0a;MP4 匯出需要系統有 ffmpeg.exe，三種方法擇一：&#x0a;&#x0a;1. 直接下載：點「是」開啟 BtbN FFmpeg builds 下載頁&#x0a;   解壓後把 ffmpeg.exe 放到本軟體資料夾或 C:\ffmpeg\bin\&#x0a;&#x0a;2. winget install Gyan.FFmpeg&#x0a;&#x0a;3. choco install ffmpeg&#x0a;&#x0a;若不需要 MP4，可改用 AVI 匯出 + VLC 播放（不需 FFmpeg）。&#x0a;&#x0a;前往下載？</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="Recording.LogStats">統計</sys:String>
+    <sys:String x:Key="Recording.LogStatsTip">啟用後，振動統計分頁的每筆計算結果會額外寫入 Event Log（%LocalAppData%\Tranzx PHM\Logs），方便客戶稽核。預設啟用。注意：5 秒視窗 + 30% 重疊 → 每 sensor 約每 3.5 秒 3 筆，長時間量測會增加 Log 檔案大小。</sys:String>
+    <sys:String x:Key="Channel.Temperature">溫度</sys:String>
+    <sys:String x:Key="Channel.Humidity">濕度</sys:String>
+    <sys:String x:Key="Channel.Tilt">水平角度</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="WarnFeed.Title">警告監控</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Section">環境警告（溫度 / 濕度）</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Enable">啟用環境警告</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Tip">啟用後，溫度或濕度超過設定閾值會發出警告，顯示在右側「警告監控」面板並寫入 Event Log。預設關閉。</sys:String>
+    <!-- Phase 5-7b: recording settings -->
+    <sys:String x:Key="Recording.Title">錄製設定</sys:String>
+    <sys:String x:Key="Recording.Settings">設定</sys:String>
+    <sys:String x:Key="Recording.TrendSection">Trend 紀錄（依時域統計頻率）</sys:String>
+    <sys:String x:Key="Recording.TrendDesc">振動、水平、溫溼度三個 CSV 並行寫入。每 N 分鐘自動切割成新檔。超過保留天數的舊檔自動刪除。</sys:String>
+    <sys:String x:Key="Recording.RawSection">Raw Data 紀錄（每筆 sample）</sys:String>
+    <sys:String x:Key="Recording.RawDesc">啟用 Raw Data 時，每筆原始加速度 sample 寫入獨立 CSV（約 3300 sps）。檔案非常大，建議短切割時間 + 短保留期。</sys:String>
+    <sys:String x:Key="Recording.SegmentTime">CSV 切割時間</sys:String>
+    <sys:String x:Key="Recording.Retention">保留天數</sys:String>
+    <sys:String x:Key="Recording.Min">分鐘</sys:String>
+    <sys:String x:Key="Recording.Day">天</sys:String>
+    <sys:String x:Key="Recording.CleanNow">立即清理</sys:String>
+    <sys:String x:Key="Recording.CleanedFmt">已刪除 {0} 個過期檔案。</sys:String>
+    <!-- Phase 5-7c: 紀錄範圍 + 三類 mask -->
+    <sys:String x:Key="Recording.ScopeSection">紀錄範圍 / 紀錄類型</sys:String>
+    <sys:String x:Key="Recording.ScopeAll">全部 Sensor 一起錄製</sys:String>
+    <sys:String x:Key="Recording.ScopeAllTip">啟用：點任一 Sensor 開始錄製，所有已連線 Sensor 同時開始 / 停止。停用：只錄被點的那一個 Sensor。</sys:String>
+    <sys:String x:Key="Recording.LogTypes">紀錄類型（可多選）：</sys:String>
+    <!-- Phase 5-8: vibration sub-mode -->
+    <sys:String x:Key="VibSub.Trend">趨勢</sys:String>
+    <sys:String x:Key="VibSub.Waveform">波形</sys:String>
+    <sys:String x:Key="VibSub.Fft">頻譜</sys:String>
+    <!-- Phase 5-8b: vibration measurement settings -->
+    <sys:String x:Key="VibSub.MenuTip">點選顯示模式（趨勢 / 波形 / 頻譜）</sys:String>
+    <sys:String x:Key="VibSet.Title">振動量測設定</sys:String>
+    <sys:String x:Key="VibSet.TipWithShortcut">振動量測設定&#x000A;快捷鍵：Shift + 左鍵 拖曳 = 圈選計算 P-P</sys:String>
+    <sys:String x:Key="VibSet.StatsSection">時域統計（取樣 / Overlap）</sys:String>
+    <sys:String x:Key="VibSet.StatsDesc">每秒幾次取樣統計，計算 Peak / RMS / Crest 與 AI 特徵。Overlap 越高曲線越平滑但 lag 變大。</sys:String>
+    <sys:String x:Key="VibSet.TrendSection">趨勢圖（依時域統計）</sys:String>
+    <sys:String x:Key="VibSet.WaveformSection">波形（時域）</sys:String>
+    <sys:String x:Key="VibSet.WaveformDesc">取最近 N 秒原始 sample 完整顯示。增大時間需要 ring buffer 容量足夠（已配置至 60 秒）。</sys:String>
+    <sys:String x:Key="VibSet.WaveformSec">顯示時間</sys:String>
+    <sys:String x:Key="VibSet.FftSection">頻譜 FFT</sys:String>
+    <sys:String x:Key="VibSet.FftDesc">取最近 N 個 sample，套窗 + 單邊振幅譜。N 越大頻率解析度越高（df = SPS / N）。</sys:String>
+    <sys:String x:Key="VibSet.FftFreqMax">頻率範圍上限</sys:String>
+    <sys:String x:Key="VibSet.FftYMax">振幅軸上限</sys:String>
+    <sys:String x:Key="VibSet.FftWindow">窗函數</sys:String>
+    <sys:String x:Key="VibSet.FftN">Lines of Scan (N)</sys:String>
+    <sys:String x:Key="Unit.Sec">秒</sys:String>
+    <sys:String x:Key="Unit.Auto">自動</sys:String>
+    <!-- Phase 5-8c: reconnect / dashboard / alarm stats -->
+    <sys:String x:Key="Pref.Reconnect.Section">Sensor 自動重連</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Tip">Sensor 意外斷線時嘗試自動重連。0 = 停用。</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Attempts">最大重試次數</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Interval">重試間隔</sys:String>
+    <sys:String x:Key="Unit.Times">次</sys:String>
+    <sys:String x:Key="Unit.Disabled">停用</sys:String>
+    <sys:String x:Key="Toolbar.Dashboard">儀表板</sys:String>
+    <sys:String x:Key="Toolbar.AlarmStats">警報統計</sys:String>
+    <sys:String x:Key="Dashboard.Title">多 Sensor 儀表板</sys:String>
+    <sys:String x:Key="Dashboard.Connected">已連線</sys:String>
+    <sys:String x:Key="Dashboard.Disconnected">未連線</sys:String>
+    <sys:String x:Key="Dashboard.SummaryFmt">已連線 {0} / {1}</sys:String>
+    <sys:String x:Key="AlarmStats.Title">歷史警報統計</sys:String>
+    <sys:String x:Key="AlarmStats.Range">日期範圍</sys:String>
+    <sys:String x:Key="AlarmStats.RangeToday">今日</sys:String>
+    <sys:String x:Key="AlarmStats.Range7d">最近 7 天</sys:String>
+    <sys:String x:Key="AlarmStats.Range30d">最近 30 天</sys:String>
+    <sys:String x:Key="AlarmStats.Range90d">最近 90 天</sys:String>
+    <sys:String x:Key="AlarmStats.RangeAll">全部</sys:String>
+    <sys:String x:Key="AlarmStats.Folder">紀錄資料夾</sys:String>
+    <sys:String x:Key="AlarmStats.Refresh">重新讀取</sys:String>
+    <sys:String x:Key="AlarmStats.Green">綠燈解除</sys:String>
+    <sys:String x:Key="AlarmStats.Yellow">黃燈次數</sys:String>
+    <sys:String x:Key="AlarmStats.Red">紅燈次數</sys:String>
+    <sys:String x:Key="AlarmStats.PerSensor">Sensor × 量值 統計</sys:String>
+    <sys:String x:Key="AlarmStats.Daily">每日警報數量</sys:String>
+    <sys:String x:Key="AlarmStats.Date">日期</sys:String>
+    <sys:String x:Key="AlarmStats.Count">次數</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Key">量值</sys:String>
+    <sys:String x:Key="AlarmStats.SummaryFmt">共解析 {0} 筆事件，{1} 個 Sensor × 量值 組合</sys:String>
+    <sys:String x:Key="AlarmStats.FolderMissing">紀錄資料夾不存在：{0}</sys:String>
+</ResourceDictionary>

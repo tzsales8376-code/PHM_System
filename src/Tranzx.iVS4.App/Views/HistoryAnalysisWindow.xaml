@@ -1,0 +1,166 @@
+<Window x:Class="Tranzx.iVS4.App.Views.HistoryAnalysisWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/skiawpf"
+        Title="{DynamicResource HistoryWin.Title}"
+        Width="1500" Height="850" MinWidth="1100" MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource BgSecondary}" Padding="16,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📂" FontSize="20" Margin="0,0,8,0"
+                           Foreground="{DynamicResource AccentTeal}"/>
+                <TextBlock Text="{DynamicResource HistoryWin.Title}"
+                           FontSize="18" FontWeight="Bold"
+                           Foreground="{DynamicResource AccentTeal}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{DynamicResource HistoryWin.Subtitle}"
+                           FontSize="11" Margin="12,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondary}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Background="{DynamicResource BgSecondary}"
+                BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,1,0,1"
+                Padding="16,8">
+            <StackPanel Orientation="Horizontal">
+                <Button Padding="14,5" Click="OnLoadCsvClick"
+                        Background="{DynamicResource AccentTeal}" Foreground="White"
+                        FontWeight="Bold"
+                        Content="{DynamicResource HistoryWin.LoadCsv}"/>
+                <Button Padding="10,5" Margin="6,0,0,0" Click="OnAddOverlayClick"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Content="{DynamicResource HistoryWin.AddOverlay}"
+                        ToolTip="{DynamicResource HistoryWin.AddOverlayTip}"/>
+                <Button Padding="10,5" Margin="6,0,0,0" Click="OnClearClick"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Content="{DynamicResource HistoryWin.ClearAll}"/>
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <Button Padding="10,5" Margin="0,0,4,0" Click="OnResetZoomClick"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Content="{DynamicResource HistoryWin.ResetZoom}"
+                        ToolTip="{DynamicResource HistoryWin.ResetZoomTip}"/>
+                <!-- 5-8c12：手動對齊（讓使用者輸入對齊基準秒數）-->
+                <Button x:Name="btnAlign" Padding="10,5" Margin="6,0,0,0" Click="OnAlignClick"
+                        Background="{DynamicResource BgTertiary}"
+                        Foreground="{DynamicResource TextPrimary}"
+                        Content="{DynamicResource HistoryWin.Align}"
+                        ToolTip="{DynamicResource HistoryWin.AlignTip}"/>
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <CheckBox x:Name="cbColX" Content="X" Margin="6,0,4,0" IsChecked="True"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource AccentRed}"
+                          Click="OnColumnToggle"/>
+                <CheckBox x:Name="cbColY" Content="Y" Margin="0,0,4,0" IsChecked="True"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource AccentTeal}"
+                          Click="OnColumnToggle"/>
+                <CheckBox x:Name="cbColZ" Content="Z" Margin="0,0,4,0" IsChecked="True"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource AccentBlue}"
+                          Click="OnColumnToggle"/>
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <TextBlock Text="{DynamicResource HistoryWin.PlotMetric}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondary}" Margin="0,0,6,0"/>
+                <ComboBox x:Name="cmbMetric" Width="140" Padding="6,3"
+                          SelectionChanged="OnMetricChanged"/>
+                <Border Width="1" Background="{DynamicResource BgTertiary}" Margin="12,2"/>
+                <Button Padding="10,5" Click="OnExportReportClick"
+                        Background="{DynamicResource AccentAmber}" Foreground="White"
+                        FontWeight="Bold"
+                        Content="{DynamicResource HistoryWin.ExportReport}"
+                        ToolTip="{DynamicResource HistoryWin.ExportReportTip}"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <oxy:PlotView Grid.Column="0" x:Name="histChart"
+                          Background="{DynamicResource BgPrimary}"
+                          Margin="6,4,4,0">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <Canvas IsHitTestVisible="False">
+                            <!-- 黑底白字粗體標籤 -->
+                            <Border Canvas.Left="{Binding Position.X}"
+                                    Canvas.Top="{Binding Position.Y}"
+                                    Background="#000000"
+                                    BorderBrush="#FFFFFF"
+                                    BorderThickness="1"
+                                    CornerRadius="3"
+                                    Padding="8,4">
+                                <Border.RenderTransform>
+                                    <TranslateTransform X="12" Y="-40"/>
+                                </Border.RenderTransform>
+                                <TextBlock Text="{Binding}"
+                                           Foreground="#FFFFFF"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           FontWeight="Bold"/>
+                            </Border>
+                        </Canvas>
+                    </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
+
+            <!-- 右側統計 + 多檔比較面板 -->
+            <Border Grid.Column="1" Width="380"
+                    Background="{DynamicResource BgSecondary}"
+                    BorderBrush="{DynamicResource BgTertiary}" BorderThickness="1,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="{DynamicResource BgTertiary}" Padding="10,8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊" FontSize="14" Margin="0,0,6,0"
+                                       Foreground="{DynamicResource AccentTeal}"/>
+                            <TextBlock Text="{DynamicResource HistoryWin.StatsPanel}"
+                                       FontWeight="Bold" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimary}"/>
+                            <TextBlock x:Name="lblRange" Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       FontSize="10" FontFamily="Consolas"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="pnlStats" Margin="6,4"/>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="3" Background="{DynamicResource BgSecondary}"
+                BorderBrush="{DynamicResource BgTertiary}" BorderThickness="0,1,0,0"
+                Padding="16,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource HistoryWin.LoadedFiles}"
+                           Foreground="{DynamicResource TextSecondary}" Margin="0,0,8,0"/>
+                <TextBlock x:Name="lblFile"
+                           FontFamily="Consolas"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           Foreground="{DynamicResource AccentBlue}"
+                           TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

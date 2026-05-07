@@ -1,0 +1,70 @@
+<Window x:Class="Tranzx.iVS4.App.Views.TimeDomainSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource TimeDomain.Title}"
+        Width="520" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 統計頻率 -->
+        <GroupBox Grid.Row="0" Header="{DynamicResource TimeDomain.Section.Stats}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}" Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource TimeDomain.StatsHz}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbStatsHz" Width="160"
+                              HorizontalAlignment="Left" Padding="6,3"
+                              ItemTemplate="{StaticResource HzItemTpl}"/>
+                </Grid>
+                <TextBlock Text="{DynamicResource TimeDomain.StatsHz.Hint}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Overlap -->
+        <GroupBox Grid.Row="1" Header="{DynamicResource TimeDomain.Section.Overlap}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}" Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource TimeDomain.Overlap}"
+                               VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                    <ComboBox Grid.Column="1" x:Name="cmbOverlap" Width="160"
+                              HorizontalAlignment="Left" Padding="6,3"
+                              ItemTemplate="{StaticResource PctItemTpl}"/>
+                </Grid>
+                <TextBlock Text="{DynamicResource TimeDomain.Overlap.Hint}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           FontSize="{DynamicResource SmallFontSize}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- 按鈕 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{DynamicResource Dialog.Cancel}" Padding="20,5" Margin="0,0,8,0"
+                    Click="OnCancelClick" IsCancel="True"/>
+            <Button Content="{DynamicResource Pref.Apply}" Padding="20,5"
+                    Background="{DynamicResource AccentTeal}" Foreground="White"
+                    Click="OnApplyClick" IsDefault="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

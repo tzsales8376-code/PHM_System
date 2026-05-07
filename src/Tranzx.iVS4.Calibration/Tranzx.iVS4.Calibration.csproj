@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Tranzx.iVS4.Calibration</RootNamespace>
+    <AssemblyName>Tranzx.iVS4.Calibration</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tranzx.iVS4.Core\Tranzx.iVS4.Core.csproj" />
+  </ItemGroup>
+</Project>

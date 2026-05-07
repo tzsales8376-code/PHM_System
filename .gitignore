@@ -1,0 +1,121 @@
+# ====================================================================
+# Tranzx iVS 4.0 / PHM Monitor System — .gitignore
+# 適用：.NET 8 WPF MVVM 專案 (Visual Studio 2022 / VS Code)
+# ====================================================================
+
+# ---- Build outputs ----
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Tt]emp/
+[Tt]emporary/
+[Bb]uild[Ll]og.*
+
+# ---- Visual Studio 個人化 / IDE 設定 ----
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# ---- Rider / Resharper ----
+.idea/
+*.DotSettings.user
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# ---- Visual Studio Code ----
+.vscode/
+*.code-workspace
+
+# ---- NuGet ----
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ---- Test results ----
+[Tt]est[Rr]esult*/
+*.coverage
+*.coveragexml
+TestResult.xml
+nunit-*.xml
+.trx
+
+# ---- DotCover / Coverlet ----
+*.dotCover
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# ---- Publish output ----
+publish/
+PublishProfiles/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml.user
+
+# ---- Application data ----
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# ---- Backup / autosave ----
+*.bak
+*.tmp
+*.swp
+*.orig
+*.rej
+
+# ---- Patches / generated docs ----
+*.patch
+*.diff
+
+# ---- 作業系統 ----
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# ---- 整合 / 暫存 zip ----
+integration_zips/
+*.zip
+
+# ---- 機密 / 簽章 ----
+*.pfx
+*.snk
+secrets.json
+
+# ---- 一次性啟動 / 整合腳本（本機 only，不進 repo）----
+_init_and_push.ps1
+_integration_*.ps1
+_commit_msg.txt

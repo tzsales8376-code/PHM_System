@@ -1,0 +1,111 @@
+<Window x:Class="Tranzx.iVS4.App.Views.AlarmThresholdDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Alarm.Title}"
+        Width="480" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource BgPrimary}" Foreground="{DynamicResource TextPrimary}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 標題 -->
+        <TextBlock x:Name="lblTarget" Grid.Row="0"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="{DynamicResource AccentTeal}" Margin="0,0,0,8"/>
+
+        <!-- 三段閾值 -->
+        <GroupBox Grid.Row="1" Header="{DynamicResource Alarm.Section.Thresholds}"
+                  Foreground="{DynamicResource AccentTeal}"
+                  BorderBrush="{DynamicResource BgTertiary}"
+                  Padding="10,8" Margin="0,0,0,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 綠燈 -->
+                <Ellipse Grid.Row="0" Grid.Column="0" Width="20" Height="20"
+                         Fill="#1ABC9C" VerticalAlignment="Center" Margin="6"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{DynamicResource Alarm.Green}"
+                           VerticalAlignment="Center" Foreground="{DynamicResource TextPrimary}"
+                           FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="0 ~ "
+                           VerticalAlignment="Center" HorizontalAlignment="Right"
+                           Foreground="{DynamicResource TextSecondary}"/>
+                <TextBlock Grid.Row="0" Grid.Column="3" x:Name="lblYellowVal"
+                           VerticalAlignment="Center" Margin="6,0"
+                           Foreground="{DynamicResource TextSecondary}"/>
+
+                <!-- 黃燈 -->
+                <Ellipse Grid.Row="1" Grid.Column="0" Width="20" Height="20"
+                         Fill="#F39C12" VerticalAlignment="Center" Margin="6"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{DynamicResource Alarm.Yellow}"
+                           VerticalAlignment="Center" Foreground="{DynamicResource TextPrimary}"
+                           FontWeight="SemiBold"/>
+                <TextBox Grid.Row="1" Grid.Column="2" x:Name="txtYellow"
+                         Padding="6,3" Margin="6,4" HorizontalContentAlignment="Right"
+                         TextChanged="OnThresholdChanged"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" x:Name="lblYellowUnit"
+                           VerticalAlignment="Center" Margin="6,0"
+                           Foreground="{DynamicResource TextSecondary}"/>
+
+                <!-- 紅燈 -->
+                <Ellipse Grid.Row="2" Grid.Column="0" Width="20" Height="20"
+                         Fill="#E74C3C" VerticalAlignment="Center" Margin="6"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{DynamicResource Alarm.Red}"
+                           VerticalAlignment="Center" Foreground="{DynamicResource TextPrimary}"
+                           FontWeight="SemiBold"/>
+                <TextBox Grid.Row="2" Grid.Column="2" x:Name="txtRed"
+                         Padding="6,3" Margin="6,4" HorizontalContentAlignment="Right"
+                         TextChanged="OnThresholdChanged"/>
+                <TextBlock Grid.Row="2" Grid.Column="3" x:Name="lblRedUnit"
+                           VerticalAlignment="Center" Margin="6,0"
+                           Foreground="{DynamicResource TextSecondary}"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- 預覽說明 -->
+        <Border Grid.Row="2" Background="{DynamicResource BgSecondary}" CornerRadius="4"
+                Padding="10,8" Margin="0,0,0,12">
+            <TextBlock x:Name="lblPreview" Foreground="{DynamicResource TextSecondary}"
+                       FontSize="{DynamicResource SmallFontSize}" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- 複製到全部 -->
+        <Border Grid.Row="3" Background="{DynamicResource BgSecondary}" CornerRadius="4"
+                Padding="10,8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Alarm.CopyToAll}"
+                           Foreground="{DynamicResource TextSecondary}"
+                           FontSize="{DynamicResource SmallFontSize}" Margin="0,0,0,6"/>
+                <Button x:Name="btnCopyToGroup" Content="{DynamicResource Alarm.CopyToGroup}"
+                        Click="OnCopyToGroup"
+                        Padding="10,4" HorizontalAlignment="Left"
+                        Background="{DynamicResource AccentBlue}" Foreground="White"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 按鈕 -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{DynamicResource Dialog.Cancel}" Padding="20,5" Margin="0,0,8,0"
+                    Click="OnCancelClick" IsCancel="True"/>
+            <Button Content="{DynamicResource Pref.Apply}" Padding="20,5"
+                    Background="{DynamicResource AccentTeal}" Foreground="White"
+                    Click="OnApplyClick" IsDefault="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

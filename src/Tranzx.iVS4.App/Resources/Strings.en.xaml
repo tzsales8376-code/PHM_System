@@ -1,0 +1,550 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Log settings -->
+    <sys:String x:Key="Toolbar.LogSettings">⚙ Log Settings</sys:String>
+    <sys:String x:Key="Toolbar.LogSettings.Tip">Choose which channels to record to CSV</sys:String>
+    <sys:String x:Key="Log.SettingsTitle">CSV Logging Settings</sys:String>
+    <sys:String x:Key="Log.SettingsHint">Select channels to log to CSV. Default: all selected, recorded synchronously.</sys:String>
+    <sys:String x:Key="Log.SelectAll">Select All</sys:String>
+    <sys:String x:Key="Log.SelectNone">Select None</sys:String>
+    <sys:String x:Key="Log.SelectedCount">Selected channels</sys:String>
+    <sys:String x:Key="Log.Confirm">OK</sys:String>
+    <sys:String x:Key="Log.NoChannelsSelected">No channels selected, cannot record</sys:String>
+    <sys:String x:Key="Log.SelectionHintFmt">Will record {0} channels</sys:String>
+
+    <!-- Phase 5-2: Chart settings dialog -->
+    <sys:String x:Key="ChartSettings.Title">Chart Settings</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Vib">Vibration Chart</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Tilt">Tilt Chart</sys:String>
+    <sys:String x:Key="ChartSettings.Section.Env">Env Chart</sys:String>
+    <sys:String x:Key="ChartSettings.XSec">X-axis time span (sec)</sys:String>
+    <sys:String x:Key="ChartSettings.VibY">Y-axis range (G)</sys:String>
+    <sys:String x:Key="ChartSettings.TiltY">Y-axis range (angle)</sys:String>
+    <sys:String x:Key="ChartSettings.EnvY">Y-axis range (Min ~ Max)</sys:String>
+
+    <!-- Phase 5-2: Time domain settings -->
+    <sys:String x:Key="TimeDomain.Title">Time Domain Settings</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Stats">Statistics Rate</sys:String>
+    <sys:String x:Key="TimeDomain.Section.Overlap">Overlap</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz">Statistics rate</sys:String>
+    <sys:String x:Key="TimeDomain.StatsHz.Hint">Statistics frequency for Peak / RMS / Crest and AI features. Default 20Hz = every 50ms.</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap">Overlap percentage</sys:String>
+    <sys:String x:Key="TimeDomain.Overlap.Hint">Overlap between consecutive batches. Higher overlap = smoother but more lag. Default 30%.</sys:String>
+
+    <!-- Phase 5-2: Tilt zero -->
+    <sys:String x:Key="Tilt.Zero">Zero</sys:String>
+    <sys:String x:Key="Tilt.ZeroReset">Unzero</sys:String>
+    <sys:String x:Key="Tilt.ZeroTip">First click: set current X/Y/Z angles as 0° baseline. Second click: revert to absolute angles.</sys:String>
+    <sys:String x:Key="Status.TiltZeroedFmt">{0}: Tilt zeroed (showing offset from baseline)</sys:String>
+    <sys:String x:Key="Status.TiltZeroResetFmt">{0}: Tilt zero reset (showing absolute angles)</sys:String>
+
+    <!-- Phase 5-2.4: Performance settings -->
+    <sys:String x:Key="Pref.Section.Performance">Performance tuning</sys:String>
+    <sys:String x:Key="Pref.Perf.Hint">Lower these if the app feels sluggish. Reducing chart refresh rate or point count does not affect measurement accuracy, only visual fluidity.</sys:String>
+    <sys:String x:Key="Pref.Perf.RefreshHz">Chart refresh rate</sys:String>
+    <sys:String x:Key="Pref.Perf.MaxPoints">Max points per series</sys:String>
+
+    <!-- Phase 5-2.1: Tilt LPF preferences -->
+    <sys:String x:Key="Pref.Section.Tilt">Tilt angle</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Label">Angle display mode:</sys:String>
+    <sys:String x:Key="Pref.TiltMode.Inclinometer">Inclinometer (default)</sys:String>
+    <sys:String x:Key="Pref.TiltMode.InclinometerTip">Angle off the horizontal plane. Flat: X=0°, Y=0°, Z=+90°. Range -90°~+90°. Engineering convention.</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVector">Gravity vector</sys:String>
+    <sys:String x:Key="Pref.TiltMode.GravityVectorTip">Physical angle between axis and gravity. Flat: X=90°, Y=90°, Z=0°. Range 0°~180°.</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Enable">Enable LPF (low-pass filter)</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tip">Compute tilt from DC component then apply LPF for smoother readings under vibration. Enabled by default.</sys:String>
+    <sys:String x:Key="Pref.TiltLpf.Tau">Time constant</sys:String>
+
+    <!-- Preferences dialog -->
+    <sys:String x:Key="Toolbar.Preferences">⚙ Preferences</sys:String>
+    <sys:String x:Key="Pref.Title">Preferences</sys:String>
+    <sys:String x:Key="Pref.Apply">Apply</sys:String>
+    <sys:String x:Key="Pref.Section.Vibration">Vibration display</sys:String>
+    <sys:String x:Key="Pref.Section.Display">Display</sys:String>
+    <sys:String x:Key="Pref.Section.Future">Reserved for future</sys:String>
+    <sys:String x:Key="Pref.Future.Hint">Upcoming hardware/software adjustments (firmware update, comm settings, advanced calibration...) will live here.</sys:String>
+    <sys:String x:Key="Pref.Gravity.Label">Gravity (1G vertical axis) handling:</sys:String>
+    <sys:String x:Key="Pref.Gravity.Remove">Remove gravity (default)</sys:String>
+    <sys:String x:Key="Pref.Gravity.RemoveTip">Subtract DC per axis; X/Y/Z ≈ 0 at rest, showing pure vibration</sys:String>
+    <sys:String x:Key="Pref.Gravity.Keep">Keep gravity</sys:String>
+    <sys:String x:Key="Pref.Gravity.KeepTip">Preserve DC component; vertical axis ≈ 1G at rest</sys:String>
+
+    <!-- ViewMode icon labels -->
+    <sys:String x:Key="ViewMode.Vibration">Vibration</sys:String>
+    <sys:String x:Key="ViewMode.Tilt">Tilt</sys:String>
+    <sys:String x:Key="ViewMode.Env">Env</sys:String>
+    <sys:String x:Key="Series.Temp">Temp</sys:String>
+    <sys:String x:Key="Series.Hum">Hum</sys:String>
+
+    <!-- App -->
+    <sys:String x:Key="App.Title">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar (Phase 5 VMS-style) -->
+    <sys:String x:Key="Toolbar.AddSensor">+ Add Sensor</sys:String>
+    <sys:String x:Key="Toolbar.RemoveSensor">− Remove</sys:String>
+    <sys:String x:Key="Toolbar.SyncLabel">Sync:</sys:String>
+    <sys:String x:Key="Toolbar.StartAll">▶ Start All</sys:String>
+    <sys:String x:Key="Toolbar.StopAll">■ Stop All</sys:String>
+    <sys:String x:Key="Toolbar.RecordAll">● Record All</sys:String>
+    <sys:String x:Key="Toolbar.View">View:</sys:String>
+    <sys:String x:Key="Toolbar.View.Tip">One-click switch all sensor charts</sys:String>
+    <sys:String x:Key="Toolbar.FontSize">Font:</sys:String>
+
+    <!-- Sensor Tab -->
+    <sys:String x:Key="Tab.Sensor">Sensor</sys:String>
+    <sys:String x:Key="Tab.Stats">📊 Stats</sys:String>
+
+    <!-- Sections -->
+    <sys:String x:Key="Section.Connection">Connection</sys:String>
+    <sys:String x:Key="Section.Measure">Measure</sys:String>
+    <sys:String x:Key="Section.Settings">Settings</sys:String>
+    <sys:String x:Key="Section.Log">Log</sys:String>
+    <sys:String x:Key="Section.Calibration">Calibration</sys:String>
+
+    <!-- Per-channel -->
+    <sys:String x:Key="Channel.PortLabel">Port:</sys:String>
+    <sys:String x:Key="Channel.Connect">Connect</sys:String>
+    <sys:String x:Key="Channel.Disconnect">Disconnect</sys:String>
+    <sys:String x:Key="Channel.RecordStart">● Start Recording</sys:String>
+    <sys:String x:Key="Channel.RecordStop">■ Stop Recording</sys:String>
+    <sys:String x:Key="Channel.OpenFolder">📁 Open Folder</sys:String>
+    <sys:String x:Key="Channel.MaxReset">Reset Max</sys:String>
+
+    <!-- Live data table -->
+    <sys:String x:Key="Table.Acc">Acc (G)</sys:String>
+    <sys:String x:Key="Table.Alarm">Alarm</sys:String>
+    <sys:String x:Key="Table.Status">Status</sys:String>
+    <sys:String x:Key="Table.Angle">Angle (°)</sys:String>
+    <sys:String x:Key="Table.Value">Value</sys:String>
+    <sys:String x:Key="Measure.Running">Running</sys:String>
+    <sys:String x:Key="Measure.Stopped">Stopped</sys:String>
+    <sys:String x:Key="Pref.Diag.Show">Show diagnostics panel</sys:String>
+    <sys:String x:Key="Pref.Diag.Tip">Show SPS / Bytes / Pkt / Lost / Hex preview on each Sensor tab. Disabled by default.</sys:String>
+    <sys:String x:Key="Table.MaxRecord">Max (G)</sys:String>
+
+    <!-- Add Sensor Dialog -->
+    <sys:String x:Key="Dialog.AddSensor.Title">Add Sensor</sys:String>
+
+    <!-- Status messages (Phase 5) -->
+    <sys:String x:Key="Status.SensorConnectedFmt">{0} connected</sys:String>
+    <sys:String x:Key="Status.SensorDisconnectedFmt">{0} disconnected</sys:String>
+    <sys:String x:Key="Status.SyncStartedFmt">Sync started ({0} sensors)</sys:String>
+    <sys:String x:Key="Status.SyncStopped">Sync stopped</sys:String>
+
+    <sys:String x:Key="App.LegacyTitle">Tranzx Vibration PHM System V1.0</sys:String>
+
+    <!-- Toolbar -->
+    <sys:String x:Key="Toolbar.AddChannel">+ Add Channel</sys:String>
+    <sys:String x:Key="Toolbar.ScanUsb">🔍 Scan</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe">💾 Save Recipe</sys:String>
+    <sys:String x:Key="Toolbar.SaveRecipe.Tip">Pack current channel configuration as .tzrcp file</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe">📂 Load Recipe</sys:String>
+    <sys:String x:Key="Toolbar.LoadRecipe.Tip">Load an existing .tzrcp configuration file</sys:String>
+    <sys:String x:Key="Toolbar.Connect">▶ Connect</sys:String>
+    <sys:String x:Key="Toolbar.Disconnect">■ Disconnect</sys:String>
+    <sys:String x:Key="Toolbar.StartRecord">● Start Recording</sys:String>
+    <sys:String x:Key="Toolbar.StopRecord">■ Stop Recording</sys:String>
+    <sys:String x:Key="Toolbar.RecLabel">REC</sys:String>
+    <sys:String x:Key="Toolbar.RecOpen">📂 Open</sys:String>
+    <sys:String x:Key="Toolbar.SamplesUnit">samples</sys:String>
+    <sys:String x:Key="Toolbar.ActiveChannels">Active sensors:</sys:String>
+    <sys:String x:Key="Toolbar.Language">Language</sys:String>
+
+    <!-- Channel card -->
+    <sys:String x:Key="Channel.SPS">SPS</sys:String>
+    <sys:String x:Key="Channel.LostPackets">Lost</sys:String>
+    <sys:String x:Key="Channel.Calibration">Calib.</sys:String>
+    <sys:String x:Key="Channel.LoadCalibration.Tip">Load calibration file</sys:String>
+    <sys:String x:Key="Channel.RemoveChannel.Tip">Remove channel</sys:String>
+    <sys:String x:Key="Channel.Uncalibrated">Not calibrated</sys:String>
+    <sys:String x:Key="Channel.CalibratedFmt">Calibrated [{0}]</sys:String>
+
+    <!-- Tab headers -->
+    <sys:String x:Key="Tab.Vibration">📊 Vibration</sys:String>
+    <sys:String x:Key="Tab.Level">📐 Tilt</sys:String>
+    <sys:String x:Key="Tab.Env">🌡 Temp/Humidity</sys:String>
+
+    <!-- Vibration tab -->
+    <sys:String x:Key="Vibration.TimeMode">Time Domain</sys:String>
+    <sys:String x:Key="Vibration.FftMode">Frequency (FFT)</sys:String>
+    <sys:String x:Key="Vibration.WaveformMode">Waveform</sys:String>
+    <sys:String x:Key="Vibration.ShowAxes">Show:</sys:String>
+    <sys:String x:Key="Vibration.AmpRangeLabel">Amp range:</sys:String>
+    <sys:String x:Key="Vibration.AmpAuto">Auto</sys:String>
+    <sys:String x:Key="Vibration.Snapshot">📷 Snapshot</sys:String>
+    <sys:String x:Key="Vibration.ResetZoom">🔄 Reset zoom</sys:String>
+    <sys:String x:Key="Vibration.MaxMarkerFmt">{0} max: f={1:F1}Hz · A={2:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ZoomHint">Tip: left-drag to box-zoom · right-click for cursor · wheel to zoom · use "🔄 Reset zoom" button</sys:String>
+    <sys:String x:Key="Vibration.CrestLabel">Crest</sys:String>
+    <sys:String x:Key="Vibration.Hpf">HPF (0.5Hz)</sys:String>
+    <sys:String x:Key="Vibration.UnitLabel">Unit:</sys:String>
+    <sys:String x:Key="Vibration.WindowLabel">Window:</sys:String>
+    <sys:String x:Key="Vibration.WindowLengthLabel">Length:</sys:String>
+    <sys:String x:Key="Vibration.FreqRangeLabel">Freq range:</sys:String>
+    <sys:String x:Key="Vibration.SecUnit">sec</sys:String>
+    <sys:String x:Key="Vibration.HzUnit">Hz</sys:String>
+    <sys:String x:Key="Vibration.AutoFreq">Auto (Nyquist)</sys:String>
+    <sys:String x:Key="Vibration.CursorFmt">t={0:F3}s · X={1:F3}G · Y={2:F3}G · Z={3:F3}G</sys:String>
+    <sys:String x:Key="Vibration.CursorFftFmt">f={0:F1}Hz · X={1:F4}G · Y={2:F4}G · Z={3:F4}G</sys:String>
+    <sys:String x:Key="Vibration.ClearCursor">⊗ Clear cursor</sys:String>
+    <sys:String x:Key="Vibration.Pause">⏸ Pause</sys:String>
+    <sys:String x:Key="Vibration.Resume">▶ Resume</sys:String>
+    <sys:String x:Key="Vibration.Zero">⊙ Zero</sys:String>
+    <sys:String x:Key="Vibration.Csv">● CSV</sys:String>
+    <sys:String x:Key="Vibration.AxisTime">Time (s)</sys:String>
+    <sys:String x:Key="Vibration.AxisFreq">Frequency (Hz)</sys:String>
+    <sys:String x:Key="Vibration.AxisAmp">Amplitude (G)</sys:String>
+    <sys:String x:Key="Vibration.AxisG">G</sys:String>
+    <sys:String x:Key="Vibration.RmsLabel">RMS</sys:String>
+    <sys:String x:Key="Vibration.PpLabel">P-P</sys:String>
+
+    <!-- Level tab -->
+    <sys:String x:Key="Level.Title">Tilt Measurement (Pitch / Roll, calibration applied)</sys:String>
+    <sys:String x:Key="Level.ZeroAll">⊙ Zero All</sys:String>
+    <sys:String x:Key="Level.Precision">Precision: ±0.05°</sys:String>
+    <sys:String x:Key="Level.Pitch">Pitch</sys:String>
+    <sys:String x:Key="Level.Roll">Roll</sys:String>
+    <sys:String x:Key="Level.Total">Total</sys:String>
+
+    <!-- Env tab -->
+    <sys:String x:Key="Env.Title">Temperature / Humidity Monitoring (HDC1080)</sys:String>
+    <sys:String x:Key="Env.WindowLabel">Trend window:</sys:String>
+    <sys:String x:Key="Env.Window1Hr">1 hour</sys:String>
+    <sys:String x:Key="Env.Window6Hr">6 hours</sys:String>
+    <sys:String x:Key="Env.Window24Hr">24 hours</sys:String>
+    <sys:String x:Key="Env.TempAlertLabel">High temp alarm:</sys:String>
+    <sys:String x:Key="Env.HumAlertLabel">High humidity alarm:</sys:String>
+    <sys:String x:Key="Env.Temperature">Temp.</sys:String>
+    <sys:String x:Key="Env.Humidity">Humidity</sys:String>
+    <sys:String x:Key="Env.AxisTemp">Temperature (°C)</sys:String>
+    <sys:String x:Key="Env.AxisHum">Humidity (%RH)</sys:String>
+    <sys:String x:Key="Env.AxisTime">Time (s)</sys:String>
+    <sys:String x:Key="Env.SeriesTempFmt">Ch{0} Temp</sys:String>
+    <sys:String x:Key="Env.SeriesHumFmt">Ch{0} Humidity</sys:String>
+
+    <!-- AddChannelDialog -->
+    <sys:String x:Key="Dialog.AddChannel.Title">Add Channel</sys:String>
+    <sys:String x:Key="Dialog.SlotIndex">Sensor #</sys:String>
+    <sys:String x:Key="Dialog.DisplayName">Display name</sys:String>
+    <sys:String x:Key="Dialog.ConnectionSettings">Connection</sys:String>
+    <sys:String x:Key="Dialog.UsbCdc">USB CDC</sys:String>
+    <sys:String x:Key="Dialog.ComPort">COM Port</sys:String>
+    <sys:String x:Key="Dialog.RescanTip">Re-scan</sys:String>
+    <sys:String x:Key="Dialog.SensorSettings">Sensor</sys:String>
+    <sys:String x:Key="Dialog.SensorId">Sensor ID</sys:String>
+    <sys:String x:Key="Dialog.SensorIdTip">8-character sensor ID, used for automatic calibration matching</sys:String>
+    <sys:String x:Key="Dialog.FullScale">Full scale</sys:String>
+    <sys:String x:Key="Dialog.Odr">ODR (Hz)</sys:String>
+    <sys:String x:Key="Dialog.L02Warning">⚠ Please verify settings match the actual firmware (Lesson L02)</sys:String>
+    <sys:String x:Key="Dialog.Calibration">Calibration File</sys:String>
+    <sys:String x:Key="Dialog.AutoCalibration">Auto-match (search Calibration\ folder by Sensor ID)</sys:String>
+    <sys:String x:Key="Dialog.ManualCalibration">Manual</sys:String>
+    <sys:String x:Key="Dialog.Browse">Browse…</sys:String>
+    <sys:String x:Key="Dialog.Cancel">Cancel</sys:String>
+    <sys:String x:Key="Dialog.Add">Add</sys:String>
+    <sys:String x:Key="Dialog.DefaultChannelNameFmt">Sensor {0}</sys:String>
+    <sys:String x:Key="Dialog.SelectCalibration">Select calibration file</sys:String>
+
+    <!-- Recipe -->
+    <sys:String x:Key="Recipe.Unnamed">Untitled</sys:String>
+    <sys:String x:Key="Recipe.SaveTitle">Save Recipe</sys:String>
+    <sys:String x:Key="Recipe.LoadTitle">Load Recipe</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirm">Loading a Recipe will clear all current channels (and disconnect). Continue?</sys:String>
+    <sys:String x:Key="Recipe.LoadConfirmTitle">Confirm Recipe Load</sys:String>
+    <sys:String x:Key="Recipe.SummaryTitle">Recipe Summary</sys:String>
+    <sys:String x:Key="Recipe.SummaryPrompt">Load this Recipe?</sys:String>
+    <sys:String x:Key="Recipe.PortNote">(Note: if a PortName does not exist on this PC, the system will try to auto-match by SensorID)</sys:String>
+
+    <!-- Status messages -->
+    <sys:String x:Key="Status.Ready">Ready (click "+ Add Sensor" to begin)</sys:String>
+    <sys:String x:Key="Status.ScanResultFmt">Found {0} COM ports, {1} appear to be iVS</sys:String>
+    <sys:String x:Key="Status.ChannelLimit">Maximum 4 channels reached</sys:String>
+    <sys:String x:Key="Status.NoChannels">Add at least one channel first</sys:String>
+    <sys:String x:Key="Status.ChannelAddedFmt">Added {0} ({1})</sys:String>
+    <sys:String x:Key="Status.ChannelRemovedFmt">Removed channel {0}</sys:String>
+    <sys:String x:Key="Status.CalibrationLoadedFmt">{0}: calibration loaded [{1}]</sys:String>
+    <sys:String x:Key="Status.ConnectingFmt">Connected {0}/{1} channels, verifying device settings…</sys:String>
+    <sys:String x:Key="Status.MismatchWarnFmt">⚠ Connected ({0} channels), but {1} have device-setting mismatch — see channel cards</sys:String>
+    <sys:String x:Key="Status.VerifySuccessFmt">✓ Connected ({0} channels), {1} verified settings match</sys:String>
+    <sys:String x:Key="Status.ConnectedNoVerifyFmt">Connected ({0} channels), but device responses cannot be parsed (firmware may not support readback)</sys:String>
+    <sys:String x:Key="Status.ConnectedFmt">Connected {0} channels</sys:String>
+    <sys:String x:Key="Status.Disconnected">Disconnected</sys:String>
+    <sys:String x:Key="Status.RecordStartedFmt">Recording → {0}</sys:String>
+    <sys:String x:Key="Status.RecordStoppedFmt">Recording stopped ({0:N0} samples)</sys:String>
+    <sys:String x:Key="Status.NoRecord">No active channels, cannot record</sys:String>
+    <sys:String x:Key="Status.RecipeSavedFmt">Recipe saved: {0}</sys:String>
+    <sys:String x:Key="Status.RecipeLoadedFmt">Recipe loaded ({0}/{1} channels), click "▶ Connect" to start</sys:String>
+    <sys:String x:Key="Status.RecipeChannelFailFmt">⚠ Channel {0} load failed: {1}</sys:String>
+    <sys:String x:Key="Status.NoChannelsForRecipe">No channels to save</sys:String>
+
+    <!-- Error MessageBox titles -->
+    <sys:String x:Key="Error.Title">Error</sys:String>
+    <sys:String x:Key="Error.AddChannelFailFmt">Add channel failed: {0}</sys:String>
+    <sys:String x:Key="Error.LoadCalibrationFailFmt">Cannot load calibration: {0}</sys:String>
+    <sys:String x:Key="Error.ConnectFailFmt">Connection error: {0}</sys:String>
+    <sys:String x:Key="Error.RecordStartFailFmt">Cannot start recording: {0}</sys:String>
+    <sys:String x:Key="Error.RecipeSaveFailFmt">Save Recipe failed: {0}</sys:String>
+    <sys:String x:Key="Error.RecipeLoadFailFmt">Load Recipe failed: {0}</sys:String>
+
+    <!-- Bottom bar -->
+    <sys:String x:Key="Bottom.LastSyncFmt">Last sync: {0:HH:mm:ss} ({1} ch)</sys:String>
+
+    <!-- Mismatch banner -->
+    <sys:String x:Key="MismatchBanner.Text">Device-reported FS / ODR does not match UI settings — see channel cards or reconnect to check firmware.</sys:String>
+    <sys:String x:Key="MismatchBanner.L02">(Lesson L02)</sys:String>
+
+    <!-- Transport state -->
+    <sys:String x:Key="State.Disconnected">Disconnected</sys:String>
+    <sys:String x:Key="State.Connecting">Connecting…</sys:String>
+    <sys:String x:Key="State.Connected">Connected</sys:String>
+    <sys:String x:Key="State.Reconnecting">Reconnecting…</sys:String>
+    <sys:String x:Key="State.Faulted">Fault</sys:String>
+
+    <!-- Verification labels -->
+    <sys:String x:Key="Verification.Unverified">Not verified</sys:String>
+    <sys:String x:Key="Verification.NoResponse">Firmware did not respond to ReadFs/ReadOdr</sys:String>
+    <sys:String x:Key="Verification.SuccessFmt">✓ Verified {0}, {1}</sys:String>
+    <sys:String x:Key="Verification.MismatchFmt">⚠ Device reports {0}, {1} (mismatch)</sys:String>
+    <sys:String x:Key="Verification.FsFmt">FS=±{0}G</sys:String>
+    <sys:String x:Key="Verification.OdrFmt">ODR={0}Hz</sys:String>
+    <sys:String x:Key="Verification.FsUnknown">FS=?</sys:String>
+    <sys:String x:Key="Verification.OdrUnknown">ODR=?</sys:String>
+
+    <!-- Phase 5-4: Alarm thresholds + chart icons -->
+    <sys:String x:Key="Chart.ResetZoom">Reset zoom</sys:String>
+    <sys:String x:Key="Chart.Refresh">Refresh chart</sys:String>
+    <sys:String x:Key="Alarm.Title">Alarm Threshold</sys:String>
+    <sys:String x:Key="Alarm.Target">Target</sys:String>
+    <sys:String x:Key="Alarm.ConfigTip">Click to configure alarm thresholds</sys:String>
+    <sys:String x:Key="Alarm.Section.Thresholds">Three-level thresholds (absolute value)</sys:String>
+    <sys:String x:Key="Alarm.Green">Green (Normal)</sys:String>
+    <sys:String x:Key="Alarm.Yellow">Yellow (Warning)</sys:String>
+    <sys:String x:Key="Alarm.Red">Red (Alarm)</sys:String>
+    <sys:String x:Key="Alarm.PreviewFmt">Green: {0} {3} / Yellow: {1} {3} / Red: {2} {3}</sys:String>
+    <sys:String x:Key="Alarm.CopyToAll">Copy these thresholds to the same group (e.g. X-0P → X/Y/Z all 0-P)</sys:String>
+    <sys:String x:Key="Alarm.CopyToGroup">Copy to group</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibPeak">Copy to all-axis 0-P</sys:String>
+    <sys:String x:Key="Alarm.CopyToVibRms">Copy to all-axis RMS</sys:String>
+    <sys:String x:Key="Alarm.CopyToTilt">Copy to all-axis angle</sys:String>
+    <sys:String x:Key="Alarm.InvalidNumber">Please enter valid numbers</sys:String>
+    <sys:String x:Key="Alarm.InvalidRange">Red threshold must be greater than yellow, both ≥ 0</sys:String>
+    <!-- Phase 5-6: Alarm logger -->
+    <sys:String x:Key="Section.Alarm">Alarm Log</sys:String>
+    <sys:String x:Key="Alarm.LogFolder">Log Folder</sys:String>
+    <sys:String x:Key="Alarm.TodayCount">Today (Green / Yellow / Red)</sys:String>
+    <!-- Phase 5-7: trend logger + alarm sound -->
+    <sys:String x:Key="Trend.LogFolder">Trend Folder</sys:String>
+    <sys:String x:Key="Trend.RawData">Raw Data Log</sys:String>
+    <sys:String x:Key="Trend.RawDataTip">When enabled, records every raw sample (~3300 sps); files become very large. When disabled, logs trend stats at statistics rate.</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Show">Alarm Sound</sys:String>
+    <sys:String x:Key="Pref.AlarmSound.Tip">Plays system asterisk on yellow, hand on red. Disabled by default.</sys:String>
+    <!-- Phase 5-8c2: toast filter -->
+    <sys:String x:Key="Pref.Toast.Enable">Alarm Visual Notification (Popup)</sys:String>
+    <sys:String x:Key="Pref.Toast.Tip">Floating popup at bottom-right. Choose which levels trigger it.</sys:String>
+    <sys:String x:Key="Pref.Toast.Yellow">Show on Yellow</sys:String>
+    <sys:String x:Key="Pref.Toast.Red">Show on Red</sys:String>
+    <sys:String x:Key="VibSet.WaveformY">Y axis range</sys:String>
+    <sys:String x:Key="EventLog.Title">Event Log</sys:String>
+    <sys:String x:Key="EventLog.Time">Time</sys:String>
+    <sys:String x:Key="EventLog.Level">Level</sys:String>
+    <sys:String x:Key="EventLog.Source">Source</sys:String>
+    <sys:String x:Key="EventLog.Message">Message</sys:String>
+    <sys:String x:Key="EventLog.OpenFolder">Open Folder</sys:String>
+    <sys:String x:Key="Toolbar.EventLog">Event Log</sys:String>
+    <!-- Phase 5-8c3: live status feed -->
+    <sys:String x:Key="LiveFeed.Title">Live Status</sys:String>
+    <sys:String x:Key="LiveFeed.Clear">Clear</sys:String>
+    <sys:String x:Key="LiveFeed.ClearTip">Clear the panel (does not affect event log)</sys:String>
+    <!-- Phase 5-8c4 -->
+    <sys:String x:Key="Alarm.ResetTip">Reset today's alarm counters (Green / Yellow / Red → 0)</sys:String>
+    <sys:String x:Key="Alarm.ResetDone">Today's alarm counters cleared.</sys:String>
+    <!-- Phase 5-8c5: timed / continuous recording -->
+    <sys:String x:Key="Recording.ModeSection">Recording Mode</sys:String>
+    <sys:String x:Key="Recording.ModeDesc">Two modes, independent. Default both off = manual start/stop + split by segment minutes.</sys:String>
+    <sys:String x:Key="Recording.Timed">Timed Recording</sys:String>
+    <sys:String x:Key="Recording.TimedTip">Auto-stops after the configured duration (10 – 86400 sec, up to 24 h).</sys:String>
+    <sys:String x:Key="Recording.Duration">Duration</sys:String>
+    <sys:String x:Key="Recording.Continuous">Continuous (no segment split)</sys:String>
+    <sys:String x:Key="Recording.ContinuousTip">Ignores the segment minutes below — writes one file from start to manual stop. Best for long-form analysis.</sys:String>
+    <sys:String x:Key="Recording.TimedStartFmt">Timed recording started — auto stop in {0} sec</sys:String>
+    <sys:String x:Key="Recording.AutoStoppedFmt">Timed {0} sec elapsed — recording auto-stopped</sys:String>
+    <sys:String x:Key="Recording.ContinuousStart">Continuous recording started (no segment split)</sys:String>
+    <!-- Phase 5-8c6: Smart Log + Cleanup section -->
+    <sys:String x:Key="Recording.SmartLogSection">Smart Log (Event-Driven)</sys:String>
+    <sys:String x:Key="Recording.SmartLogEnable">Enable Smart Log</sys:String>
+    <sys:String x:Key="Recording.SmartLogTip">Auto-start recording when vibration exceeds threshold, auto-stop when it returns to baseline. One CSV per event. Saves disk space when the machine isn't running 24/7. Trigger uses max(|PeakX|, |PeakY|, |PeakZ|).</sys:String>
+    <sys:String x:Key="Recording.SmartStartG">Start threshold</sys:String>
+    <sys:String x:Key="Recording.SmartStartHold">Start hold time</sys:String>
+    <sys:String x:Key="Recording.SmartStopG">Stop threshold</sys:String>
+    <sys:String x:Key="Recording.SmartStopHold">Stop hold time</sys:String>
+    <sys:String x:Key="Recording.SmartMinSec">Min event duration</sys:String>
+    <sys:String x:Key="Recording.CleanupSection">Retention Cleanup</sys:String>
+    <sys:String x:Key="Recording.CleanupDesc">Files older than the retention days are auto-purged on launch and at midnight (FIFO 7 days at a time). Click below to apply Trend / Raw retention immediately.</sys:String>
+    <!-- Phase 5-8c7: Vibration Stats window -->
+    <sys:String x:Key="StatsWin.Title">Vibration Statistics</sys:String>
+    <sys:String x:Key="StatsWin.Window">Window</sys:String>
+    <sys:String x:Key="StatsWin.Overlap">Overlap</sys:String>
+    <sys:String x:Key="StatsWin.Start">▶ Start</sys:String>
+    <sys:String x:Key="StatsWin.Stop">■ Stop</sys:String>
+    <sys:String x:Key="StatsWin.ExportNow">Compute Now</sys:String>
+    <sys:String x:Key="StatsWin.ExportNowTip">Compute one row for all sensors immediately, ignore window timer</sys:String>
+    <sys:String x:Key="StatsWin.Clear">Clear View</sys:String>
+    <sys:String x:Key="StatsWin.OutputFolder">CSV Output Folder:</sys:String>
+    <sys:String x:Key="StatsWin.NextInFmt">Next in {0:F1}s</sys:String>
+    <sys:String x:Key="StatsWin.RunningFmt">Running (window {0}s, overlap {1}%)</sys:String>
+    <sys:String x:Key="StatsWin.StoppedFmt">Stopped ({0} rows written)</sys:String>
+    <sys:String x:Key="StatsWin.Col.Time">Time</sys:String>
+    <sys:String x:Key="StatsWin.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="StatsWin.Col.Axis">Axis</sys:String>
+    <sys:String x:Key="Toolbar.VibStats">Vib Stats</sys:String>
+    <!-- Phase 5-8c8: power saver + stats chart -->
+    <sys:String x:Key="StatsWin.ChartMetric">Metric</sys:String>
+    <sys:String x:Key="StatsWin.ChartMaxPoints">Max points</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Section">Power Saver</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Enable">Enable Power Saver</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.Tip">After no mouse/keyboard activity for the configured time, chart rendering is paused to save CPU. Data computation and alarms still run. Any input resumes immediately. Enabled by default.</sys:String>
+    <sys:String x:Key="Pref.PowerSaver.IdleMin">Idle threshold</sys:String>
+    <sys:String x:Key="Unit.Min">min</sys:String>
+    <!-- Phase 5-8c9 -->
+    <sys:String x:Key="StatsWin.ApplyAxis">Apply Y range</sys:String>
+    <sys:String x:Key="StatsWin.AutoAxis">Auto Y range</sys:String>
+    <sys:String x:Key="StatsWin.XSpan">X span</sys:String>
+    <sys:String x:Key="Pref.Stats.LogEnable">Log statistics rows to Event Log</sys:String>
+    <sys:String x:Key="Pref.Stats.LogTip">When enabled, every statistics row is also written to the Event Log (%LocalAppData%\Tranzx.iVS4\Logs\app_yyyyMMdd.csv) for audit purposes. Disabled by default. Note: with a 5-second window and 30% overlap, each sensor generates 3 rows roughly every 3.5 seconds — long sessions will significantly inflate the log file.</sys:String>
+    <sys:String x:Key="HistoryWin.Title">History Analysis</sys:String>
+    <sys:String x:Key="HistoryWin.LoadCsv">📂 Load CSV</sys:String>
+    <sys:String x:Key="HistoryWin.ClearAll">Clear</sys:String>
+    <sys:String x:Key="HistoryWin.PlotMetric">Plot metric</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFmt">Loaded {0} rows, {1} metrics</sys:String>
+    <sys:String x:Key="HistoryWin.EmptyFile">CSV file is empty or malformed</sys:String>
+    <sys:String x:Key="Toolbar.HistoryAnalysis">History</sys:String>
+    <!-- Phase 5-8c11 -->
+    <sys:String x:Key="HistoryWin.Subtitle">Up to 4 CSVs overlay ｜ Click=track ｜ Ctrl+Drag=zoom ｜ Right-drag=pan ｜ Wheel=zoom</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlay">+ Add overlay</sys:String>
+    <sys:String x:Key="HistoryWin.AddOverlayTip">Overlay another CSV on the current chart (max 4)</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoom">↺ Reset zoom</sys:String>
+    <sys:String x:Key="HistoryWin.ResetZoomTip">Reset zoom to full range</sys:String>
+    <sys:String x:Key="HistoryWin.StatsPanel">Stats</sys:String>
+    <sys:String x:Key="HistoryWin.Comparison">Comparison</sys:String>
+    <sys:String x:Key="HistoryWin.LoadedFiles">Loaded:</sys:String>
+    <sys:String x:Key="HistoryWin.MaxOverlayFmt">Max overlay limit reached ({0} files)</sys:String>
+    <sys:String x:Key="HistoryWin.NoDataToExport">Nothing to export</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReport">📄 Export report</sys:String>
+    <sys:String x:Key="HistoryWin.ExportReportTip">Export PDF / HTML / CSV summary report</sys:String>
+    <!-- Phase 5-8c12 -->
+    <sys:String x:Key="HistoryWin.Align">⚙ Align</sys:String>
+    <sys:String x:Key="HistoryWin.AlignTip">Set the alignment anchor for each CSV (which second to treat as t=0)</sys:String>
+    <sys:String x:Key="HistoryWin.AlignDesc">By default each CSV is aligned by its first row. To align manually, enter the time (in seconds from the first row) that should be treated as t=0.</sys:String>
+    <sys:String x:Key="HistoryWin.AlignOffset">t=0 at</sys:String>
+    <sys:String x:Key="HistoryWin.AlignReset">Reset all</sys:String>
+    <sys:String x:Key="HistoryWin.AlignNeedMulti">Need at least 2 CSVs to align</sys:String>
+    <sys:String x:Key="HistoryWin.PdfFallback">Cannot generate PDF (Microsoft Edge / Chrome not found). Saved as HTML instead — you can print to PDF manually.</sys:String>
+    <!-- Phase 5-9 (A) -->
+    <sys:String x:Key="Motion3D.Title">3D Motion Replay</sys:String>
+    <sys:String x:Key="Motion3D.Subtitle">Pick one recording — Tilt + Vibration CSV are loaded together to replay sensor motion</sys:String>
+    <sys:String x:Key="Motion3D.LoadCsv">📂 Load recording</sys:String>
+    <sys:String x:Key="Motion3D.SelectTiltCsv">Select any CSV (Tilt or Vib); the matching companion file is auto-detected</sys:String>
+    <sys:String x:Key="Motion3D.Clear">Clear</sys:String>
+    <sys:String x:Key="Motion3D.MotionScale">Motion scale</sys:String>
+    <sys:String x:Key="Motion3D.TrailLen">Trail length</sys:String>
+    <sys:String x:Key="Motion3D.ShowVector">Vector arrow</sys:String>
+    <sys:String x:Key="Motion3D.ShowTrail">Trail</sys:String>
+    <sys:String x:Key="Motion3D.ShowGrid">Ground grid</sys:String>
+    <sys:String x:Key="Motion3D.LiveValues">Live values</sys:String>
+    <sys:String x:Key="Motion3D.Speed">Speed</sys:String>
+    <sys:String x:Key="Motion3D.Rewind">Rewind to start</sys:String>
+    <sys:String x:Key="Motion3D.NoData">No valid data in the CSV</sys:String>
+    <sys:String x:Key="Motion3D.ExportAvi">🎬 Export AVI</sys:String>
+    <sys:String x:Key="Motion3D.ExportAviTip">Render to AVI (Motion-JPEG; play with VLC; up to 60s)</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4">🎞 Export MP4</sys:String>
+    <sys:String x:Key="Motion3D.ExportMp4Tip">Render to MP4 (H.264) — plays everywhere; requires FFmpeg on system</sys:String>
+    <sys:String x:Key="Motion3D.RenderingAvi">Rendering 3D</sys:String>
+    <sys:String x:Key="Motion3D.EncodingMp4">H.264 Encoding</sys:String>
+    <sys:String x:Key="Motion3D.FFmpegMissing">FFmpeg not found.&#x0a;&#x0a;MP4 export requires ffmpeg.exe. Three options:&#x0a;&#x0a;1. Direct download: click YES to open BtbN FFmpeg builds&#x0a;   Extract ffmpeg.exe to this app folder or C:\ffmpeg\bin\&#x0a;&#x0a;2. winget install Gyan.FFmpeg&#x0a;&#x0a;3. choco install ffmpeg&#x0a;&#x0a;Or just use AVI export + VLC (no FFmpeg required).&#x0a;&#x0a;Open download page?</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="Recording.LogStats">Stats</sys:String>
+    <sys:String x:Key="Recording.LogStatsTip">When enabled, every row computed in the Vibration Statistics window is also written to the Event Log (%LocalAppData%\Tranzx PHM\Logs) for audit purposes. Enabled by default. Note: with a 5s window and 30% overlap, each sensor produces ~3 rows every 3.5 seconds — long sessions will inflate the log.</sys:String>
+    <sys:String x:Key="Channel.Temperature">Temperature</sys:String>
+    <sys:String x:Key="Channel.Humidity">Humidity</sys:String>
+    <sys:String x:Key="Channel.Tilt">Tilt</sys:String>
+    <!-- Phase 5-8c10 -->
+    <sys:String x:Key="WarnFeed.Title">Warnings</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Section">Environmental Warning (Temp / Humidity)</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Enable">Enable environmental warning</sys:String>
+    <sys:String x:Key="Pref.EnvWarn.Tip">When enabled, temperature or humidity exceeding the threshold raises a warning in the right-side Warnings panel and Event Log. Disabled by default.</sys:String>
+    <!-- Phase 5-7b: recording settings -->
+    <sys:String x:Key="Recording.Title">Recording Settings</sys:String>
+    <sys:String x:Key="Recording.Settings">Settings</sys:String>
+    <sys:String x:Key="Recording.TrendSection">Trend Log (at statistics rate)</sys:String>
+    <sys:String x:Key="Recording.TrendDesc">Vibration, Tilt, and Env CSVs are written in parallel. Auto-split into a new file every N minutes. Files older than retention are auto-deleted.</sys:String>
+    <sys:String x:Key="Recording.RawSection">Raw Data Log (per sample)</sys:String>
+    <sys:String x:Key="Recording.RawDesc">When Raw Data is enabled, every raw acceleration sample (~3300 sps) is written to a separate CSV. Files become very large; short segment + short retention recommended.</sys:String>
+    <sys:String x:Key="Recording.SegmentTime">CSV split interval</sys:String>
+    <sys:String x:Key="Recording.Retention">Retention</sys:String>
+    <sys:String x:Key="Recording.Min">min</sys:String>
+    <sys:String x:Key="Recording.Day">days</sys:String>
+    <sys:String x:Key="Recording.CleanNow">Clean Now</sys:String>
+    <sys:String x:Key="Recording.CleanedFmt">Deleted {0} expired files.</sys:String>
+    <!-- Phase 5-7c: 紀錄範圍 + 三類 mask -->
+    <sys:String x:Key="Recording.ScopeSection">Recording Scope / Log Types</sys:String>
+    <sys:String x:Key="Recording.ScopeAll">Record all Sensors together</sys:String>
+    <sys:String x:Key="Recording.ScopeAllTip">When enabled, hitting Start on any Sensor toggles all connected Sensors simultaneously. When disabled, only the clicked Sensor is recorded.</sys:String>
+    <sys:String x:Key="Recording.LogTypes">Log types (multi-select):</sys:String>
+    <!-- Phase 5-8: vibration sub-mode -->
+    <sys:String x:Key="VibSub.Trend">Trend</sys:String>
+    <sys:String x:Key="VibSub.Waveform">Waveform</sys:String>
+    <sys:String x:Key="VibSub.Fft">FFT</sys:String>
+    <!-- Phase 5-8b: vibration measurement settings -->
+    <sys:String x:Key="VibSub.MenuTip">Select display mode (Trend / Waveform / FFT)</sys:String>
+    <sys:String x:Key="VibSet.Title">Vibration Measurement Settings</sys:String>
+    <sys:String x:Key="VibSet.TipWithShortcut">Vibration Measurement Settings&#x000A;Shortcut: Shift + Left-drag = Box-select Peak-to-Peak</sys:String>
+    <sys:String x:Key="VibSet.StatsSection">Time-Domain Statistics (Rate / Overlap)</sys:String>
+    <sys:String x:Key="VibSet.StatsDesc">How many statistics batches per second; computes Peak / RMS / Crest / AI features. Higher overlap = smoother but more latency.</sys:String>
+    <sys:String x:Key="VibSet.TrendSection">Trend Chart (statistics-based)</sys:String>
+    <sys:String x:Key="VibSet.WaveformSection">Waveform (Time Domain)</sys:String>
+    <sys:String x:Key="VibSet.WaveformDesc">Shows the last N seconds of raw samples. Ring buffer is sized for up to 60 seconds.</sys:String>
+    <sys:String x:Key="VibSet.WaveformSec">Display window</sys:String>
+    <sys:String x:Key="VibSet.FftSection">FFT Spectrum</sys:String>
+    <sys:String x:Key="VibSet.FftDesc">Last N samples → window → single-sided amplitude spectrum. Larger N improves frequency resolution (df = SPS / N).</sys:String>
+    <sys:String x:Key="VibSet.FftFreqMax">Frequency range</sys:String>
+    <sys:String x:Key="VibSet.FftYMax">Amplitude axis max</sys:String>
+    <sys:String x:Key="VibSet.FftWindow">Window function</sys:String>
+    <sys:String x:Key="VibSet.FftN">Lines of Scan (N)</sys:String>
+    <sys:String x:Key="Unit.Sec">sec</sys:String>
+    <sys:String x:Key="Unit.Auto">Auto</sys:String>
+    <!-- Phase 5-8c: reconnect / dashboard / alarm stats -->
+    <sys:String x:Key="Pref.Reconnect.Section">Sensor Auto-Reconnect</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Tip">When a Sensor unexpectedly disconnects, try to reconnect automatically. 0 = disabled.</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Attempts">Max attempts</sys:String>
+    <sys:String x:Key="Pref.Reconnect.Interval">Retry interval</sys:String>
+    <sys:String x:Key="Unit.Times">attempts</sys:String>
+    <sys:String x:Key="Unit.Disabled">Disabled</sys:String>
+    <sys:String x:Key="Toolbar.Dashboard">Dashboard</sys:String>
+    <sys:String x:Key="Toolbar.AlarmStats">Alarm Stats</sys:String>
+    <sys:String x:Key="Dashboard.Title">Multi-Sensor Dashboard</sys:String>
+    <sys:String x:Key="Dashboard.Connected">Connected</sys:String>
+    <sys:String x:Key="Dashboard.Disconnected">Offline</sys:String>
+    <sys:String x:Key="Dashboard.SummaryFmt">Connected {0} / {1}</sys:String>
+    <sys:String x:Key="AlarmStats.Title">Alarm History Statistics</sys:String>
+    <sys:String x:Key="AlarmStats.Range">Date Range</sys:String>
+    <sys:String x:Key="AlarmStats.RangeToday">Today</sys:String>
+    <sys:String x:Key="AlarmStats.Range7d">Last 7 days</sys:String>
+    <sys:String x:Key="AlarmStats.Range30d">Last 30 days</sys:String>
+    <sys:String x:Key="AlarmStats.Range90d">Last 90 days</sys:String>
+    <sys:String x:Key="AlarmStats.RangeAll">All</sys:String>
+    <sys:String x:Key="AlarmStats.Folder">Log Folder</sys:String>
+    <sys:String x:Key="AlarmStats.Refresh">Refresh</sys:String>
+    <sys:String x:Key="AlarmStats.Green">Green clears</sys:String>
+    <sys:String x:Key="AlarmStats.Yellow">Yellow events</sys:String>
+    <sys:String x:Key="AlarmStats.Red">Red events</sys:String>
+    <sys:String x:Key="AlarmStats.PerSensor">Sensor × Metric Counts</sys:String>
+    <sys:String x:Key="AlarmStats.Daily">Daily alarm counts</sys:String>
+    <sys:String x:Key="AlarmStats.Date">Date</sys:String>
+    <sys:String x:Key="AlarmStats.Count">Count</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Sensor">Sensor</sys:String>
+    <sys:String x:Key="AlarmStats.Col.Key">Metric</sys:String>
+    <sys:String x:Key="AlarmStats.SummaryFmt">Parsed {0} events across {1} Sensor × Metric combinations</sys:String>
+    <sys:String x:Key="AlarmStats.FolderMissing">Log folder does not exist: {0}</sys:String>
+</ResourceDictionary>
